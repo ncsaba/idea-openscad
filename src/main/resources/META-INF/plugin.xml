@@ -1,0 +1,25 @@
+<idea-plugin>
+    <id>com.javampire.idea-openscad</id>
+    <name>OpenSCAD plugin for InelliJ platform</name>
+    <vendor email="idea-openscad@javampire.com" url="http://github.com/idea-openscad">Csaba Nagy</vendor>
+
+    <description><![CDATA[
+    Syntax highlighting and refactoring support for OpenSCAD files.
+    ]]></description>
+
+    <change-notes><![CDATA[
+      Release 0.0.1: Initial release.<br>
+    ]]>
+    </change-notes>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Extension points for openscad -->
+        <fileTypeFactory implementation="com.javampire.openscad.OpenSCADFileTypeFactory"/>
+        <lang.parserDefinition language="OpenSCAD" implementationClass="com.javampire.openscad.OpenSCADParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="OpenSCAD" implementationClass="com.javampire.openscad.OpenSCADSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="com.javampire.openscad.OpenSCADColorSettingsPage"/>
+        <bundledColorScheme path="com/javampire/openscad/color_schemes/OpenSCADDefault"/>
+        <lang.foldingBuilder language="OpenSCAD" implementationClass="com.javampire.openscad.OpenSCADFoldingBuilder"/>
+    </extensions>
+
+</idea-plugin>

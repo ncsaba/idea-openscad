@@ -1,0 +1,290 @@
+{
+    parserClass="com.javampire.openscad.parser.OpenSCADParser"
+
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="OpenSCAD"
+    psiImplClassSuffix="Impl"
+    psiPackage="com.javampire.openscad.psi"
+    psiImplPackage="com.javampire.openscad.psi.impl"
+
+    elementTypeHolderClass="com.javampire.openscad.psi.OpenSCADTypes"
+    elementTypeClass="com.javampire.openscad.psi.OpenSCADElementType"
+    tokenTypeClass="com.javampire.openscad.psi.OpenSCADTokenType"
+
+    extends(".*expr")=expr
+    extends(".*obj")=object
+    extends(".*op")=operator
+
+    psiImplUtilClass="com.javampire.openscad.psi.impl.OpenSCADPsiImplUtil"
+}
+
+openSCADFile ::= item_*
+
+private item_ ::= (
+    comment_item
+    | include_item
+    | use_item
+    | statement
+    | module_declaration
+    | function_declaration
+)
+
+private comment_item ::= C_STYLE_COMMENT | DOC_COMMENT | END_OF_LINE_COMMENT
+
+include_item ::= INCLUDE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END
+use_item ::= USE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END
+
+object ::= builtin_obj
+         | module_call_obj
+         | block_obj
+         | compound_obj
+         | empty_obj
+
+builtin_obj ::= cube_obj
+              | cylinder_obj
+              | echo_obj
+              | assert_obj
+              | sphere_obj
+              | polyhedron_obj
+              | projection_obj
+              | square_obj
+              | circle_obj
+              | ellipse_obj
+              | polygon_obj
+              | text_obj
+              | surface_obj
+              | child_obj
+              | children_obj
+              | import_obj
+              | import_dxf_obj
+              | import_stl_obj
+
+cube_obj ::= CUBE_KEYWORD arg_assignment_list SEMICOLON
+cylinder_obj ::= CYLINDER_KEYWORD arg_assignment_list SEMICOLON
+echo_obj ::= ECHO_KEYWORD arg_assignment_list SEMICOLON
+assert_obj ::= ASSERT_KEYWORD arg_assignment_list SEMICOLON
+sphere_obj ::= SPHERE_KEYWORD arg_assignment_list SEMICOLON
+polyhedron_obj ::= POLYHEDRON_KEYWORD arg_assignment_list SEMICOLON
+projection_obj ::= PROJECTION_KEYWORD arg_assignment_list SEMICOLON
+square_obj ::= SQUARE_KEYWORD arg_assignment_list SEMICOLON
+circle_obj ::= CIRCLE_KEYWORD arg_assignment_list SEMICOLON
+ellipse_obj ::= ELLIPSE_KEYWORD arg_assignment_list SEMICOLON
+polygon_obj ::= POLYGON_KEYWORD arg_assignment_list SEMICOLON
+text_obj ::= TEXT_KEYWORD arg_assignment_list SEMICOLON
+surface_obj ::= SURFACE_KEYWORD arg_assignment_list SEMICOLON
+child_obj ::= CHILD_KEYWORD arg_assignment_list SEMICOLON
+children_obj ::= CHILDREN_KEYWORD arg_assignment_list SEMICOLON
+import_obj ::= IMPORT_KEYWORD arg_assignment_list SEMICOLON
+import_dxf_obj ::= IMPORT_DXF_KEYWORD arg_assignment_list SEMICOLON
+import_stl_obj ::= IMPORT_STL_KEYWORD arg_assignment_list SEMICOLON
+
+module_call_obj ::= IDENTIFIER arg_assignment_list SEMICOLON
+
+block_obj ::= LBRACE statement* RBRACE
+
+empty_obj ::= SEMICOLON
+
+private statement ::= object | assignment
+
+assignment ::= IDENTIFIER EQUALS expr SEMICOLON
+
+private compound_obj ::= operator object;
+
+operator ::= builtin_op
+           | modifier_op
+           | module_call_op
+
+module_call_op ::= IDENTIFIER arg_assignment_list
+
+modifier_op ::= background_op
+              | debug_op
+              | root_op
+              | disable_op
+
+background_op ::= PERC
+debug_op ::= HASH
+root_op ::= EXCL
+disable_op ::= MUL
+
+builtin_op ::= for_op
+             | intersection_for_op
+             | else_op
+             | if_op
+             | linear_extrude_op
+             | rotate_extrude_op
+             | rotate_op
+             | translate_op
+             | scale_op
+             | resize_op
+             | mirror_op
+             | multmatrix_op
+             | color_op
+             | offset_op
+             | minkowski_op
+             | hull_op
+             | union_op
+             | difference_op
+             | intersection_op
+             | render_op
+             | assign_op
+             | let_op
+
+linear_extrude_op ::= LINEAR_EXTRUDE_KEYWORD arg_assignment_list
+rotate_extrude_op ::= ROTATE_EXTRUDE_KEYWORD arg_assignment_list
+rotate_op ::= ROTATE_KEYWORD arg_assignment_list
+translate_op ::= TRANSLATE_KEYWORD arg_assignment_list
+scale_op ::= SCALE_KEYWORD arg_assignment_list
+resize_op ::= RESIZE_KEYWORD arg_assignment_list
+mirror_op ::= MIRROR_KEYWORD arg_assignment_list
+multmatrix_op ::= MULTMATRIX_KEYWORD arg_assignment_list
+color_op ::= COLOR_KEYWORD arg_assignment_list
+offset_op ::= OFFSET_KEYWORD arg_assignment_list
+minkowski_op ::= MINKOWSKI_KEYWORD arg_assignment_list
+hull_op ::= HULL_KEYWORD arg_assignment_list
+union_op ::= UNION_KEYWORD arg_assignment_list
+difference_op ::= DIFFERENCE_KEYWORD arg_assignment_list
+intersection_op ::= INTERSECTION_KEYWORD arg_assignment_list
+render_op ::= RENDER_KEYWORD arg_assignment_list
+
+for_op ::= FOR_KEYWORD full_arg_assignment_list
+intersection_for_op ::= INTERSECTION_FOR_KEYWORD full_arg_assignment_list
+else_op ::= if_op object ELSE_KEYWORD
+if_op ::= IF_KEYWORD LPARENTH expr RPARENTH
+assign_op ::= ASSIGN_KEYWORD LPARENTH full_arg_assignment_list RPARENTH
+let_op ::= LET_KEYWORD LPARENTH full_arg_assignment_list RPARENTH
+
+module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement
+function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS expr SEMICOLON
+
+expr ::= conditional_group
+       | add_group
+       | boolean_group
+       | mul_group
+       | unary_group
+       | call_group
+       | primary_group
+
+// private rules to define operators with the same priority
+private boolean_group ::= and_expr | or_expr
+private conditional_group ::= elvis_expr | conditional_expr
+private unary_group ::= unary_plus_expr | unary_min_expr | unary_negate_expr
+private mul_group ::= mul_expr | div_expr | modulo_expr
+private add_group ::= plus_expr | minus_expr
+private call_group ::= call_expr | qualification_expr | index_expr
+private primary_group ::= builtin_expr
+                        | simple_ref_expr
+                        | literal_expr
+                        | paren_expr
+                        | list_comprehension_expr
+                        | range_expr
+                        | vector_expr
+
+and_expr ::= expr AND expr
+or_expr ::= expr OR expr
+unary_min_expr ::= MINUS expr
+unary_plus_expr ::= PLUS expr
+unary_negate_expr ::= EXCL expr
+div_expr ::= expr DIV expr
+mul_expr ::= expr MUL expr
+modulo_expr ::= expr PERC expr
+minus_expr ::= expr MINUS expr
+plus_expr ::= expr PLUS expr
+conditional_expr ::= expr ( LT | GT | LE | GE | EQ | NE ) expr
+elvis_expr ::= expr QUERY expr COLON expr
+paren_expr ::= LPARENTH expr RPARENTH
+vector_expr ::= LBRACKET [ expr ( COMMA+ (expr | &RBRACKET) )* ] RBRACKET {pin(".*")=1}
+index_expr ::= expr LBRACKET expr RBRACKET
+range_expr ::= LBRACKET expr COLON expr [ COLON expr ] RBRACKET
+list_comprehension_expr ::= LBRACKET for_element (if_element | let_element)* expr RBRACKET
+for_element ::= FOR_KEYWORD arg_assignment_list
+if_element ::= IF_KEYWORD LPARENTH expr RPARENTH
+let_element ::= LET_KEYWORD arg_assignment_list
+builtin_expr ::= let_expr
+               | cos_expr
+               | sin_expr
+               | tan_expr
+               | acos_expr
+               | asin_expr
+               | atan_expr
+               | atan2_expr
+               | abs_expr
+               | ceil_expr
+               | concat_expr
+               | cross_expr
+               | exp_expr
+               | floor_expr
+               | ln_expr
+               | len_expr
+               | log_expr
+               | lookup_expr
+               | max_expr
+               | min_expr
+               | norm_expr
+               | pow_expr
+               | rands_expr
+               | round_expr
+               | sign_expr
+               | sqrt_expr
+               | str_expr
+               | chr_expr
+               | select_expr
+               | search_expr
+               | version_expr
+               | version_num_expr
+               | parent_module_expr
+
+let_expr ::= LET_KEYWORD full_arg_assignment_list expr
+cos_expr ::= COS_KEYWORD arg_assignment_list
+sin_expr ::= SIN_KEYWORD arg_assignment_list
+tan_expr ::= TAN_KEYWORD arg_assignment_list
+acos_expr ::= ACOS_KEYWORD arg_assignment_list
+asin_expr ::= ASIN_KEYWORD arg_assignment_list
+atan_expr ::= ATAN_KEYWORD arg_assignment_list
+atan2_expr ::= ATAN2_KEYWORD arg_assignment_list
+abs_expr ::= ABS_KEYWORD arg_assignment_list
+ceil_expr ::= CEIL_KEYWORD arg_assignment_list
+concat_expr ::= CONCAT_KEYWORD arg_assignment_list
+cross_expr ::= CROSS_KEYWORD arg_assignment_list
+exp_expr ::= EXP_KEYWORD arg_assignment_list
+floor_expr ::= FLOOR_KEYWORD arg_assignment_list
+ln_expr ::= LN_KEYWORD arg_assignment_list
+len_expr ::= LEN_KEYWORD arg_assignment_list
+log_expr ::= LOG_KEYWORD arg_assignment_list
+lookup_expr ::= LOOKUP_KEYWORD arg_assignment_list
+max_expr ::= MAX_KEYWORD arg_assignment_list
+min_expr ::= MIN_KEYWORD arg_assignment_list
+norm_expr ::= NORM_KEYWORD arg_assignment_list
+pow_expr ::= POW_KEYWORD arg_assignment_list
+rands_expr ::= RANDS_KEYWORD arg_assignment_list
+round_expr ::= ROUND_KEYWORD arg_assignment_list
+sign_expr ::= SIGN_KEYWORD arg_assignment_list
+sqrt_expr ::= SQRT_KEYWORD arg_assignment_list
+str_expr ::= STR_KEYWORD arg_assignment_list
+chr_expr ::= CHR_KEYWORD arg_assignment_list
+select_expr ::= SELECT_KEYWORD arg_assignment_list
+search_expr ::= SEARCH_KEYWORD arg_assignment_list
+version_expr ::= VERSION_KEYWORD arg_assignment_list
+version_num_expr ::= VERSION_NUM_KEYWORD arg_assignment_list
+parent_module_expr ::= PARENT_MODULE_KEYWORD arg_assignment_list
+
+fake ref_expr ::= expr? DOT IDENTIFIER
+simple_ref_expr ::= IDENTIFIER {extends=ref_expr elementType=ref_expr}
+qualification_expr ::= expr DOT IDENTIFIER {extends=ref_expr elementType=ref_expr}
+
+literal_expr ::= TRUE_KEYWORD
+               | FALSE_KEYWORD
+               | UNDEF_KEYWORD
+               | NUMBER_LITERAL
+               | SQ_STRING_LITERAL
+               | DQ_STRING_LITERAL
+
+call_expr ::= ref_expr arg_assignment_list
+arg_assignment_list ::= LPARENTH arg_assignment? ( COMMA+ arg_assignment )* RPARENTH {pin(".*")=1}
+arg_assignment ::= [ IDENTIFIER EQUALS ] expr
+
+arg_declaration_list ::= LPARENTH arg_declaration? ( COMMA+ arg_declaration )* RPARENTH {pin(".*")=1}
+arg_declaration ::= IDENTIFIER [EQUALS expr]
+
+full_arg_assignment_list ::= LPARENTH full_arg_assignment? ( COMMA+ full_arg_assignment )* RPARENTH {pin(".*")=1}
+full_arg_assignment ::= IDENTIFIER EQUALS expr

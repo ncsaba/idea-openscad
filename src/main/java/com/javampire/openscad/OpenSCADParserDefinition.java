@@ -1,0 +1,387 @@
+package com.javampire.openscad;
+
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.ParserDefinition;
+import com.intellij.lang.PsiParser;
+import com.intellij.lexer.Lexer;
+import com.intellij.openapi.project.Project;
+import com.intellij.psi.FileViewProvider;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.TokenType;
+import com.intellij.psi.tree.IFileElementType;
+import com.intellij.psi.tree.TokenSet;
+import com.javampire.openscad.parser.OpenSCADParser;
+import com.javampire.openscad.psi.OpenSCADFile;
+import com.javampire.openscad.psi.OpenSCADTypes;
+import org.jetbrains.annotations.NotNull;
+
+public class OpenSCADParserDefinition implements ParserDefinition {
+    public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
+    public static final TokenSet COMMENTS = TokenSet.create(
+            OpenSCADTypes.END_OF_LINE_COMMENT, OpenSCADTypes.C_STYLE_COMMENT, OpenSCADTypes.DOC_COMMENT
+    );
+
+    public static final TokenSet OPERATOR_KEYWORDS = TokenSet.create(
+            OpenSCADTypes.ASSIGN_KEYWORD, OpenSCADTypes.COLOR_KEYWORD, OpenSCADTypes.DIFFERENCE_KEYWORD,
+            OpenSCADTypes.INTERSECTION_FOR_KEYWORD, OpenSCADTypes.INTERSECTION_KEYWORD,
+            OpenSCADTypes.LINEAR_EXTRUDE_KEYWORD, OpenSCADTypes.MINKOWSKI_KEYWORD,
+            OpenSCADTypes.MIRROR_KEYWORD, OpenSCADTypes.MULTMATRIX_KEYWORD, OpenSCADTypes.OFFSET_KEYWORD,
+            OpenSCADTypes.PROJECTION_KEYWORD, OpenSCADTypes.RENDER_KEYWORD, OpenSCADTypes.RESIZE_KEYWORD,
+            OpenSCADTypes.ROTATE_EXTRUDE_KEYWORD, OpenSCADTypes.ROTATE_KEYWORD, OpenSCADTypes.SCALE_KEYWORD,
+            OpenSCADTypes.TRANSLATE_KEYWORD, OpenSCADTypes.UNION_KEYWORD
+    );
+
+    public static final TokenSet LANGUAGE_KEYWORDS = TokenSet.create(
+            OpenSCADTypes.ELSE_KEYWORD, OpenSCADTypes.FALSE_KEYWORD, OpenSCADTypes.FOR_KEYWORD,
+            OpenSCADTypes.FUNCTION_KEYWORD, OpenSCADTypes.IF_KEYWORD, OpenSCADTypes.INCLUDE_KEYWORD,
+            OpenSCADTypes.LET_KEYWORD, OpenSCADTypes.MODULE_KEYWORD, OpenSCADTypes.PARENT_MODULE_KEYWORD,
+            OpenSCADTypes.TRUE_KEYWORD, OpenSCADTypes.UNDEF_KEYWORD, OpenSCADTypes.USE_KEYWORD,
+            OpenSCADTypes.VERSION_KEYWORD, OpenSCADTypes.VERSION_NUM_KEYWORD
+    );
+
+    public static final TokenSet OBJECT_KEYWORDS = TokenSet.create(
+            OpenSCADTypes.ASSERT_KEYWORD, OpenSCADTypes.CHILDREN_KEYWORD, OpenSCADTypes.CHILD_KEYWORD,
+            OpenSCADTypes.CIRCLE_KEYWORD, OpenSCADTypes.CUBE_KEYWORD, OpenSCADTypes.CYLINDER_KEYWORD,
+            OpenSCADTypes.ECHO_KEYWORD, OpenSCADTypes.ELLIPSE_KEYWORD, OpenSCADTypes.HULL_KEYWORD,
+            OpenSCADTypes.IMPORT_DXF_KEYWORD, OpenSCADTypes.IMPORT_KEYWORD, OpenSCADTypes.IMPORT_STL_KEYWORD,
+            OpenSCADTypes.SPHERE_KEYWORD, OpenSCADTypes.SQUARE_KEYWORD, OpenSCADTypes.SURFACE_KEYWORD,
+            OpenSCADTypes.TEXT_KEYWORD, OpenSCADTypes.POLYGON_KEYWORD
+    );
+
+    public static final TokenSet FUNCTION_KEYWORDS = TokenSet.create(
+            OpenSCADTypes.ABS_KEYWORD, OpenSCADTypes.ACOS_KEYWORD, OpenSCADTypes.ASIN_KEYWORD,
+            OpenSCADTypes.ATAN2_KEYWORD, OpenSCADTypes.ATAN_KEYWORD, OpenSCADTypes.CEIL_KEYWORD,
+            OpenSCADTypes.CHR_KEYWORD, OpenSCADTypes.CONCAT_KEYWORD, OpenSCADTypes.COS_KEYWORD,
+            OpenSCADTypes.CROSS_KEYWORD, OpenSCADTypes.EXP_KEYWORD, OpenSCADTypes.FLOOR_KEYWORD,
+            OpenSCADTypes.LEN_KEYWORD, OpenSCADTypes.LN_KEYWORD, OpenSCADTypes.LOG_KEYWORD,
+            OpenSCADTypes.LOOKUP_KEYWORD, OpenSCADTypes.MAX_KEYWORD, OpenSCADTypes.MIN_KEYWORD,
+            OpenSCADTypes.NORM_KEYWORD, OpenSCADTypes.POLYHEDRON_KEYWORD, OpenSCADTypes.POW_KEYWORD,
+            OpenSCADTypes.RANDS_KEYWORD, OpenSCADTypes.ROUND_KEYWORD, OpenSCADTypes.SEARCH_KEYWORD,
+            OpenSCADTypes.SELECT_KEYWORD, OpenSCADTypes.SIGN_KEYWORD, OpenSCADTypes.SIN_KEYWORD,
+            OpenSCADTypes.SQRT_KEYWORD, OpenSCADTypes.STR_KEYWORD, OpenSCADTypes.TAN_KEYWORD
+    );
+
+    public static final TokenSet PREDEFINED_SYMBOLS = TokenSet.create(
+            OpenSCADTypes.AND, OpenSCADTypes.OR, OpenSCADTypes.PLUS,
+            OpenSCADTypes.MINUS, OpenSCADTypes.PERC, OpenSCADTypes.DIV,
+            OpenSCADTypes.MUL, OpenSCADTypes.LT, OpenSCADTypes.LE,
+            OpenSCADTypes.GT, OpenSCADTypes.GE, OpenSCADTypes.NE,
+            OpenSCADTypes.EQ, OpenSCADTypes.EQUALS
+    );
+
+    public static final TokenSet SEPARATOR_SYMBOLS = TokenSet.create(
+            OpenSCADTypes.COLON, OpenSCADTypes.SEMICOLON, OpenSCADTypes.COMMA
+    );
+
+    public static final TokenSet ANGLE_BRACKETS_TOKENS = TokenSet.create(
+            OpenSCADTypes.INCLUDE_START, OpenSCADTypes.INCLUDE_END
+    );
+
+    public static final TokenSet PARENTHESES_TOKENS = TokenSet.create(
+            OpenSCADTypes.LPARENTH, OpenSCADTypes.RPARENTH
+    );
+
+    public static final TokenSet BRACES_TOKENS = TokenSet.create(
+            OpenSCADTypes.LBRACE, OpenSCADTypes.RBRACE
+    );
+
+    public static final TokenSet BRACKETS_TOKENS = TokenSet.create(
+            OpenSCADTypes.LBRACKET, OpenSCADTypes.RBRACKET
+    );
+
+    public static final TokenSet LINE_COMMENT_TOKENS = TokenSet.create(
+            OpenSCADTypes.END_OF_LINE_COMMENT
+    );
+
+    public static final TokenSet IMPORT_TOKENS = TokenSet.create(
+            OpenSCADTypes.END_OF_LINE_COMMENT, OpenSCADTypes.INCLUDE_ITEM, OpenSCADTypes.USE_ITEM
+    );
+
+    public static final IFileElementType FILE = new IFileElementType(OpenSCADLanguage.INSTANCE);
+
+    @NotNull
+    @Override
+    public Lexer createLexer(Project project) {
+        return new OpenSCADLexerAdapter();
+    }
+
+    @NotNull
+    public TokenSet getWhitespaceTokens() {
+        return WHITE_SPACES;
+    }
+
+    @NotNull
+    public TokenSet getCommentTokens() {
+        return COMMENTS;
+    }
+
+    @NotNull
+    public TokenSet getStringLiteralElements() {
+        return TokenSet.EMPTY;
+    }
+
+    @NotNull
+    public PsiParser createParser(final Project project) {
+        return new OpenSCADParser();
+    }
+
+    @Override
+    public IFileElementType getFileNodeType() {
+        return FILE;
+    }
+
+    public PsiFile createFile(FileViewProvider viewProvider) {
+        return new OpenSCADFile(viewProvider);
+    }
+
+    public SpaceRequirements spaceExistanceTypeBetweenTokens(ASTNode left, ASTNode right) {
+        return SpaceRequirements.MAY;
+    }
+
+    @NotNull
+    public PsiElement createElement(ASTNode node) {
+        return OpenSCADTypes.Factory.createElement(node);
+    }
+}
+/*
+List of all parsing Tokens:
+ABS_EXPR
+ACOS_EXPR
+AND_EXPR
+ARG_ASSIGNMENT
+ARG_ASSIGNMENT_LIST
+ARG_DECLARATION
+ARG_DECLARATION_LIST
+ASIN_EXPR
+ASSERT_OBJ
+ASSIGNMENT
+ASSIGN_OP
+ATAN_2_EXPR
+ATAN_EXPR
+BACKGROUND_OP
+BLOCK_OBJ
+BUILTIN_EXPR
+BUILTIN_OBJ
+BUILTIN_OP
+CALL_EXPR
+CEIL_EXPR
+CHILDREN_OBJ
+CHILD_OBJ
+CHR_EXPR
+CIRCLE_OBJ
+COLOR_OP
+CONCAT_EXPR
+CONDITIONAL_EXPR
+COS_EXPR
+CROSS_EXPR
+CUBE_OBJ
+CYLINDER_OBJ
+DEBUG_OP
+DIFFERENCE_OP
+DISABLE_OP
+DIV_EXPR
+ECHO_OBJ
+ELLIPSE_OBJ
+ELSE_OP
+ELVIS_EXPR
+EMPTY_OBJ
+EXPR
+EXP_EXPR
+FLOOR_EXPR
+FOR_ELEMENT
+FOR_OP
+FULL_ARG_ASSIGNMENT
+FULL_ARG_ASSIGNMENT_LIST
+FUNCTION_DECLARATION
+HULL_OP
+IF_ELEMENT
+IF_OP
+IMPORT_DXF_OBJ
+IMPORT_OBJ
+IMPORT_STL_OBJ
+INCLUDE_ITEM
+INDEX_EXPR
+INTERSECTION_FOR_OP
+INTERSECTION_OP
+LEN_EXPR
+LET_ELEMENT
+LET_EXPR
+LET_OP
+LINEAR_EXTRUDE_OP
+LIST_COMPREHENSION_EXPR
+LITERAL_EXPR
+LN_EXPR
+LOG_EXPR
+LOOKUP_EXPR
+MAX_EXPR
+MINKOWSKI_OP
+MINUS_EXPR
+MIN_EXPR
+MIRROR_OP
+MODULE_CALL_OBJ
+MODULE_CALL_OP
+MODULE_DECLARATION
+MODULO_EXPR
+MULTMATRIX_OP
+MUL_EXPR
+NORM_EXPR
+OBJECT
+OFFSET_OP
+OPERATOR
+OR_EXPR
+PARENT_MODULE_EXPR
+PAREN_EXPR
+PLUS_EXPR
+POLYGON_OBJ
+POLYHEDRON_OBJ
+POW_EXPR
+PROJECTION_OBJ
+RANDS_EXPR
+RANGE_EXPR
+REF_EXPR
+RENDER_OP
+RESIZE_OP
+ROOT_OP
+ROTATE_EXTRUDE_OP
+ROTATE_OP
+ROUND_EXPR
+SCALE_OP
+SEARCH_EXPR
+SELECT_EXPR
+SIGN_EXPR
+SIN_EXPR
+SPHERE_OBJ
+SQRT_EXPR
+SQUARE_OBJ
+STR_EXPR
+SURFACE_OBJ
+TAN_EXPR
+TEXT_OBJ
+TRANSLATE_OP
+UNARY_MIN_EXPR
+UNARY_NEGATE_EXPR
+UNARY_PLUS_EXPR
+UNION_OP
+USE_ITEM
+VECTOR_EXPR
+VERSION_EXPR
+VERSION_NUM_EXPR
+
+ABS_KEYWORD
+ACOS_KEYWORD
+AND
+ASIN_KEYWORD
+ASSERT_KEYWORD
+ASSIGN_KEYWORD
+ATAN2_KEYWORD
+ATAN_KEYWORD
+CEIL_KEYWORD
+CHILDREN_KEYWORD
+CHILD_KEYWORD
+CHR_KEYWORD
+CIRCLE_KEYWORD
+COLON
+COLOR_KEYWORD
+COMMA
+CONCAT_KEYWORD
+COS_KEYWORD
+CROSS_KEYWORD
+CUBE_KEYWORD
+CYLINDER_KEYWORD
+C_STYLE_COMMENT
+DIFFERENCE_KEYWORD
+DIV
+DOC_COMMENT
+DOT
+DQ_STRING_LITERAL
+ECHO_KEYWORD
+ELLIPSE_KEYWORD
+ELSE_KEYWORD
+END_OF_LINE_COMMENT
+EQ
+EQUALS
+EXCL
+EXP_KEYWORD
+FALSE_KEYWORD
+FLOOR_KEYWORD
+FOR_KEYWORD
+FUNCTION_KEYWORD
+GE
+GT
+HASH
+HULL_KEYWORD
+IDENTIFIER
+IF_KEYWORD
+IMPORT_DXF_KEYWORD
+IMPORT_KEYWORD
+IMPORT_STL_KEYWORD
+INCLUDE_END
+INCLUDE_KEYWORD
+INCLUDE_PATH
+INCLUDE_START
+INTERSECTION_FOR_KEYWORD
+INTERSECTION_KEYWORD
+LBRACE
+LBRACKET
+LE
+LEN_KEYWORD
+LET_KEYWORD
+LINEAR_EXTRUDE_KEYWORD
+LN_KEYWORD
+LOG_KEYWORD
+LOOKUP_KEYWORD
+LPARENTH
+LT
+MAX_KEYWORD
+MINKOWSKI_KEYWORD
+MINUS
+MIN_KEYWORD
+MIRROR_KEYWORD
+MODULE_KEYWORD
+MUL
+MULTMATRIX_KEYWORD
+NE
+NORM_KEYWORD
+NUMBER_LITERAL
+OFFSET_KEYWORD
+OR
+PARENT_MODULE_KEYWORD
+PERC
+PLUS
+POLYGON_KEYWORD
+POLYHEDRON_KEYWORD
+POW_KEYWORD
+PROJECTION_KEYWORD
+QUERY
+RANDS_KEYWORD
+RBRACE
+RBRACKET
+RENDER_KEYWORD
+RESIZE_KEYWORD
+ROTATE_EXTRUDE_KEYWORD
+ROTATE_KEYWORD
+ROUND_KEYWORD
+RPARENTH
+SCALE_KEYWORD
+SEARCH_KEYWORD
+SELECT_KEYWORD
+SEMICOLON
+SIGN_KEYWORD
+SIN_KEYWORD
+SPHERE_KEYWORD
+SQRT_KEYWORD
+SQUARE_KEYWORD
+SQ_STRING_LITERAL
+STR_KEYWORD
+SURFACE_KEYWORD
+TAN_KEYWORD
+TEXT_KEYWORD
+TRANSLATE_KEYWORD
+TRUE_KEYWORD
+UNDEF_KEYWORD
+UNION_KEYWORD
+USE_KEYWORD
+VERSION_KEYWORD
+VERSION_NUM_KEYWORD
+*/

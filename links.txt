@@ -1,0 +1,11 @@
+https://github.com/JoostZ/Oscad
+
+IntelliJ Platform extension points:
+http://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_extensions_and_extension_points.html
+https://upsource.jetbrains.com/idea-ce/file/idea-ce-d00d8b4ae3ed33097972b8a4286b336bf4ffcfab/platform/platform-resources/src/META-INF/PlatformExtensionPoints.xml
+
+Custom language plugin tutorial:
+http://www.jetbrains.org/intellij/sdk/docs/tutorials/custom_language_support_tutorial.html
+
+URL shortener software:
+http://yourls.org/

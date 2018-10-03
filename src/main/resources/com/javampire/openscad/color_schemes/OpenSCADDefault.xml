@@ -1,0 +1,57 @@
+<scheme name="OpenSCAD.Default" version="142" parent_scheme="Default">
+  <metaInfo>
+    <property name="created">2018-09-30T17:48:50</property>
+    <property name="ide">Idea</property>
+    <property name="ideVersion">2018.2.4.0.0</property>
+    <property name="modified">2018-09-30T17:49:15</property>
+    <property name="originalScheme">_@user_Default</property>
+  </metaInfo>
+  <attributes>
+    <option name="OPENSCAD_COMMENT">
+      <value>
+        <option name="FOREGROUND" value="8582" />
+        <option name="FONT_TYPE" value="2" />
+      </value>
+    </option>
+    <option name="OPENSCAD_IMPORT_PATH">
+      <value>
+        <option name="FOREGROUND" value="0" />
+      </value>
+    </option>
+    <option name="OPENSCAD_KEYWORD">
+      <value>
+        <option name="FOREGROUND" value="28100" />
+      </value>
+    </option>
+    <option name="OPENSCAD_NUMBER">
+      <value>
+        <option name="FOREGROUND" value="a05400" />
+      </value>
+    </option>
+    <option name="OPENSCAD_OBJECT_KEYWORD">
+      <value>
+        <option name="FOREGROUND" value="80" />
+      </value>
+    </option>
+    <option name="OPENSCAD_OPERATION_SIGN">
+      <value>
+        <option name="FOREGROUND" value="ff" />
+      </value>
+    </option>
+    <option name="OPENSCAD_OPERATOR_KEYWORD">
+      <value>
+        <option name="FOREGROUND" value="80" />
+      </value>
+    </option>
+    <option name="OPENSCAD_SEPARATOR">
+      <value>
+        <option name="FOREGROUND" value="ff" />
+      </value>
+    </option>
+    <option name="OPENSCAD_STRING">
+      <value>
+        <option name="FOREGROUND" value="7c009e" />
+      </value>
+    </option>
+  </attributes>
+</scheme>
