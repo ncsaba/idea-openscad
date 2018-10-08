@@ -98,6 +98,11 @@ public class OpenSCADParserDefinition implements ParserDefinition {
             OpenSCADTypes.END_OF_LINE_COMMENT, OpenSCADTypes.INCLUDE_ITEM, OpenSCADTypes.USE_ITEM
     );
 
+    /** These elements have their name in the first child of identifier token type */
+    public static final TokenSet NAMED_ELEMENTS = TokenSet.create(
+            OpenSCADTypes.MODULE_DECLARATION, OpenSCADTypes.FUNCTION_DECLARATION
+    );
+
     public static final IFileElementType FILE = new IFileElementType(OpenSCADLanguage.INSTANCE);
 
     @NotNull

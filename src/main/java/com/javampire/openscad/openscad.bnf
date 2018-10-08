@@ -154,8 +154,8 @@ if_op ::= IF_KEYWORD LPARENTH expr RPARENTH
 assign_op ::= ASSIGN_KEYWORD LPARENTH full_arg_assignment_list RPARENTH
 let_op ::= LET_KEYWORD LPARENTH full_arg_assignment_list RPARENTH
 
-module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement
-function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS expr SEMICOLON
+module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement {methods=[getPresentation]}
+function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS expr SEMICOLON {methods=[getPresentation]}
 
 expr ::= conditional_group
        | add_group

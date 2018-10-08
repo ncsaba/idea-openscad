@@ -20,6 +20,7 @@
         <colorSettingsPage implementation="com.javampire.openscad.OpenSCADColorSettingsPage"/>
         <bundledColorScheme path="com/javampire/openscad/color_schemes/OpenSCADDefault"/>
         <lang.foldingBuilder language="OpenSCAD" implementationClass="com.javampire.openscad.OpenSCADFoldingBuilder"/>
+        <lang.psiStructureViewFactory language="OpenSCAD" implementationClass="com.javampire.openscad.OpenSCADStructureViewFactory"/>
     </extensions>
 
     <depends>com.intellij.modules.lang</depends>

@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.javampire.openscad.psi.*;
+import com.intellij.navigation.ItemPresentation;
 
 public class OpenSCADFunctionDeclarationImpl extends ASTWrapperPsiElement implements OpenSCADFunctionDeclaration {
 
@@ -36,6 +37,10 @@ public class OpenSCADFunctionDeclarationImpl extends ASTWrapperPsiElement implem
   @NotNull
   public OpenSCADExpr getExpr() {
     return findNotNullChildByClass(OpenSCADExpr.class);
+  }
+
+  public ItemPresentation getPresentation() {
+    return OpenSCADPsiImplUtil.getPresentation(this);
   }
 
 }
