@@ -32,8 +32,8 @@ private item_ ::= (
 
 private comment_item ::= C_STYLE_COMMENT | DOC_COMMENT | END_OF_LINE_COMMENT
 
-include_item ::= INCLUDE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END
-use_item ::= USE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END
+include_item ::= INCLUDE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END {methods=[getPresentation]}
+use_item ::= USE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END {methods=[getPresentation]}
 
 object ::= builtin_obj
          | module_call_obj

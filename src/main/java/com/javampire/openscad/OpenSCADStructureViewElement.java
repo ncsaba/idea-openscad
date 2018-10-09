@@ -8,9 +8,7 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.NavigatablePsiElement;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.javampire.openscad.psi.OpenSCADFile;
-import com.javampire.openscad.psi.OpenSCADFunctionDeclaration;
-import com.javampire.openscad.psi.OpenSCADModuleDeclaration;
+import com.javampire.openscad.psi.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -68,7 +66,9 @@ public class OpenSCADStructureViewElement implements StructureViewTreeElement, S
         if (element instanceof OpenSCADFile) {
             final List<TreeElement> treeElements = new ArrayList<>();
             final List<PsiElement> navigatableElements = PsiTreeUtil.getChildrenOfAnyType(
-                    element, OpenSCADModuleDeclaration.class, OpenSCADFunctionDeclaration.class
+                    element,
+                    OpenSCADModuleDeclaration.class, OpenSCADFunctionDeclaration.class,
+                    OpenSCADUseItem.class, OpenSCADIncludeItem.class
             );
             for (PsiElement element : navigatableElements) {
                 final OpenSCADStructureViewElement child = new OpenSCADStructureViewElement((NavigatablePsiElement)element);

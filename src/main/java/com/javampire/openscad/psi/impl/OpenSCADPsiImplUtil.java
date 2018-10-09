@@ -5,9 +5,7 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.OpenSCADParserDefinition;
-import com.javampire.openscad.psi.OpenSCADFunctionDeclaration;
-import com.javampire.openscad.psi.OpenSCADModuleDeclaration;
-import com.javampire.openscad.psi.OpenSCADTypes;
+import com.javampire.openscad.psi.*;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -20,14 +18,22 @@ public class OpenSCADPsiImplUtil {
             @Override
             public String getPresentableText() {
                 if (OpenSCADParserDefinition.NAMED_ELEMENTS.contains(element.getNode().getElementType())) {
-                    ASTNode nameNode = element.getNode().findChildByType(OpenSCADTypes.IDENTIFIER);
+                    final ASTNode nameNode = element.getNode().findChildByType(OpenSCADTypes.IDENTIFIER);
                     if (nameNode != null) {
                         return nameNode.getText();
                     } else {
                         return "Unnamed module/function";
                     }
                 }
-                return "Unknown element"; // element.getKey();
+                if (element instanceof OpenSCADUseItem || element instanceof OpenSCADIncludeItem) {
+                    final ASTNode pathNode = element.getNode().findChildByType(OpenSCADTypes.INCLUDE_PATH);
+                    if (pathNode != null) {
+                        return pathNode.getText().replaceAll("^.*/([^/]*)$", "$1");
+                    } else {
+                        return "Empty import";
+                    }
+                }
+                return "Unknown element";
             }
 
             @Nullable
