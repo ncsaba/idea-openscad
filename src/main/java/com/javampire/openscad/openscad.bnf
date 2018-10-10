@@ -79,7 +79,12 @@ import_obj ::= IMPORT_KEYWORD arg_assignment_list SEMICOLON
 import_dxf_obj ::= IMPORT_DXF_KEYWORD arg_assignment_list SEMICOLON
 import_stl_obj ::= IMPORT_STL_KEYWORD arg_assignment_list SEMICOLON
 
-module_call_obj ::= IDENTIFIER arg_assignment_list SEMICOLON
+module_call_obj ::= module_obj_reference arg_assignment_list SEMICOLON
+module_obj_reference ::= IDENTIFIER {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
+    methods=[getPresentation getName setName getNameIdentifier getReference]
+}
 
 block_obj ::= LBRACE statement* RBRACE
 
@@ -87,7 +92,12 @@ empty_obj ::= SEMICOLON
 
 private statement ::= object | assignment
 
-assignment ::= IDENTIFIER EQUALS expr SEMICOLON
+assignment ::= variable_declaration EQUALS expr SEMICOLON
+variable_declaration ::= IDENTIFIER {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
+    methods=[getName setName getNameIdentifier]
+}
 
 private compound_obj ::= operator object;
 
@@ -95,7 +105,12 @@ operator ::= builtin_op
            | modifier_op
            | module_call_op
 
-module_call_op ::= IDENTIFIER arg_assignment_list
+module_call_op ::= module_op_reference arg_assignment_list
+module_op_reference ::= IDENTIFIER {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
+    methods=[getPresentation getName setName getNameIdentifier getReference]
+}
 
 modifier_op ::= background_op
               | debug_op
@@ -147,15 +162,23 @@ difference_op ::= DIFFERENCE_KEYWORD arg_assignment_list
 intersection_op ::= INTERSECTION_KEYWORD arg_assignment_list
 render_op ::= RENDER_KEYWORD arg_assignment_list
 
-for_op ::= FOR_KEYWORD full_arg_assignment_list
-intersection_for_op ::= INTERSECTION_FOR_KEYWORD full_arg_assignment_list
+for_op ::= FOR_KEYWORD full_arg_declaration_list
+intersection_for_op ::= INTERSECTION_FOR_KEYWORD full_arg_declaration_list
 else_op ::= if_op object ELSE_KEYWORD
 if_op ::= IF_KEYWORD LPARENTH expr RPARENTH
-assign_op ::= ASSIGN_KEYWORD LPARENTH full_arg_assignment_list RPARENTH
-let_op ::= LET_KEYWORD LPARENTH full_arg_assignment_list RPARENTH
+assign_op ::= ASSIGN_KEYWORD LPARENTH full_arg_declaration_list RPARENTH
+let_op ::= LET_KEYWORD LPARENTH full_arg_declaration_list RPARENTH
 
-module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement {methods=[getPresentation]}
-function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS expr SEMICOLON {methods=[getPresentation]}
+module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
+    methods=[getPresentation getName setName getNameIdentifier]
+}
+function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS expr SEMICOLON {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
+    methods=[getPresentation getName setName getNameIdentifier]
+}
 
 expr ::= conditional_group
        | add_group
@@ -173,7 +196,7 @@ private mul_group ::= mul_expr | div_expr | modulo_expr
 private add_group ::= plus_expr | minus_expr
 private call_group ::= call_expr | qualification_expr | index_expr
 private primary_group ::= builtin_expr
-                        | simple_ref_expr
+                        | variable_ref_expr
                         | literal_expr
                         | paren_expr
                         | list_comprehension_expr
@@ -197,9 +220,9 @@ vector_expr ::= LBRACKET [ expr ( COMMA+ (expr | &RBRACKET) )* ] RBRACKET {pin("
 index_expr ::= expr LBRACKET expr RBRACKET
 range_expr ::= LBRACKET expr COLON expr [ COLON expr ] RBRACKET
 list_comprehension_expr ::= LBRACKET for_element (if_element | let_element)* expr RBRACKET
-for_element ::= FOR_KEYWORD arg_assignment_list
+for_element ::= FOR_KEYWORD full_arg_declaration_list
 if_element ::= IF_KEYWORD LPARENTH expr RPARENTH
-let_element ::= LET_KEYWORD arg_assignment_list
+let_element ::= LET_KEYWORD full_arg_declaration_list
 builtin_expr ::= let_expr
                | cos_expr
                | sin_expr
@@ -234,7 +257,7 @@ builtin_expr ::= let_expr
                | version_num_expr
                | parent_module_expr
 
-let_expr ::= LET_KEYWORD full_arg_assignment_list expr
+let_expr ::= LET_KEYWORD full_arg_declaration_list expr
 cos_expr ::= COS_KEYWORD arg_assignment_list
 sin_expr ::= SIN_KEYWORD arg_assignment_list
 tan_expr ::= TAN_KEYWORD arg_assignment_list
@@ -268,8 +291,12 @@ version_expr ::= VERSION_KEYWORD arg_assignment_list
 version_num_expr ::= VERSION_NUM_KEYWORD arg_assignment_list
 parent_module_expr ::= PARENT_MODULE_KEYWORD arg_assignment_list
 
-fake ref_expr ::= expr? DOT IDENTIFIER
-simple_ref_expr ::= IDENTIFIER {extends=ref_expr elementType=ref_expr}
+fake ref_expr ::= expr? DOT IDENTIFIER {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
+    methods=[getPresentation getName setName getNameIdentifier getReference]
+}
+variable_ref_expr ::= IDENTIFIER {extends=ref_expr elementType=ref_expr}
 qualification_expr ::= expr DOT IDENTIFIER {extends=ref_expr elementType=ref_expr}
 
 literal_expr ::= TRUE_KEYWORD
@@ -281,10 +308,23 @@ literal_expr ::= TRUE_KEYWORD
 
 call_expr ::= ref_expr arg_assignment_list
 arg_assignment_list ::= LPARENTH arg_assignment? ( COMMA+ arg_assignment )* RPARENTH {pin(".*")=1}
-arg_assignment ::= [ IDENTIFIER EQUALS ] expr
+arg_assignment ::= [ parameter_reference EQUALS ] expr
+parameter_reference ::= IDENTIFIER {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
+    methods=[getPresentation getName setName getNameIdentifier getReference]
+}
 
 arg_declaration_list ::= LPARENTH arg_declaration? ( COMMA+ arg_declaration )* RPARENTH {pin(".*")=1}
-arg_declaration ::= IDENTIFIER [EQUALS expr]
+arg_declaration ::= IDENTIFIER [EQUALS expr] {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
+    methods=[getName setName getNameIdentifier]
+}
 
-full_arg_assignment_list ::= LPARENTH full_arg_assignment? ( COMMA+ full_arg_assignment )* RPARENTH {pin(".*")=1}
-full_arg_assignment ::= IDENTIFIER EQUALS expr
+full_arg_declaration_list ::= LPARENTH full_arg_declaration? ( COMMA+ full_arg_declaration )* RPARENTH {pin(".*")=1}
+full_arg_declaration ::= IDENTIFIER EQUALS expr {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
+    methods=[getName setName getNameIdentifier]
+}

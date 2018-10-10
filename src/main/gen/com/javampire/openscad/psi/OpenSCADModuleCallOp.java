@@ -10,4 +10,7 @@ public interface OpenSCADModuleCallOp extends OpenSCADOperator {
   @NotNull
   OpenSCADArgAssignmentList getArgAssignmentList();
 
+  @NotNull
+  OpenSCADModuleOpReference getModuleOpReference();
+
 }

@@ -33,8 +33,8 @@ public class OpenSCADLetExprImpl extends OpenSCADExprImpl implements OpenSCADLet
 
   @Override
   @NotNull
-  public OpenSCADFullArgAssignmentList getFullArgAssignmentList() {
-    return findNotNullChildByClass(OpenSCADFullArgAssignmentList.class);
+  public OpenSCADFullArgDeclarationList getFullArgDeclarationList() {
+    return findNotNullChildByClass(OpenSCADFullArgDeclarationList.class);
   }
 
 }

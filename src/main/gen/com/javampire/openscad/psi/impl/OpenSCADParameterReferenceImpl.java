@@ -9,15 +9,17 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.javampire.openscad.psi.*;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiReference;
 
-public class OpenSCADArgDeclarationImpl extends OpenSCADNamedElementImpl implements OpenSCADArgDeclaration {
+public class OpenSCADParameterReferenceImpl extends OpenSCADNamedElementImpl implements OpenSCADParameterReference {
 
-  public OpenSCADArgDeclarationImpl(@NotNull ASTNode node) {
+  public OpenSCADParameterReferenceImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitArgDeclaration(this);
+    visitor.visitParameterReference(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -25,10 +27,8 @@ public class OpenSCADArgDeclarationImpl extends OpenSCADNamedElementImpl impleme
     else super.accept(visitor);
   }
 
-  @Override
-  @Nullable
-  public OpenSCADExpr getExpr() {
-    return findChildByClass(OpenSCADExpr.class);
+  public ItemPresentation getPresentation() {
+    return OpenSCADPsiImplUtil.getPresentation(this);
   }
 
   public String getName() {
@@ -41,6 +41,10 @@ public class OpenSCADArgDeclarationImpl extends OpenSCADNamedElementImpl impleme
 
   public PsiElement getNameIdentifier() {
     return OpenSCADPsiImplUtil.getNameIdentifier(this);
+  }
+
+  public PsiReference getReference() {
+    return OpenSCADPsiImplUtil.getReference(this);
   }
 
 }

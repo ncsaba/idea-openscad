@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface OpenSCADLetOp extends OpenSCADOperator {
 
   @NotNull
-  OpenSCADFullArgAssignmentList getFullArgAssignmentList();
+  OpenSCADFullArgDeclarationList getFullArgDeclarationList();
 
 }

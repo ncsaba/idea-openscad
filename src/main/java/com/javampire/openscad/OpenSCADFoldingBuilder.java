@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.javampire.openscad.OpenSCADParserDefinition.IMPORT_TOKENS;
+import static com.javampire.openscad.OpenSCADParserDefinition.IMPORT_FOLDING_TOKENS;
 import static com.javampire.openscad.OpenSCADParserDefinition.LINE_COMMENT_TOKENS;
 
 public class OpenSCADFoldingBuilder extends FoldingBuilderEx {
@@ -53,8 +53,8 @@ public class OpenSCADFoldingBuilder extends FoldingBuilderEx {
         if (node.getElementType() == OpenSCADTypes.END_OF_LINE_COMMENT) {
             return addFoldsForStatementBlock(list, element, document, LINE_COMMENT_TOKENS, "//...");
         }
-        if (IMPORT_TOKENS.contains(node.getElementType())) {
-            return addFoldsForStatementBlock(list, element, document, IMPORT_TOKENS, "include/use <...>");
+        if (IMPORT_FOLDING_TOKENS.contains(node.getElementType())) {
+            return addFoldsForStatementBlock(list, element, document, IMPORT_FOLDING_TOKENS, "include/use <...>");
         }
         if (node.getElementType() == OpenSCADTypes.BLOCK_OBJ) {
             foldIfMultiLine(list, element, document, "{...}");

@@ -11,14 +11,14 @@ import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.javampire.openscad.psi.*;
 
-public class OpenSCADFullArgAssignmentImpl extends ASTWrapperPsiElement implements OpenSCADFullArgAssignment {
+public class OpenSCADFullArgDeclarationListImpl extends ASTWrapperPsiElement implements OpenSCADFullArgDeclarationList {
 
-  public OpenSCADFullArgAssignmentImpl(@NotNull ASTNode node) {
+  public OpenSCADFullArgDeclarationListImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitFullArgAssignment(this);
+    visitor.visitFullArgDeclarationList(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,8 +28,8 @@ public class OpenSCADFullArgAssignmentImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @NotNull
-  public OpenSCADExpr getExpr() {
-    return findNotNullChildByClass(OpenSCADExpr.class);
+  public List<OpenSCADFullArgDeclaration> getFullArgDeclarationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADFullArgDeclaration.class);
   }
 
 }

@@ -32,4 +32,10 @@ public class OpenSCADAssignmentImpl extends ASTWrapperPsiElement implements Open
     return findNotNullChildByClass(OpenSCADExpr.class);
   }
 
+  @Override
+  @NotNull
+  public OpenSCADVariableDeclaration getVariableDeclaration() {
+    return findNotNullChildByClass(OpenSCADVariableDeclaration.class);
+  }
+
 }

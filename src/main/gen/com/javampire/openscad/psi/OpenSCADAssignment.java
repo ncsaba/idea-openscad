@@ -10,4 +10,7 @@ public interface OpenSCADAssignment extends PsiElement {
   @NotNull
   OpenSCADExpr getExpr();
 
+  @NotNull
+  OpenSCADVariableDeclaration getVariableDeclaration();
+
 }

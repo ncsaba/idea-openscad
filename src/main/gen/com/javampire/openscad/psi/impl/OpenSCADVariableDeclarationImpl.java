@@ -10,25 +10,19 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.javampire.openscad.psi.*;
 
-public class OpenSCADArgDeclarationImpl extends OpenSCADNamedElementImpl implements OpenSCADArgDeclaration {
+public class OpenSCADVariableDeclarationImpl extends OpenSCADNamedElementImpl implements OpenSCADVariableDeclaration {
 
-  public OpenSCADArgDeclarationImpl(@NotNull ASTNode node) {
+  public OpenSCADVariableDeclarationImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitArgDeclaration(this);
+    visitor.visitVariableDeclaration(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public OpenSCADExpr getExpr() {
-    return findChildByClass(OpenSCADExpr.class);
   }
 
   public String getName() {

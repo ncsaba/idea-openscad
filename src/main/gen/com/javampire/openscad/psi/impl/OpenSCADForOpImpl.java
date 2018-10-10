@@ -27,8 +27,8 @@ public class OpenSCADForOpImpl extends OpenSCADOperatorImpl implements OpenSCADF
 
   @Override
   @NotNull
-  public OpenSCADFullArgAssignmentList getFullArgAssignmentList() {
-    return findNotNullChildByClass(OpenSCADFullArgAssignmentList.class);
+  public OpenSCADFullArgDeclarationList getFullArgDeclarationList() {
+    return findNotNullChildByClass(OpenSCADFullArgDeclarationList.class);
   }
 
 }
