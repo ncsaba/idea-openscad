@@ -27,8 +27,8 @@ public class OpenSCADIntersectionForOpImpl extends OpenSCADOperatorImpl implemen
 
   @Override
   @NotNull
-  public OpenSCADFullArgAssignmentList getFullArgAssignmentList() {
-    return findNotNullChildByClass(OpenSCADFullArgAssignmentList.class);
+  public OpenSCADFullArgDeclarationList getFullArgDeclarationList() {
+    return findNotNullChildByClass(OpenSCADFullArgDeclarationList.class);
   }
 
 }

@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface OpenSCADLetElement extends PsiElement {
 
   @NotNull
-  OpenSCADArgAssignmentList getArgAssignmentList();
+  OpenSCADFullArgDeclarationList getFullArgDeclarationList();
 
 }

@@ -32,4 +32,10 @@ public class OpenSCADArgAssignmentImpl extends ASTWrapperPsiElement implements O
     return findNotNullChildByClass(OpenSCADExpr.class);
   }
 
+  @Override
+  @Nullable
+  public OpenSCADParameterReference getParameterReference() {
+    return findChildByClass(OpenSCADParameterReference.class);
+  }
+
 }

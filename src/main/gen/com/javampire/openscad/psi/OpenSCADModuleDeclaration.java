@@ -6,7 +6,7 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
 
-public interface OpenSCADModuleDeclaration extends PsiElement {
+public interface OpenSCADModuleDeclaration extends OpenSCADNamedElement {
 
   @NotNull
   OpenSCADArgDeclarationList getArgDeclarationList();
@@ -18,5 +18,11 @@ public interface OpenSCADModuleDeclaration extends PsiElement {
   OpenSCADObject getObject();
 
   ItemPresentation getPresentation();
+
+  String getName();
+
+  PsiElement setName(String newName);
+
+  PsiElement getNameIdentifier();
 
 }

@@ -28,8 +28,8 @@ public class OpenSCADLetElementImpl extends ASTWrapperPsiElement implements Open
 
   @Override
   @NotNull
-  public OpenSCADArgAssignmentList getArgAssignmentList() {
-    return findNotNullChildByClass(OpenSCADArgAssignmentList.class);
+  public OpenSCADFullArgDeclarationList getFullArgDeclarationList() {
+    return findNotNullChildByClass(OpenSCADFullArgDeclarationList.class);
   }
 
 }

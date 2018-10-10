@@ -11,6 +11,6 @@ public interface OpenSCADLetExpr extends OpenSCADExpr {
   OpenSCADExpr getExpr();
 
   @NotNull
-  OpenSCADFullArgAssignmentList getFullArgAssignmentList();
+  OpenSCADFullArgDeclarationList getFullArgDeclarationList();
 
 }

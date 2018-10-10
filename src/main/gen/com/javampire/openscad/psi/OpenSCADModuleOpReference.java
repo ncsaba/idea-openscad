@@ -5,14 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiReference;
 
-public interface OpenSCADFunctionDeclaration extends OpenSCADNamedElement {
-
-  @NotNull
-  OpenSCADArgDeclarationList getArgDeclarationList();
-
-  @NotNull
-  OpenSCADExpr getExpr();
+public interface OpenSCADModuleOpReference extends OpenSCADNamedElement {
 
   ItemPresentation getPresentation();
 
@@ -21,5 +16,7 @@ public interface OpenSCADFunctionDeclaration extends OpenSCADNamedElement {
   PsiElement setName(String newName);
 
   PsiElement getNameIdentifier();
+
+  PsiReference getReference();
 
 }

@@ -53,8 +53,8 @@ public interface OpenSCADTypes {
   IElementType FLOOR_EXPR = new OpenSCADElementType("FLOOR_EXPR");
   IElementType FOR_ELEMENT = new OpenSCADElementType("FOR_ELEMENT");
   IElementType FOR_OP = new OpenSCADElementType("FOR_OP");
-  IElementType FULL_ARG_ASSIGNMENT = new OpenSCADElementType("FULL_ARG_ASSIGNMENT");
-  IElementType FULL_ARG_ASSIGNMENT_LIST = new OpenSCADElementType("FULL_ARG_ASSIGNMENT_LIST");
+  IElementType FULL_ARG_DECLARATION = new OpenSCADElementType("FULL_ARG_DECLARATION");
+  IElementType FULL_ARG_DECLARATION_LIST = new OpenSCADElementType("FULL_ARG_DECLARATION_LIST");
   IElementType FUNCTION_DECLARATION = new OpenSCADElementType("FUNCTION_DECLARATION");
   IElementType HULL_OP = new OpenSCADElementType("HULL_OP");
   IElementType IF_ELEMENT = new OpenSCADElementType("IF_ELEMENT");
@@ -85,6 +85,8 @@ public interface OpenSCADTypes {
   IElementType MODULE_CALL_OBJ = new OpenSCADElementType("MODULE_CALL_OBJ");
   IElementType MODULE_CALL_OP = new OpenSCADElementType("MODULE_CALL_OP");
   IElementType MODULE_DECLARATION = new OpenSCADElementType("MODULE_DECLARATION");
+  IElementType MODULE_OBJ_REFERENCE = new OpenSCADElementType("MODULE_OBJ_REFERENCE");
+  IElementType MODULE_OP_REFERENCE = new OpenSCADElementType("MODULE_OP_REFERENCE");
   IElementType MODULO_EXPR = new OpenSCADElementType("MODULO_EXPR");
   IElementType MULTMATRIX_OP = new OpenSCADElementType("MULTMATRIX_OP");
   IElementType MUL_EXPR = new OpenSCADElementType("MUL_EXPR");
@@ -93,6 +95,7 @@ public interface OpenSCADTypes {
   IElementType OFFSET_OP = new OpenSCADElementType("OFFSET_OP");
   IElementType OPERATOR = new OpenSCADElementType("OPERATOR");
   IElementType OR_EXPR = new OpenSCADElementType("OR_EXPR");
+  IElementType PARAMETER_REFERENCE = new OpenSCADElementType("PARAMETER_REFERENCE");
   IElementType PARENT_MODULE_EXPR = new OpenSCADElementType("PARENT_MODULE_EXPR");
   IElementType PAREN_EXPR = new OpenSCADElementType("PAREN_EXPR");
   IElementType PLUS_EXPR = new OpenSCADElementType("PLUS_EXPR");
@@ -127,6 +130,7 @@ public interface OpenSCADTypes {
   IElementType UNARY_PLUS_EXPR = new OpenSCADElementType("UNARY_PLUS_EXPR");
   IElementType UNION_OP = new OpenSCADElementType("UNION_OP");
   IElementType USE_ITEM = new OpenSCADElementType("USE_ITEM");
+  IElementType VARIABLE_DECLARATION = new OpenSCADElementType("VARIABLE_DECLARATION");
   IElementType VECTOR_EXPR = new OpenSCADElementType("VECTOR_EXPR");
   IElementType VERSION_EXPR = new OpenSCADElementType("VERSION_EXPR");
   IElementType VERSION_NUM_EXPR = new OpenSCADElementType("VERSION_NUM_EXPR");
@@ -374,11 +378,11 @@ public interface OpenSCADTypes {
       else if (type == FOR_OP) {
         return new OpenSCADForOpImpl(node);
       }
-      else if (type == FULL_ARG_ASSIGNMENT) {
-        return new OpenSCADFullArgAssignmentImpl(node);
+      else if (type == FULL_ARG_DECLARATION) {
+        return new OpenSCADFullArgDeclarationImpl(node);
       }
-      else if (type == FULL_ARG_ASSIGNMENT_LIST) {
-        return new OpenSCADFullArgAssignmentListImpl(node);
+      else if (type == FULL_ARG_DECLARATION_LIST) {
+        return new OpenSCADFullArgDeclarationListImpl(node);
       }
       else if (type == FUNCTION_DECLARATION) {
         return new OpenSCADFunctionDeclarationImpl(node);
@@ -467,6 +471,12 @@ public interface OpenSCADTypes {
       else if (type == MODULE_DECLARATION) {
         return new OpenSCADModuleDeclarationImpl(node);
       }
+      else if (type == MODULE_OBJ_REFERENCE) {
+        return new OpenSCADModuleObjReferenceImpl(node);
+      }
+      else if (type == MODULE_OP_REFERENCE) {
+        return new OpenSCADModuleOpReferenceImpl(node);
+      }
       else if (type == MODULO_EXPR) {
         return new OpenSCADModuloExprImpl(node);
       }
@@ -487,6 +497,9 @@ public interface OpenSCADTypes {
       }
       else if (type == OR_EXPR) {
         return new OpenSCADOrExprImpl(node);
+      }
+      else if (type == PARAMETER_REFERENCE) {
+        return new OpenSCADParameterReferenceImpl(node);
       }
       else if (type == PARENT_MODULE_EXPR) {
         return new OpenSCADParentModuleExprImpl(node);
@@ -589,6 +602,9 @@ public interface OpenSCADTypes {
       }
       else if (type == USE_ITEM) {
         return new OpenSCADUseItemImpl(node);
+      }
+      else if (type == VARIABLE_DECLARATION) {
+        return new OpenSCADVariableDeclarationImpl(node);
       }
       else if (type == VECTOR_EXPR) {
         return new OpenSCADVectorExprImpl(node);

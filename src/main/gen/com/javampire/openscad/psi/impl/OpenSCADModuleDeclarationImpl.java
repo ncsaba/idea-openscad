@@ -8,11 +8,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.javampire.openscad.psi.*;
 import com.intellij.navigation.ItemPresentation;
 
-public class OpenSCADModuleDeclarationImpl extends ASTWrapperPsiElement implements OpenSCADModuleDeclaration {
+public class OpenSCADModuleDeclarationImpl extends OpenSCADNamedElementImpl implements OpenSCADModuleDeclaration {
 
   public OpenSCADModuleDeclarationImpl(@NotNull ASTNode node) {
     super(node);
@@ -47,6 +46,18 @@ public class OpenSCADModuleDeclarationImpl extends ASTWrapperPsiElement implemen
 
   public ItemPresentation getPresentation() {
     return OpenSCADPsiImplUtil.getPresentation(this);
+  }
+
+  public String getName() {
+    return OpenSCADPsiImplUtil.getName(this);
+  }
+
+  public PsiElement setName(String newName) {
+    return OpenSCADPsiImplUtil.setName(this, newName);
+  }
+
+  public PsiElement getNameIdentifier() {
+    return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }
 
 }

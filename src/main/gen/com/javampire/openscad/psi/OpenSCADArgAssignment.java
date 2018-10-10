@@ -10,4 +10,7 @@ public interface OpenSCADArgAssignment extends PsiElement {
   @NotNull
   OpenSCADExpr getExpr();
 
+  @Nullable
+  OpenSCADParameterReference getParameterReference();
+
 }

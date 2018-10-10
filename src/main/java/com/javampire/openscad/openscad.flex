@@ -128,6 +128,7 @@ DQ_STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
     "version_num"               { return OpenSCADTypes.VERSION_NUM_KEYWORD; }
     "parent_module"             { return OpenSCADTypes.PARENT_MODULE_KEYWORD; }
 
+    "."                         { return OpenSCADTypes.DOT; }
     "="                         { return OpenSCADTypes.EQUALS; }
     ";"                         { return OpenSCADTypes.SEMICOLON; }
     ","                         { return OpenSCADTypes.COMMA; }

@@ -172,29 +172,29 @@ class OpenSCADLexer implements FlexLexer {
 
   private static final String ZZ_ACTION_PACKED_0 =
     "\2\0\1\1\1\2\1\3\1\4\1\5\1\6\1\7"+
-    "\1\1\1\10\1\11\1\12\21\6\1\13\1\14\1\15"+
-    "\1\16\1\17\1\20\1\21\1\22\1\23\1\24\1\25"+
-    "\1\26\1\27\1\30\1\31\1\32\2\1\1\33\1\2"+
-    "\1\34\1\35\1\36\1\37\1\40\1\7\2\0\1\11"+
-    "\1\0\1\12\1\6\1\41\12\6\1\42\47\6\1\43"+
-    "\1\44\1\45\1\46\1\47\1\40\1\50\1\7\1\0"+
-    "\11\6\1\51\2\6\1\52\2\6\1\53\1\54\1\55"+
-    "\3\6\1\56\4\6\1\57\1\60\5\6\1\61\6\6"+
-    "\1\62\4\6\1\63\1\6\1\64\11\6\1\65\2\6"+
-    "\1\66\4\6\1\67\1\6\1\0\2\50\3\6\1\70"+
-    "\1\6\1\71\1\72\12\6\1\73\1\6\1\74\1\75"+
-    "\6\6\1\76\3\6\1\77\1\100\2\6\1\101\1\102"+
-    "\1\103\6\6\1\104\11\6\1\40\1\0\4\6\1\105"+
-    "\1\106\1\6\1\107\3\6\1\110\1\111\2\6\1\112"+
-    "\5\6\1\113\1\6\1\114\2\6\1\115\3\6\1\116"+
-    "\1\117\15\6\1\120\1\121\1\6\1\122\2\6\1\123"+
-    "\3\6\1\124\1\125\1\126\1\127\1\6\1\130\1\131"+
-    "\1\6\1\132\1\133\1\134\1\135\1\6\1\136\1\6"+
-    "\1\137\5\6\1\140\6\6\1\141\1\142\7\6\1\143"+
-    "\1\6\1\144\3\6\1\145\1\146\2\6\1\147\15\6"+
-    "\1\150\1\6\1\151\6\6\1\152\1\153\1\6\1\154"+
-    "\1\6\1\155\1\6\1\156\1\157\5\6\1\160\1\161"+
-    "\6\6\1\162\1\6\1\163\1\164\1\6\1\165";
+    "\1\10\1\11\1\12\1\13\21\6\1\14\1\15\1\16"+
+    "\1\17\1\20\1\21\1\22\1\23\1\24\1\25\1\26"+
+    "\1\27\1\30\1\31\1\32\1\33\2\1\1\34\1\2"+
+    "\1\35\1\36\1\37\1\40\1\41\1\7\2\0\1\12"+
+    "\1\0\1\13\1\6\1\42\12\6\1\43\47\6\1\44"+
+    "\1\45\1\46\1\47\1\50\1\41\1\51\1\7\1\0"+
+    "\11\6\1\52\2\6\1\53\2\6\1\54\1\55\1\56"+
+    "\3\6\1\57\4\6\1\60\1\61\5\6\1\62\6\6"+
+    "\1\63\4\6\1\64\1\6\1\65\11\6\1\66\2\6"+
+    "\1\67\4\6\1\70\1\6\1\0\2\51\3\6\1\71"+
+    "\1\6\1\72\1\73\12\6\1\74\1\6\1\75\1\76"+
+    "\6\6\1\77\3\6\1\100\1\101\2\6\1\102\1\103"+
+    "\1\104\6\6\1\105\11\6\1\41\1\0\4\6\1\106"+
+    "\1\107\1\6\1\110\3\6\1\111\1\112\2\6\1\113"+
+    "\5\6\1\114\1\6\1\115\2\6\1\116\3\6\1\117"+
+    "\1\120\15\6\1\121\1\122\1\6\1\123\2\6\1\124"+
+    "\3\6\1\125\1\126\1\127\1\130\1\6\1\131\1\132"+
+    "\1\6\1\133\1\134\1\135\1\136\1\6\1\137\1\6"+
+    "\1\140\5\6\1\141\6\6\1\142\1\143\7\6\1\144"+
+    "\1\6\1\145\3\6\1\146\1\147\2\6\1\150\15\6"+
+    "\1\151\1\6\1\152\6\6\1\153\1\154\1\6\1\155"+
+    "\1\6\1\156\1\6\1\157\1\160\5\6\1\161\1\162"+
+    "\6\6\1\163\1\6\1\164\1\165\1\6\1\166";
 
   private static int [] zzUnpackAction() {
     int [] result = new int[401];
@@ -965,587 +965,592 @@ class OpenSCADLexer implements FlexLexer {
             { return TokenType.BAD_CHARACTER;
             } 
             // fall through
-          case 118: break;
+          case 119: break;
           case 2: 
             { return TokenType.WHITE_SPACE;
             } 
             // fall through
-          case 119: break;
+          case 120: break;
           case 3: 
             { return OpenSCADTypes.GT;
             } 
             // fall through
-          case 120: break;
+          case 121: break;
           case 4: 
             { return OpenSCADTypes.DIV;
             } 
             // fall through
-          case 121: break;
+          case 122: break;
           case 5: 
             { return OpenSCADTypes.MUL;
             } 
             // fall through
-          case 122: break;
+          case 123: break;
           case 6: 
             { return OpenSCADTypes.IDENTIFIER;
             } 
             // fall through
-          case 123: break;
+          case 124: break;
           case 7: 
             { return OpenSCADTypes.NUMBER_LITERAL;
             } 
             // fall through
-          case 124: break;
-          case 8: 
-            { return OpenSCADTypes.PLUS;
-            } 
-            // fall through
           case 125: break;
-          case 9: 
-            { return OpenSCADTypes.SQ_STRING_LITERAL;
+          case 8: 
+            { return OpenSCADTypes.DOT;
             } 
             // fall through
           case 126: break;
-          case 10: 
-            { return OpenSCADTypes.DQ_STRING_LITERAL;
+          case 9: 
+            { return OpenSCADTypes.PLUS;
             } 
             // fall through
           case 127: break;
-          case 11: 
-            { return OpenSCADTypes.EQUALS;
+          case 10: 
+            { return OpenSCADTypes.SQ_STRING_LITERAL;
             } 
             // fall through
           case 128: break;
-          case 12: 
-            { return OpenSCADTypes.SEMICOLON;
+          case 11: 
+            { return OpenSCADTypes.DQ_STRING_LITERAL;
             } 
             // fall through
           case 129: break;
-          case 13: 
-            { return OpenSCADTypes.COMMA;
+          case 12: 
+            { return OpenSCADTypes.EQUALS;
             } 
             // fall through
           case 130: break;
-          case 14: 
-            { return OpenSCADTypes.MINUS;
+          case 13: 
+            { return OpenSCADTypes.SEMICOLON;
             } 
             // fall through
           case 131: break;
-          case 15: 
-            { return OpenSCADTypes.PERC;
+          case 14: 
+            { return OpenSCADTypes.COMMA;
             } 
             // fall through
           case 132: break;
-          case 16: 
-            { return OpenSCADTypes.QUERY;
+          case 15: 
+            { return OpenSCADTypes.MINUS;
             } 
             // fall through
           case 133: break;
-          case 17: 
-            { return OpenSCADTypes.COLON;
+          case 16: 
+            { return OpenSCADTypes.PERC;
             } 
             // fall through
           case 134: break;
-          case 18: 
-            { return OpenSCADTypes.LPARENTH;
+          case 17: 
+            { return OpenSCADTypes.QUERY;
             } 
             // fall through
           case 135: break;
-          case 19: 
-            { return OpenSCADTypes.RPARENTH;
+          case 18: 
+            { return OpenSCADTypes.COLON;
             } 
             // fall through
           case 136: break;
-          case 20: 
-            { return OpenSCADTypes.LBRACE;
+          case 19: 
+            { return OpenSCADTypes.LPARENTH;
             } 
             // fall through
           case 137: break;
-          case 21: 
-            { return OpenSCADTypes.RBRACE;
+          case 20: 
+            { return OpenSCADTypes.RPARENTH;
             } 
             // fall through
           case 138: break;
-          case 22: 
-            { return OpenSCADTypes.LBRACKET;
+          case 21: 
+            { return OpenSCADTypes.LBRACE;
             } 
             // fall through
           case 139: break;
-          case 23: 
-            { return OpenSCADTypes.RBRACKET;
+          case 22: 
+            { return OpenSCADTypes.RBRACE;
             } 
             // fall through
           case 140: break;
-          case 24: 
-            { return OpenSCADTypes.HASH;
+          case 23: 
+            { return OpenSCADTypes.LBRACKET;
             } 
             // fall through
           case 141: break;
-          case 25: 
-            { return OpenSCADTypes.LT;
+          case 24: 
+            { return OpenSCADTypes.RBRACKET;
             } 
             // fall through
           case 142: break;
-          case 26: 
-            { return OpenSCADTypes.EXCL;
+          case 25: 
+            { return OpenSCADTypes.HASH;
             } 
             // fall through
           case 143: break;
-          case 27: 
-            { return OpenSCADTypes.INCLUDE_PATH;
+          case 26: 
+            { return OpenSCADTypes.LT;
             } 
             // fall through
           case 144: break;
-          case 28: 
-            { yybegin(YYINITIAL); return OpenSCADTypes.INCLUDE_END;
+          case 27: 
+            { return OpenSCADTypes.EXCL;
             } 
             // fall through
           case 145: break;
-          case 29: 
-            { return OpenSCADTypes.INCLUDE_START;
+          case 28: 
+            { return OpenSCADTypes.INCLUDE_PATH;
             } 
             // fall through
           case 146: break;
-          case 30: 
-            { return OpenSCADTypes.GE;
+          case 29: 
+            { yybegin(YYINITIAL); return OpenSCADTypes.INCLUDE_END;
             } 
             // fall through
           case 147: break;
-          case 31: 
-            { return OpenSCADTypes.END_OF_LINE_COMMENT;
+          case 30: 
+            { return OpenSCADTypes.INCLUDE_START;
             } 
             // fall through
           case 148: break;
-          case 32: 
-            { return OpenSCADTypes.C_STYLE_COMMENT;
+          case 31: 
+            { return OpenSCADTypes.GE;
             } 
             // fall through
           case 149: break;
-          case 33: 
-            { return OpenSCADTypes.IF_KEYWORD;
+          case 32: 
+            { return OpenSCADTypes.END_OF_LINE_COMMENT;
             } 
             // fall through
           case 150: break;
-          case 34: 
-            { return OpenSCADTypes.LN_KEYWORD;
+          case 33: 
+            { return OpenSCADTypes.C_STYLE_COMMENT;
             } 
             // fall through
           case 151: break;
-          case 35: 
-            { return OpenSCADTypes.EQ;
+          case 34: 
+            { return OpenSCADTypes.IF_KEYWORD;
             } 
             // fall through
           case 152: break;
-          case 36: 
-            { return OpenSCADTypes.LE;
+          case 35: 
+            { return OpenSCADTypes.LN_KEYWORD;
             } 
             // fall through
           case 153: break;
-          case 37: 
-            { return OpenSCADTypes.NE;
+          case 36: 
+            { return OpenSCADTypes.EQ;
             } 
             // fall through
           case 154: break;
-          case 38: 
-            { return OpenSCADTypes.AND;
+          case 37: 
+            { return OpenSCADTypes.LE;
             } 
             // fall through
           case 155: break;
-          case 39: 
-            { return OpenSCADTypes.OR;
+          case 38: 
+            { return OpenSCADTypes.NE;
             } 
             // fall through
           case 156: break;
-          case 40: 
-            { return OpenSCADTypes.DOC_COMMENT;
+          case 39: 
+            { return OpenSCADTypes.AND;
             } 
             // fall through
           case 157: break;
-          case 41: 
-            { return OpenSCADTypes.CHR_KEYWORD;
+          case 40: 
+            { return OpenSCADTypes.OR;
             } 
             // fall through
           case 158: break;
-          case 42: 
-            { return OpenSCADTypes.COS_KEYWORD;
+          case 41: 
+            { return OpenSCADTypes.DOC_COMMENT;
             } 
             // fall through
           case 159: break;
-          case 43: 
-            { return OpenSCADTypes.LEN_KEYWORD;
+          case 42: 
+            { return OpenSCADTypes.CHR_KEYWORD;
             } 
             // fall through
           case 160: break;
-          case 44: 
-            { return OpenSCADTypes.LET_KEYWORD;
+          case 43: 
+            { return OpenSCADTypes.COS_KEYWORD;
             } 
             // fall through
           case 161: break;
-          case 45: 
-            { return OpenSCADTypes.LOG_KEYWORD;
+          case 44: 
+            { return OpenSCADTypes.LEN_KEYWORD;
             } 
             // fall through
           case 162: break;
-          case 46: 
-            { yybegin(INCLUDE_PATH); return OpenSCADTypes.USE_KEYWORD;
+          case 45: 
+            { return OpenSCADTypes.LET_KEYWORD;
             } 
             // fall through
           case 163: break;
-          case 47: 
-            { return OpenSCADTypes.EXP_KEYWORD;
+          case 46: 
+            { return OpenSCADTypes.LOG_KEYWORD;
             } 
             // fall through
           case 164: break;
-          case 48: 
-            { return OpenSCADTypes.SIN_KEYWORD;
+          case 47: 
+            { yybegin(INCLUDE_PATH); return OpenSCADTypes.USE_KEYWORD;
             } 
             // fall through
           case 165: break;
-          case 49: 
-            { return OpenSCADTypes.STR_KEYWORD;
+          case 48: 
+            { return OpenSCADTypes.EXP_KEYWORD;
             } 
             // fall through
           case 166: break;
-          case 50: 
-            { return OpenSCADTypes.FOR_KEYWORD;
+          case 49: 
+            { return OpenSCADTypes.SIN_KEYWORD;
             } 
             // fall through
           case 167: break;
-          case 51: 
-            { return OpenSCADTypes.ABS_KEYWORD;
+          case 50: 
+            { return OpenSCADTypes.STR_KEYWORD;
             } 
             // fall through
           case 168: break;
-          case 52: 
-            { return OpenSCADTypes.TAN_KEYWORD;
+          case 51: 
+            { return OpenSCADTypes.FOR_KEYWORD;
             } 
             // fall through
           case 169: break;
-          case 53: 
-            { return OpenSCADTypes.MIN_KEYWORD;
+          case 52: 
+            { return OpenSCADTypes.ABS_KEYWORD;
             } 
             // fall through
           case 170: break;
-          case 54: 
-            { return OpenSCADTypes.MAX_KEYWORD;
+          case 53: 
+            { return OpenSCADTypes.TAN_KEYWORD;
             } 
             // fall through
           case 171: break;
-          case 55: 
-            { return OpenSCADTypes.POW_KEYWORD;
+          case 54: 
+            { return OpenSCADTypes.MIN_KEYWORD;
             } 
             // fall through
           case 172: break;
-          case 56: 
-            { return OpenSCADTypes.NORM_KEYWORD;
+          case 55: 
+            { return OpenSCADTypes.MAX_KEYWORD;
             } 
             // fall through
           case 173: break;
-          case 57: 
-            { return OpenSCADTypes.CUBE_KEYWORD;
+          case 56: 
+            { return OpenSCADTypes.POW_KEYWORD;
             } 
             // fall through
           case 174: break;
-          case 58: 
-            { return OpenSCADTypes.CEIL_KEYWORD;
+          case 57: 
+            { return OpenSCADTypes.NORM_KEYWORD;
             } 
             // fall through
           case 175: break;
-          case 59: 
-            { return OpenSCADTypes.ECHO_KEYWORD;
+          case 58: 
+            { return OpenSCADTypes.CUBE_KEYWORD;
             } 
             // fall through
           case 176: break;
-          case 60: 
-            { return OpenSCADTypes.ELSE_KEYWORD;
+          case 59: 
+            { return OpenSCADTypes.CEIL_KEYWORD;
             } 
             // fall through
           case 177: break;
-          case 61: 
-            { return OpenSCADTypes.SIGN_KEYWORD;
+          case 60: 
+            { return OpenSCADTypes.ECHO_KEYWORD;
             } 
             // fall through
           case 178: break;
-          case 62: 
-            { return OpenSCADTypes.SQRT_KEYWORD;
+          case 61: 
+            { return OpenSCADTypes.ELSE_KEYWORD;
             } 
             // fall through
           case 179: break;
-          case 63: 
-            { return OpenSCADTypes.ACOS_KEYWORD;
+          case 62: 
+            { return OpenSCADTypes.SIGN_KEYWORD;
             } 
             // fall through
           case 180: break;
-          case 64: 
-            { return OpenSCADTypes.ASIN_KEYWORD;
+          case 63: 
+            { return OpenSCADTypes.SQRT_KEYWORD;
             } 
             // fall through
           case 181: break;
-          case 65: 
-            { return OpenSCADTypes.ATAN_KEYWORD;
+          case 64: 
+            { return OpenSCADTypes.ACOS_KEYWORD;
             } 
             // fall through
           case 182: break;
-          case 66: 
-            { return OpenSCADTypes.TEXT_KEYWORD;
+          case 65: 
+            { return OpenSCADTypes.ASIN_KEYWORD;
             } 
             // fall through
           case 183: break;
-          case 67: 
-            { return OpenSCADTypes.TRUE_KEYWORD;
+          case 66: 
+            { return OpenSCADTypes.ATAN_KEYWORD;
             } 
             // fall through
           case 184: break;
-          case 68: 
-            { return OpenSCADTypes.HULL_KEYWORD;
+          case 67: 
+            { return OpenSCADTypes.TEXT_KEYWORD;
             } 
             // fall through
           case 185: break;
-          case 69: 
-            { return OpenSCADTypes.CROSS_KEYWORD;
+          case 68: 
+            { return OpenSCADTypes.TRUE_KEYWORD;
             } 
             // fall through
           case 186: break;
-          case 70: 
-            { return OpenSCADTypes.CHILD_KEYWORD;
+          case 69: 
+            { return OpenSCADTypes.HULL_KEYWORD;
             } 
             // fall through
           case 187: break;
-          case 71: 
-            { return OpenSCADTypes.COLOR_KEYWORD;
+          case 70: 
+            { return OpenSCADTypes.CROSS_KEYWORD;
             } 
             // fall through
           case 188: break;
-          case 72: 
-            { return OpenSCADTypes.UNION_KEYWORD;
+          case 71: 
+            { return OpenSCADTypes.CHILD_KEYWORD;
             } 
             // fall through
           case 189: break;
-          case 73: 
-            { return OpenSCADTypes.UNDEF_KEYWORD;
+          case 72: 
+            { return OpenSCADTypes.COLOR_KEYWORD;
             } 
             // fall through
           case 190: break;
-          case 74: 
-            { return OpenSCADTypes.SCALE_KEYWORD;
+          case 73: 
+            { return OpenSCADTypes.UNION_KEYWORD;
             } 
             // fall through
           case 191: break;
-          case 75: 
-            { return OpenSCADTypes.FLOOR_KEYWORD;
+          case 74: 
+            { return OpenSCADTypes.UNDEF_KEYWORD;
             } 
             // fall through
           case 192: break;
-          case 76: 
-            { return OpenSCADTypes.FALSE_KEYWORD;
+          case 75: 
+            { return OpenSCADTypes.SCALE_KEYWORD;
             } 
             // fall through
           case 193: break;
-          case 77: 
-            { return OpenSCADTypes.ATAN2_KEYWORD;
+          case 76: 
+            { return OpenSCADTypes.FLOOR_KEYWORD;
             } 
             // fall through
           case 194: break;
-          case 78: 
-            { return OpenSCADTypes.RANDS_KEYWORD;
+          case 77: 
+            { return OpenSCADTypes.FALSE_KEYWORD;
             } 
             // fall through
           case 195: break;
-          case 79: 
-            { return OpenSCADTypes.ROUND_KEYWORD;
+          case 78: 
+            { return OpenSCADTypes.ATAN2_KEYWORD;
             } 
             // fall through
           case 196: break;
-          case 80: 
-            { return OpenSCADTypes.IMPORT_KEYWORD;
+          case 79: 
+            { return OpenSCADTypes.RANDS_KEYWORD;
             } 
             // fall through
           case 197: break;
-          case 81: 
-            { return OpenSCADTypes.CIRCLE_KEYWORD;
+          case 80: 
+            { return OpenSCADTypes.ROUND_KEYWORD;
             } 
             // fall through
           case 198: break;
-          case 82: 
-            { return OpenSCADTypes.CONCAT_KEYWORD;
+          case 81: 
+            { return OpenSCADTypes.IMPORT_KEYWORD;
             } 
             // fall through
           case 199: break;
-          case 83: 
-            { return OpenSCADTypes.LOOKUP_KEYWORD;
+          case 82: 
+            { return OpenSCADTypes.CIRCLE_KEYWORD;
             } 
             // fall through
           case 200: break;
-          case 84: 
-            { return OpenSCADTypes.SELECT_KEYWORD;
+          case 83: 
+            { return OpenSCADTypes.CONCAT_KEYWORD;
             } 
             // fall through
           case 201: break;
-          case 85: 
-            { return OpenSCADTypes.SEARCH_KEYWORD;
+          case 84: 
+            { return OpenSCADTypes.LOOKUP_KEYWORD;
             } 
             // fall through
           case 202: break;
-          case 86: 
-            { return OpenSCADTypes.SPHERE_KEYWORD;
+          case 85: 
+            { return OpenSCADTypes.SELECT_KEYWORD;
             } 
             // fall through
           case 203: break;
-          case 87: 
-            { return OpenSCADTypes.SQUARE_KEYWORD;
+          case 86: 
+            { return OpenSCADTypes.SEARCH_KEYWORD;
             } 
             // fall through
           case 204: break;
-          case 88: 
-            { return OpenSCADTypes.ASSIGN_KEYWORD;
+          case 87: 
+            { return OpenSCADTypes.SPHERE_KEYWORD;
             } 
             // fall through
           case 205: break;
-          case 89: 
-            { return OpenSCADTypes.ASSERT_KEYWORD;
+          case 88: 
+            { return OpenSCADTypes.SQUARE_KEYWORD;
             } 
             // fall through
           case 206: break;
-          case 90: 
-            { return OpenSCADTypes.RENDER_KEYWORD;
+          case 89: 
+            { return OpenSCADTypes.ASSIGN_KEYWORD;
             } 
             // fall through
           case 207: break;
-          case 91: 
-            { return OpenSCADTypes.RESIZE_KEYWORD;
+          case 90: 
+            { return OpenSCADTypes.ASSERT_KEYWORD;
             } 
             // fall through
           case 208: break;
-          case 92: 
-            { return OpenSCADTypes.ROTATE_KEYWORD;
+          case 91: 
+            { return OpenSCADTypes.RENDER_KEYWORD;
             } 
             // fall through
           case 209: break;
-          case 93: 
-            { return OpenSCADTypes.OFFSET_KEYWORD;
+          case 92: 
+            { return OpenSCADTypes.RESIZE_KEYWORD;
             } 
             // fall through
           case 210: break;
-          case 94: 
-            { return OpenSCADTypes.MIRROR_KEYWORD;
+          case 93: 
+            { return OpenSCADTypes.ROTATE_KEYWORD;
             } 
             // fall through
           case 211: break;
-          case 95: 
-            { return OpenSCADTypes.MODULE_KEYWORD;
+          case 94: 
+            { return OpenSCADTypes.OFFSET_KEYWORD;
             } 
             // fall through
           case 212: break;
-          case 96: 
-            { yybegin(INCLUDE_PATH); return OpenSCADTypes.INCLUDE_KEYWORD;
+          case 95: 
+            { return OpenSCADTypes.MIRROR_KEYWORD;
             } 
             // fall through
           case 213: break;
-          case 97: 
-            { return OpenSCADTypes.ELLIPSE_KEYWORD;
+          case 96: 
+            { return OpenSCADTypes.MODULE_KEYWORD;
             } 
             // fall through
           case 214: break;
-          case 98: 
-            { return OpenSCADTypes.SURFACE_KEYWORD;
+          case 97: 
+            { yybegin(INCLUDE_PATH); return OpenSCADTypes.INCLUDE_KEYWORD;
             } 
             // fall through
           case 215: break;
-          case 99: 
-            { return OpenSCADTypes.POLYGON_KEYWORD;
+          case 98: 
+            { return OpenSCADTypes.ELLIPSE_KEYWORD;
             } 
             // fall through
           case 216: break;
-          case 100: 
-            { return OpenSCADTypes.VERSION_KEYWORD;
+          case 99: 
+            { return OpenSCADTypes.SURFACE_KEYWORD;
             } 
             // fall through
           case 217: break;
-          case 101: 
-            { return OpenSCADTypes.CHILDREN_KEYWORD;
+          case 100: 
+            { return OpenSCADTypes.POLYGON_KEYWORD;
             } 
             // fall through
           case 218: break;
-          case 102: 
-            { return OpenSCADTypes.CYLINDER_KEYWORD;
+          case 101: 
+            { return OpenSCADTypes.VERSION_KEYWORD;
             } 
             // fall through
           case 219: break;
-          case 103: 
-            { return OpenSCADTypes.FUNCTION_KEYWORD;
+          case 102: 
+            { return OpenSCADTypes.CHILDREN_KEYWORD;
             } 
             // fall through
           case 220: break;
-          case 104: 
-            { return OpenSCADTypes.TRANSLATE_KEYWORD;
+          case 103: 
+            { return OpenSCADTypes.CYLINDER_KEYWORD;
             } 
             // fall through
           case 221: break;
-          case 105: 
-            { return OpenSCADTypes.MINKOWSKI_KEYWORD;
+          case 104: 
+            { return OpenSCADTypes.FUNCTION_KEYWORD;
             } 
             // fall through
           case 222: break;
-          case 106: 
-            { return OpenSCADTypes.IMPORT_DXF_KEYWORD;
+          case 105: 
+            { return OpenSCADTypes.TRANSLATE_KEYWORD;
             } 
             // fall through
           case 223: break;
-          case 107: 
-            { return OpenSCADTypes.IMPORT_STL_KEYWORD;
+          case 106: 
+            { return OpenSCADTypes.MINKOWSKI_KEYWORD;
             } 
             // fall through
           case 224: break;
-          case 108: 
-            { return OpenSCADTypes.DIFFERENCE_KEYWORD;
+          case 107: 
+            { return OpenSCADTypes.IMPORT_DXF_KEYWORD;
             } 
             // fall through
           case 225: break;
-          case 109: 
-            { return OpenSCADTypes.MULTMATRIX_KEYWORD;
+          case 108: 
+            { return OpenSCADTypes.IMPORT_STL_KEYWORD;
             } 
             // fall through
           case 226: break;
-          case 110: 
-            { return OpenSCADTypes.PROJECTION_KEYWORD;
+          case 109: 
+            { return OpenSCADTypes.DIFFERENCE_KEYWORD;
             } 
             // fall through
           case 227: break;
-          case 111: 
-            { return OpenSCADTypes.POLYHEDRON_KEYWORD;
+          case 110: 
+            { return OpenSCADTypes.MULTMATRIX_KEYWORD;
             } 
             // fall through
           case 228: break;
-          case 112: 
-            { return OpenSCADTypes.VERSION_NUM_KEYWORD;
+          case 111: 
+            { return OpenSCADTypes.PROJECTION_KEYWORD;
             } 
             // fall through
           case 229: break;
-          case 113: 
-            { return OpenSCADTypes.INTERSECTION_KEYWORD;
+          case 112: 
+            { return OpenSCADTypes.POLYHEDRON_KEYWORD;
             } 
             // fall through
           case 230: break;
-          case 114: 
-            { return OpenSCADTypes.PARENT_MODULE_KEYWORD;
+          case 113: 
+            { return OpenSCADTypes.VERSION_NUM_KEYWORD;
             } 
             // fall through
           case 231: break;
-          case 115: 
-            { return OpenSCADTypes.LINEAR_EXTRUDE_KEYWORD;
+          case 114: 
+            { return OpenSCADTypes.INTERSECTION_KEYWORD;
             } 
             // fall through
           case 232: break;
-          case 116: 
-            { return OpenSCADTypes.ROTATE_EXTRUDE_KEYWORD;
+          case 115: 
+            { return OpenSCADTypes.PARENT_MODULE_KEYWORD;
             } 
             // fall through
           case 233: break;
-          case 117: 
-            { return OpenSCADTypes.INTERSECTION_FOR_KEYWORD;
+          case 116: 
+            { return OpenSCADTypes.LINEAR_EXTRUDE_KEYWORD;
             } 
             // fall through
           case 234: break;
+          case 117: 
+            { return OpenSCADTypes.ROTATE_EXTRUDE_KEYWORD;
+            } 
+            // fall through
+          case 235: break;
+          case 118: 
+            { return OpenSCADTypes.INTERSECTION_FOR_KEYWORD;
+            } 
+            // fall through
+          case 236: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

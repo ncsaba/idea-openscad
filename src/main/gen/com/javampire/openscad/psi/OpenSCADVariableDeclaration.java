@@ -5,9 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface OpenSCADFullArgAssignmentList extends PsiElement {
+public interface OpenSCADVariableDeclaration extends OpenSCADNamedElement {
 
-  @NotNull
-  List<OpenSCADFullArgAssignment> getFullArgAssignmentList();
+  String getName();
+
+  PsiElement setName(String newName);
+
+  PsiElement getNameIdentifier();
 
 }
