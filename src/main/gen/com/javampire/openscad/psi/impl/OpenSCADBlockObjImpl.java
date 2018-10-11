@@ -33,6 +33,18 @@ public class OpenSCADBlockObjImpl extends OpenSCADObjectImpl implements OpenSCAD
 
   @Override
   @NotNull
+  public List<OpenSCADFunctionDeclaration> getFunctionDeclarationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADFunctionDeclaration.class);
+  }
+
+  @Override
+  @NotNull
+  public List<OpenSCADModuleDeclaration> getModuleDeclarationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADModuleDeclaration.class);
+  }
+
+  @Override
+  @NotNull
   public List<OpenSCADObject> getObjectList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADObject.class);
   }

@@ -26,14 +26,12 @@ private item_ ::= (
     | include_item
     | use_item
     | statement
-    | module_declaration
-    | function_declaration
 )
 
 private comment_item ::= C_STYLE_COMMENT | DOC_COMMENT | END_OF_LINE_COMMENT
 
-include_item ::= INCLUDE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END {methods=[getPresentation]}
-use_item ::= USE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END {methods=[getPresentation]}
+include_item ::= INCLUDE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END { methods=[getPresentation] }
+use_item ::= USE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END { methods=[getPresentation] }
 
 object ::= builtin_obj
          | module_call_obj
@@ -90,7 +88,7 @@ block_obj ::= LBRACE statement* RBRACE
 
 empty_obj ::= SEMICOLON
 
-private statement ::= object | assignment
+private statement ::= object | assignment | module_declaration | function_declaration
 
 assignment ::= variable_declaration EQUALS expr SEMICOLON
 variable_declaration ::= IDENTIFIER {
@@ -216,7 +214,9 @@ plus_expr ::= expr PLUS expr
 conditional_expr ::= expr ( LT | GT | LE | GE | EQ | NE ) expr
 elvis_expr ::= expr QUERY expr COLON expr
 paren_expr ::= LPARENTH expr RPARENTH
-vector_expr ::= LBRACKET [ expr ( COMMA+ (expr | &RBRACKET) )* ] RBRACKET {pin(".*")=1}
+vector_expr ::= LBRACKET [ vector_item ( COMMA+ (vector_item | &RBRACKET) )* ] RBRACKET { pin(".*")=1 }
+private vector_item ::= expr { recoverWhile=recover_vector }
+private recover_vector ::= ! (COMMA | RBRACKET)
 index_expr ::= expr LBRACKET expr RBRACKET
 range_expr ::= LBRACKET expr COLON expr [ COLON expr ] RBRACKET
 list_comprehension_expr ::= LBRACKET for_element (if_element | let_element)* expr RBRACKET

@@ -15,6 +15,12 @@ public interface OpenSCADModuleDeclaration extends OpenSCADNamedElement {
   OpenSCADAssignment getAssignment();
 
   @Nullable
+  OpenSCADFunctionDeclaration getFunctionDeclaration();
+
+  @Nullable
+  OpenSCADModuleDeclaration getModuleDeclaration();
+
+  @Nullable
   OpenSCADObject getObject();
 
   ItemPresentation getPresentation();
