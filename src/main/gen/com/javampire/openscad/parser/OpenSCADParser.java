@@ -413,7 +413,7 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, ARG_ASSIGNMENT, "<arg assignment>");
     r = arg_assignment_0(b, l + 1);
     r = r && expr(b, l + 1, -1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, l, m, r, false, recover_arg_parser_);
     return r;
   }
 
@@ -500,12 +500,11 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   // IDENTIFIER [EQUALS expr]
   public static boolean arg_declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arg_declaration")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, ARG_DECLARATION, "<arg declaration>");
     r = consumeToken(b, IDENTIFIER);
     r = r && arg_declaration_1(b, l + 1);
-    exit_section_(b, m, ARG_DECLARATION, r);
+    exit_section_(b, l, m, r, false, recover_arg_parser_);
     return r;
   }
 
@@ -1123,12 +1122,11 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   // IDENTIFIER EQUALS expr
   public static boolean full_arg_declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "full_arg_declaration")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, FULL_ARG_DECLARATION, "<full arg declaration>");
     r = consumeTokens(b, 0, IDENTIFIER, EQUALS);
     r = r && expr(b, l + 1, -1);
-    exit_section_(b, m, FULL_ARG_DECLARATION, r);
+    exit_section_(b, l, m, r, false, recover_arg_parser_);
     return r;
   }
 
@@ -1760,6 +1758,26 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, RANDS_KEYWORD);
     r = r && arg_assignment_list(b, l + 1);
     exit_section_(b, m, RANDS_EXPR, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // ! (COMMA | RPARENTH)
+  static boolean recover_arg(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "recover_arg")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NOT_);
+    r = !recover_arg_0(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // COMMA | RPARENTH
+  private static boolean recover_arg_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "recover_arg_0")) return false;
+    boolean r;
+    r = consumeToken(b, COMMA);
+    if (!r) r = consumeToken(b, RPARENTH);
     return r;
   }
 
@@ -2563,6 +2581,11 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     return r;
   }
 
+  final static Parser recover_arg_parser_ = new Parser() {
+    public boolean parse(PsiBuilder b, int l) {
+      return recover_arg(b, l + 1);
+    }
+  };
   final static Parser recover_vector_parser_ = new Parser() {
     public boolean parse(PsiBuilder b, int l) {
       return recover_vector(b, l + 1);
