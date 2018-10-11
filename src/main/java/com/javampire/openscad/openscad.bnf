@@ -308,7 +308,10 @@ literal_expr ::= TRUE_KEYWORD
 
 call_expr ::= ref_expr arg_assignment_list
 arg_assignment_list ::= LPARENTH arg_assignment? ( COMMA+ arg_assignment )* RPARENTH {pin(".*")=1}
-arg_assignment ::= [ parameter_reference EQUALS ] expr
+arg_assignment ::= [ parameter_reference EQUALS ] expr {
+    recoverWhile=recover_arg
+}
+private recover_arg ::= ! (COMMA | RPARENTH)
 parameter_reference ::= IDENTIFIER {
     mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADNamedElement"
@@ -320,6 +323,7 @@ arg_declaration ::= IDENTIFIER [EQUALS expr] {
     mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADNamedElement"
     methods=[getName setName getNameIdentifier]
+    recoverWhile=recover_arg
 }
 
 full_arg_declaration_list ::= LPARENTH full_arg_declaration? ( COMMA+ full_arg_declaration )* RPARENTH {pin(".*")=1}
@@ -327,4 +331,5 @@ full_arg_declaration ::= IDENTIFIER EQUALS expr {
     mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADNamedElement"
     methods=[getName setName getNameIdentifier]
+    recoverWhile=recover_arg
 }
