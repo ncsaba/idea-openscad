@@ -40,6 +40,18 @@ public class OpenSCADModuleDeclarationImpl extends OpenSCADNamedElementImpl impl
 
   @Override
   @Nullable
+  public OpenSCADFunctionDeclaration getFunctionDeclaration() {
+    return findChildByClass(OpenSCADFunctionDeclaration.class);
+  }
+
+  @Override
+  @Nullable
+  public OpenSCADModuleDeclaration getModuleDeclaration() {
+    return findChildByClass(OpenSCADModuleDeclaration.class);
+  }
+
+  @Override
+  @Nullable
   public OpenSCADObject getObject() {
     return findChildByClass(OpenSCADObject.class);
   }
