@@ -4,6 +4,8 @@ package com.javampire.openscad.psi;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.StubBasedPsiElement;
+import com.javampire.openscad.psi.stub.OpenSCADModuleStub;
 
 public class OpenSCADVisitor extends PsiElementVisitor {
 
@@ -313,6 +315,7 @@ public class OpenSCADVisitor extends PsiElementVisitor {
 
   public void visitModuleDeclaration(@NotNull OpenSCADModuleDeclaration o) {
     visitNamedElement(o);
+    // visitStubBasedPsiElement(o);
   }
 
   public void visitModuleObjReference(@NotNull OpenSCADModuleObjReference o) {
