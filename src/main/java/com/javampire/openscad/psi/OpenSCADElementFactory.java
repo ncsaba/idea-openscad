@@ -3,7 +3,9 @@ package com.javampire.openscad.psi;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFileFactory;
+import com.intellij.psi.tree.IElementType;
 import com.javampire.openscad.OpenSCADFileType;
+import com.javampire.openscad.psi.stub.OpenSCADModuleStubElementType;
 
 public class OpenSCADElementFactory {
 
@@ -16,6 +18,14 @@ public class OpenSCADElementFactory {
         String name = "dummy.scad";
         return (OpenSCADFile) PsiFileFactory.getInstance(project).
                 createFileFromText(name, OpenSCADFileType.INSTANCE, text);
+    }
+
+    public static IElementType getElementType(String debugName) {
+        if ("MODULE_DECLARATION".equals(debugName)) {
+            return OpenSCADModuleStubElementType.INSTANCE;
+        } else {
+            return new OpenSCADElementType(debugName);
+        }
     }
 
 }

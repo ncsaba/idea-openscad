@@ -9,7 +9,7 @@
     psiImplPackage="com.javampire.openscad.psi.impl"
 
     elementTypeHolderClass="com.javampire.openscad.psi.OpenSCADTypes"
-    elementTypeClass="com.javampire.openscad.psi.OpenSCADElementType"
+    elementTypeFactory="com.javampire.openscad.psi.OpenSCADElementFactory.getElementType"
     tokenTypeClass="com.javampire.openscad.psi.OpenSCADTokenType"
 
     extends(".*expr")=expr
@@ -168,8 +168,11 @@ assign_op ::= ASSIGN_KEYWORD LPARENTH full_arg_declaration_list RPARENTH
 let_op ::= LET_KEYWORD LPARENTH full_arg_declaration_list RPARENTH
 
 module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
-    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
+    mixin="com.javampire.openscad.psi.impl.OpenSCADModuleDeclarationStubElementImpl"
+    implements=[
+        "com.javampire.openscad.psi.OpenSCADNamedElement"
+        "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.OpenSCADModuleStub>"
+    ]
     methods=[getPresentation getName setName getNameIdentifier]
 }
 function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS expr SEMICOLON {

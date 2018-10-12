@@ -10,8 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.javampire.openscad.psi.*;
 import com.intellij.navigation.ItemPresentation;
+import com.javampire.openscad.psi.stub.OpenSCADModuleStub;
+import com.intellij.psi.stubs.IStubElementType;
 
-public class OpenSCADModuleDeclarationImpl extends OpenSCADNamedElementImpl implements OpenSCADModuleDeclaration {
+public class OpenSCADModuleDeclarationImpl extends OpenSCADModuleDeclarationStubElementImpl implements OpenSCADModuleDeclaration {
+
+  public OpenSCADModuleDeclarationImpl(@NotNull OpenSCADModuleStub stub, @NotNull IStubElementType type) {
+    super(stub, type);
+  }
 
   public OpenSCADModuleDeclarationImpl(@NotNull ASTNode node) {
     super(node);

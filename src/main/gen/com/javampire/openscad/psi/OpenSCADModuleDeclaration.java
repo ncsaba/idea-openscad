@@ -4,9 +4,11 @@ package com.javampire.openscad.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.StubBasedPsiElement;
+import com.javampire.openscad.psi.stub.OpenSCADModuleStub;
 import com.intellij.navigation.ItemPresentation;
 
-public interface OpenSCADModuleDeclaration extends OpenSCADNamedElement {
+public interface OpenSCADModuleDeclaration extends OpenSCADNamedElement, StubBasedPsiElement<OpenSCADModuleStub> {
 
   @NotNull
   OpenSCADArgDeclarationList getArgDeclarationList();
