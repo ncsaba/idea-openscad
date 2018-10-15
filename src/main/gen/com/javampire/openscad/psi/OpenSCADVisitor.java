@@ -396,17 +396,17 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitObject(o);
   }
 
+  public void visitQualificationExpr(@NotNull OpenSCADQualificationExpr o) {
+    visitExpr(o);
+    // visitNamedElement(o);
+  }
+
   public void visitRandsExpr(@NotNull OpenSCADRandsExpr o) {
     visitExpr(o);
   }
 
   public void visitRangeExpr(@NotNull OpenSCADRangeExpr o) {
     visitExpr(o);
-  }
-
-  public void visitRefExpr(@NotNull OpenSCADRefExpr o) {
-    visitExpr(o);
-    // visitNamedElement(o);
   }
 
   public void visitRenderOp(@NotNull OpenSCADRenderOp o) {
@@ -507,6 +507,11 @@ public class OpenSCADVisitor extends PsiElementVisitor {
 
   public void visitVariableDeclaration(@NotNull OpenSCADVariableDeclaration o) {
     visitNamedElement(o);
+  }
+
+  public void visitVariableRefExpr(@NotNull OpenSCADVariableRefExpr o) {
+    visitExpr(o);
+    // visitNamedElement(o);
   }
 
   public void visitVectorExpr(@NotNull OpenSCADVectorExpr o) {

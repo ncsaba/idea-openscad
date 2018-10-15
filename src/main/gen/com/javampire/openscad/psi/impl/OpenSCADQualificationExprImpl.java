@@ -12,14 +12,14 @@ import com.javampire.openscad.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public class OpenSCADRefExprImpl extends OpenSCADNamedElementImpl implements OpenSCADRefExpr {
+public class OpenSCADQualificationExprImpl extends OpenSCADNamedElementImpl implements OpenSCADQualificationExpr {
 
-  public OpenSCADRefExprImpl(@NotNull ASTNode node) {
+  public OpenSCADQualificationExprImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitRefExpr(this);
+    visitor.visitQualificationExpr(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,9 +28,9 @@ public class OpenSCADRefExprImpl extends OpenSCADNamedElementImpl implements Ope
   }
 
   @Override
-  @Nullable
+  @NotNull
   public OpenSCADExpr getExpr() {
-    return findChildByClass(OpenSCADExpr.class);
+    return findNotNullChildByClass(OpenSCADExpr.class);
   }
 
   public ItemPresentation getPresentation() {

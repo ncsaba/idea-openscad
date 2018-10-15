@@ -7,9 +7,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface OpenSCADRefExpr extends OpenSCADExpr, OpenSCADNamedElement {
+public interface OpenSCADQualificationExpr extends OpenSCADExpr, OpenSCADNamedElement {
 
-  @Nullable
+  @NotNull
   OpenSCADExpr getExpr();
 
   ItemPresentation getPresentation();

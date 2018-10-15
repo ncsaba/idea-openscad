@@ -375,11 +375,11 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
       LN_EXPR, LOG_EXPR, LOOKUP_EXPR, MAX_EXPR,
       MINUS_EXPR, MIN_EXPR, MODULO_EXPR, MUL_EXPR,
       NORM_EXPR, OR_EXPR, PARENT_MODULE_EXPR, PAREN_EXPR,
-      PLUS_EXPR, POW_EXPR, RANDS_EXPR, RANGE_EXPR,
-      REF_EXPR, ROUND_EXPR, SEARCH_EXPR, SELECT_EXPR,
+      PLUS_EXPR, POW_EXPR, QUALIFICATION_EXPR, RANDS_EXPR,
+      RANGE_EXPR, ROUND_EXPR, SEARCH_EXPR, SELECT_EXPR,
       SIGN_EXPR, SIN_EXPR, SQRT_EXPR, STR_EXPR,
       TAN_EXPR, UNARY_MIN_EXPR, UNARY_NEGATE_EXPR, UNARY_PLUS_EXPR,
-      VECTOR_EXPR, VERSION_EXPR, VERSION_NUM_EXPR),
+      VARIABLE_REF_EXPR, VECTOR_EXPR, VERSION_EXPR, VERSION_NUM_EXPR),
   };
 
   /* ********************************************************** */
@@ -2161,8 +2161,8 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   // 3: BINARY(mul_expr) BINARY(div_expr) BINARY(modulo_expr)
   // 4: PREFIX(unary_plus_expr) PREFIX(unary_min_expr) PREFIX(unary_negate_expr)
   // 5: ATOM(function_call_expr) POSTFIX(qualification_expr) BINARY(index_expr)
-  // 6: ATOM(builtin_expr) ATOM(variable_ref_expr) ATOM(literal_expr) PREFIX(paren_expr)
-  //    PREFIX(list_comprehension_expr) ATOM(range_expr) ATOM(vector_expr)
+  // 6: ATOM(builtin_expr) ATOM(literal_expr) PREFIX(paren_expr) PREFIX(list_comprehension_expr)
+  //    ATOM(range_expr) ATOM(vector_expr) ATOM(variable_ref_expr)
   public static boolean expr(PsiBuilder b, int l, int g) {
     if (!recursion_guard_(b, l, "expr")) return false;
     addVariant(b, "<expr>");
@@ -2173,12 +2173,12 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     if (!r) r = unary_negate_expr(b, l + 1);
     if (!r) r = function_call_expr(b, l + 1);
     if (!r) r = builtin_expr(b, l + 1);
-    if (!r) r = variable_ref_expr(b, l + 1);
     if (!r) r = literal_expr(b, l + 1);
     if (!r) r = paren_expr(b, l + 1);
     if (!r) r = list_comprehension_expr(b, l + 1);
     if (!r) r = range_expr(b, l + 1);
     if (!r) r = vector_expr(b, l + 1);
+    if (!r) r = variable_ref_expr(b, l + 1);
     p = r;
     r = r && expr_0(b, l + 1, g);
     exit_section_(b, l, m, null, r, p, null);
@@ -2229,7 +2229,7 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
       }
       else if (g < 5 && parseTokensSmart(b, 0, DOT, IDENTIFIER)) {
         r = true;
-        exit_section_(b, l, m, REF_EXPR, r, true, null);
+        exit_section_(b, l, m, QUALIFICATION_EXPR, r, true, null);
       }
       else if (g < 5 && consumeTokenSmart(b, LBRACKET)) {
         r = report_error_(b, expr(b, l, 5));
@@ -2387,17 +2387,6 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     if (!r) r = version_num_expr(b, l + 1);
     if (!r) r = parent_module_expr(b, l + 1);
     exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // IDENTIFIER
-  public static boolean variable_ref_expr(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "variable_ref_expr")) return false;
-    if (!nextTokenIsSmart(b, IDENTIFIER)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokenSmart(b, IDENTIFIER);
-    exit_section_(b, m, REF_EXPR, r);
     return r;
   }
 
@@ -2602,6 +2591,17 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _AND_);
     r = consumeTokenSmart(b, RBRACKET);
     exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // IDENTIFIER
+  public static boolean variable_ref_expr(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_ref_expr")) return false;
+    if (!nextTokenIsSmart(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokenSmart(b, IDENTIFIER);
+    exit_section_(b, m, VARIABLE_REF_EXPR, r);
     return r;
   }
 

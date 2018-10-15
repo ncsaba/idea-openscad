@@ -116,7 +116,8 @@ public class OpenSCADParserDefinition implements ParserDefinition {
             OpenSCADTypes.MODULE_DECLARATION, OpenSCADTypes.FUNCTION_DECLARATION,
             OpenSCADTypes.ARG_DECLARATION, OpenSCADTypes.FULL_ARG_DECLARATION,
             OpenSCADTypes.MODULE_OP_NAME_REF, OpenSCADTypes.MODULE_OBJ_NAME_REF,
-            OpenSCADTypes.FUNCTION_NAME_REF, OpenSCADTypes.PARAMETER_REFERENCE
+            OpenSCADTypes.FUNCTION_NAME_REF, OpenSCADTypes.PARAMETER_REFERENCE,
+            OpenSCADTypes.VARIABLE_REF_EXPR
     );
 
     public static final IStubFileElementType FILE = new IStubFileElementType(OpenSCADLanguage.INSTANCE);

@@ -1,5 +1,6 @@
 package com.javampire.openscad.references;
 
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
@@ -17,6 +18,8 @@ import java.util.List;
 
 public class OpenSCADModuleReference extends PsiReferenceBase<OpenSCADNamedElement> implements PsiPolyVariantReference {
 
+    private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.references.OpenSCADModuleReference");
+
     private String moduleName;
 
     public OpenSCADModuleReference(@NotNull OpenSCADNamedElement element, TextRange textRange) {
@@ -29,19 +32,19 @@ public class OpenSCADModuleReference extends PsiReferenceBase<OpenSCADNamedEleme
     public ResolveResult[] multiResolve(boolean incompleteCode) {
         Project project = myElement.getProject();
         final Collection<OpenSCADModuleDeclaration> modules = OpenSCADModuleIndex.getInstance().get(this.moduleName, project, GlobalSearchScope.allScope(project));
-        System.out.println("multiResolve modules:" + modules);
+        LOG.debug("multiResolve modules:" + modules);
         final List<ResolveResult> results = new ArrayList<ResolveResult>();
         for (OpenSCADModuleDeclaration module : modules) {
             results.add(new PsiElementResolveResult(module));
         }
-        System.out.println("multiResolve results:" + results);
+        LOG.debug("multiResolve results:" + results);
         return results.toArray(new ResolveResult[0]);
     }
 
     @Nullable
     @Override
     public PsiElement resolve() {
-        System.out.println("resolve called");
+        LOG.debug("resolve called");
         final ResolveResult[] resolveResults = multiResolve(false);
         return resolveResults.length == 1 ? resolveResults[0].getElement() : null;
     }
@@ -50,7 +53,7 @@ public class OpenSCADModuleReference extends PsiReferenceBase<OpenSCADNamedEleme
     @Override
     public Object[] getVariants() {
         // TODO: implement (this is used for code completion)
-        System.out.println("getVariants called");
+        LOG.debug("getVariants called");
         return ArrayUtil.EMPTY_OBJECT_ARRAY;
     }
 
@@ -58,4 +61,5 @@ public class OpenSCADModuleReference extends PsiReferenceBase<OpenSCADNamedEleme
     public String toString() {
         return "ModuleReference(" + this.moduleName + ", " + getRangeInElement() + ")";
     }
+
 }
