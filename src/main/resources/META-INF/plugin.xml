@@ -21,6 +21,9 @@
         <bundledColorScheme path="com/javampire/openscad/color_schemes/OpenSCADDefault"/>
         <lang.foldingBuilder language="OpenSCAD" implementationClass="com.javampire.openscad.OpenSCADFoldingBuilder"/>
         <lang.psiStructureViewFactory language="OpenSCAD" implementationClass="com.javampire.openscad.OpenSCADStructureViewFactory"/>
+        <stubElementTypeHolder class="com.javampire.openscad.psi.OpenSCADTypes"/>
+        <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADModuleIndex"/>
+        <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADFunctionIndex"/>
     </extensions>
 
     <depends>com.intellij.modules.lang</depends>

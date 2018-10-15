@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import com.javampire.openscad.psi.stub.OpenSCADModuleStub;
+import com.javampire.openscad.psi.stub.OpenSCADFunctionStub;
 
 public class OpenSCADVisitor extends PsiElementVisitor {
 
@@ -79,10 +80,6 @@ public class OpenSCADVisitor extends PsiElementVisitor {
 
   public void visitBuiltinOp(@NotNull OpenSCADBuiltinOp o) {
     visitOperator(o);
-  }
-
-  public void visitCallExpr(@NotNull OpenSCADCallExpr o) {
-    visitExpr(o);
   }
 
   public void visitCeilExpr(@NotNull OpenSCADCeilExpr o) {
@@ -197,7 +194,16 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitFunctionCallExpr(@NotNull OpenSCADFunctionCallExpr o) {
+    visitExpr(o);
+  }
+
   public void visitFunctionDeclaration(@NotNull OpenSCADFunctionDeclaration o) {
+    visitNamedElement(o);
+    // visitStubBasedPsiElement(o);
+  }
+
+  public void visitFunctionNameRef(@NotNull OpenSCADFunctionNameRef o) {
     visitNamedElement(o);
   }
 
@@ -318,11 +324,11 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     // visitStubBasedPsiElement(o);
   }
 
-  public void visitModuleObjReference(@NotNull OpenSCADModuleObjReference o) {
+  public void visitModuleObjNameRef(@NotNull OpenSCADModuleObjNameRef o) {
     visitNamedElement(o);
   }
 
-  public void visitModuleOpReference(@NotNull OpenSCADModuleOpReference o) {
+  public void visitModuleOpNameRef(@NotNull OpenSCADModuleOpNameRef o) {
     visitNamedElement(o);
   }
 

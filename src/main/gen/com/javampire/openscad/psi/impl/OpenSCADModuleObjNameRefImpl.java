@@ -12,14 +12,14 @@ import com.javampire.openscad.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public class OpenSCADModuleOpReferenceImpl extends OpenSCADNamedElementImpl implements OpenSCADModuleOpReference {
+public class OpenSCADModuleObjNameRefImpl extends OpenSCADNamedElementImpl implements OpenSCADModuleObjNameRef {
 
-  public OpenSCADModuleOpReferenceImpl(@NotNull ASTNode node) {
+  public OpenSCADModuleObjNameRefImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitModuleOpReference(this);
+    visitor.visitModuleObjNameRef(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

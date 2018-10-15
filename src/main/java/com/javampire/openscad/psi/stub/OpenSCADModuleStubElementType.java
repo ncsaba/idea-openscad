@@ -10,12 +10,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
+import static com.javampire.openscad.psi.stub.index.OpenSCADModuleIndex.MODULE;
+
 public class OpenSCADModuleStubElementType extends IStubElementType<OpenSCADModuleStub, OpenSCADModuleDeclaration> {
 
     public static final OpenSCADModuleStubElementType INSTANCE = new OpenSCADModuleStubElementType();
 
     public OpenSCADModuleStubElementType() {
-        super("OPEN_SCAD", OpenSCADLanguage.INSTANCE);
+        super("OPEN_SCAD_MODULE", OpenSCADLanguage.INSTANCE);
     }
 
     @Override
@@ -49,6 +51,6 @@ public class OpenSCADModuleStubElementType extends IStubElementType<OpenSCADModu
 
     @Override
     public void indexStub(@NotNull OpenSCADModuleStub stub, @NotNull IndexSink sink) {
-        // TODO: implement
+        sink.occurrence(MODULE, stub.getName());
     }
 }

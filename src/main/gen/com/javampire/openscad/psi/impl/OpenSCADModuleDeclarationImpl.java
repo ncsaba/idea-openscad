@@ -66,10 +66,6 @@ public class OpenSCADModuleDeclarationImpl extends OpenSCADModuleDeclarationStub
     return OpenSCADPsiImplUtil.getPresentation(this);
   }
 
-  public String getName() {
-    return OpenSCADPsiImplUtil.getName(this);
-  }
-
   public PsiElement setName(String newName) {
     return OpenSCADPsiImplUtil.setName(this, newName);
   }

@@ -5,12 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface OpenSCADCallExpr extends OpenSCADExpr {
+public interface OpenSCADFunctionCallExpr extends OpenSCADExpr {
 
   @NotNull
   OpenSCADArgAssignmentList getArgAssignmentList();
 
   @NotNull
-  OpenSCADRefExpr getRefExpr();
+  OpenSCADFunctionNameRef getFunctionNameRef();
 
 }

@@ -6,16 +6,16 @@ import com.intellij.lang.Language;
 import com.intellij.psi.stubs.IStubElementType;
 import com.javampire.openscad.OpenSCADLanguage;
 import com.javampire.openscad.psi.OpenSCADTypes;
-import com.javampire.openscad.psi.stub.OpenSCADModuleStub;
+import com.javampire.openscad.psi.stub.OpenSCADFunctionStub;
 import org.jetbrains.annotations.NotNull;
 
-public class OpenSCADModuleDeclarationStubElementImpl extends StubBasedPsiElementBase<OpenSCADModuleStub> {
+public class OpenSCADFunctionDeclarationStubElementImpl extends StubBasedPsiElementBase<OpenSCADFunctionStub> {
 
-    public OpenSCADModuleDeclarationStubElementImpl(@NotNull OpenSCADModuleStub stub, @NotNull IStubElementType nodeType) {
+    public OpenSCADFunctionDeclarationStubElementImpl(@NotNull OpenSCADFunctionStub stub, @NotNull IStubElementType nodeType) {
         super(stub, nodeType);
     }
 
-    public OpenSCADModuleDeclarationStubElementImpl(@NotNull ASTNode node) {
+    public OpenSCADFunctionDeclarationStubElementImpl(@NotNull ASTNode node) {
         super(node);
     }
 
@@ -27,7 +27,7 @@ public class OpenSCADModuleDeclarationStubElementImpl extends StubBasedPsiElemen
 
     @Override
     public String getName() {
-        final OpenSCADModuleStub stub = getStub();
+        final OpenSCADFunctionStub stub = getStub();
         if (stub != null) {
             return stub.getName();
         }

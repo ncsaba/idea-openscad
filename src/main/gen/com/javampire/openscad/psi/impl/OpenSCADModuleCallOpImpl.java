@@ -33,8 +33,8 @@ public class OpenSCADModuleCallOpImpl extends OpenSCADOperatorImpl implements Op
 
   @Override
   @NotNull
-  public OpenSCADModuleOpReference getModuleOpReference() {
-    return findNotNullChildByClass(OpenSCADModuleOpReference.class);
+  public OpenSCADModuleOpNameRef getModuleOpNameRef() {
+    return findNotNullChildByClass(OpenSCADModuleOpNameRef.class);
   }
 
 }

@@ -77,8 +77,8 @@ import_obj ::= IMPORT_KEYWORD arg_assignment_list SEMICOLON
 import_dxf_obj ::= IMPORT_DXF_KEYWORD arg_assignment_list SEMICOLON
 import_stl_obj ::= IMPORT_STL_KEYWORD arg_assignment_list SEMICOLON
 
-module_call_obj ::= module_obj_reference arg_assignment_list SEMICOLON
-module_obj_reference ::= IDENTIFIER {
+module_call_obj ::= module_obj_name_ref arg_assignment_list SEMICOLON
+module_obj_name_ref ::= IDENTIFIER {
     mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADNamedElement"
     methods=[getPresentation getName setName getNameIdentifier getReference]
@@ -103,8 +103,8 @@ operator ::= builtin_op
            | modifier_op
            | module_call_op
 
-module_call_op ::= module_op_reference arg_assignment_list
-module_op_reference ::= IDENTIFIER {
+module_call_op ::= module_op_name_ref arg_assignment_list
+module_op_name_ref ::= IDENTIFIER {
     mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADNamedElement"
     methods=[getPresentation getName setName getNameIdentifier getReference]
@@ -173,12 +173,15 @@ module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement 
         "com.javampire.openscad.psi.OpenSCADNamedElement"
         "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.OpenSCADModuleStub>"
     ]
-    methods=[getPresentation getName setName getNameIdentifier]
+    methods=[getPresentation setName getNameIdentifier]
 }
 function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS expr SEMICOLON {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
-    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
-    methods=[getPresentation getName setName getNameIdentifier]
+    mixin="com.javampire.openscad.psi.impl.OpenSCADFunctionDeclarationStubElementImpl"
+    implements=[
+        "com.javampire.openscad.psi.OpenSCADNamedElement"
+        "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.OpenSCADFunctionStub>"
+    ]
+    methods=[getPresentation setName getNameIdentifier]
 }
 
 expr ::= conditional_group
@@ -195,7 +198,7 @@ private conditional_group ::= elvis_expr | conditional_expr
 private unary_group ::= unary_plus_expr | unary_min_expr | unary_negate_expr
 private mul_group ::= mul_expr | div_expr | modulo_expr
 private add_group ::= plus_expr | minus_expr
-private call_group ::= call_expr | qualification_expr | index_expr
+private call_group ::= function_call_expr | qualification_expr | index_expr
 private primary_group ::= builtin_expr
                         | variable_ref_expr
                         | literal_expr
@@ -309,7 +312,12 @@ literal_expr ::= TRUE_KEYWORD
                | SQ_STRING_LITERAL
                | DQ_STRING_LITERAL
 
-call_expr ::= ref_expr arg_assignment_list
+function_call_expr ::= function_name_ref arg_assignment_list
+function_name_ref ::= IDENTIFIER {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
+    methods=[getPresentation getName setName getNameIdentifier getReference]
+}
 arg_assignment_list ::= LPARENTH arg_assignment? ( COMMA+ arg_assignment )* RPARENTH {pin(".*")=1}
 arg_assignment ::= [ parameter_reference EQUALS ] expr {
     recoverWhile=recover_arg

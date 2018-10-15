@@ -11,6 +11,6 @@ public interface OpenSCADModuleCallObj extends OpenSCADObject {
   OpenSCADArgAssignmentList getArgAssignmentList();
 
   @NotNull
-  OpenSCADModuleObjReference getModuleObjReference();
+  OpenSCADModuleObjNameRef getModuleObjNameRef();
 
 }

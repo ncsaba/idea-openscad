@@ -2,11 +2,14 @@ package com.javampire.openscad.psi.impl;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.OpenSCADParserDefinition;
 import com.javampire.openscad.psi.*;
+import com.javampire.openscad.references.OpenSCADFunctionReference;
+import com.javampire.openscad.references.OpenSCADModuleReference;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -104,8 +107,21 @@ public class OpenSCADPsiImplUtil {
 
     public static PsiReference getReference(PsiElement element) {
         // TODO: implement
+        PsiReference ref;
         if (element instanceof OpenSCADNamedElement) {
-            System.out.println(element + "(" + ((OpenSCADNamedElement)element).getName() + ")");
+            final String name = ((OpenSCADNamedElement) element).getName();
+            if (name != null) {
+                System.out.println("getReference(named element): " + name);
+                if (element instanceof OpenSCADModuleObjNameRef || element instanceof OpenSCADModuleOpNameRef) {
+                    ref = new OpenSCADModuleReference((OpenSCADNamedElement) element, new TextRange(0, element.getTextLength()));
+                    System.out.println("Created module ref: " + ref);
+                    return ref;
+                } else if (element instanceof OpenSCADFunctionNameRef) {
+                    ref = new OpenSCADFunctionReference((OpenSCADNamedElement) element, new TextRange(0, element.getTextLength()));
+                    System.out.println("Created function ref: " + ref);
+                    return ref;
+                }
+            }
         } else {
             System.out.println(element + "(no getName)");
         }
