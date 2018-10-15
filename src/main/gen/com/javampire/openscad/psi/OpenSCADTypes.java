@@ -26,7 +26,6 @@ public interface OpenSCADTypes {
   IElementType BUILTIN_EXPR = OpenSCADElementFactory.getElementType("BUILTIN_EXPR");
   IElementType BUILTIN_OBJ = OpenSCADElementFactory.getElementType("BUILTIN_OBJ");
   IElementType BUILTIN_OP = OpenSCADElementFactory.getElementType("BUILTIN_OP");
-  IElementType CALL_EXPR = OpenSCADElementFactory.getElementType("CALL_EXPR");
   IElementType CEIL_EXPR = OpenSCADElementFactory.getElementType("CEIL_EXPR");
   IElementType CHILDREN_OBJ = OpenSCADElementFactory.getElementType("CHILDREN_OBJ");
   IElementType CHILD_OBJ = OpenSCADElementFactory.getElementType("CHILD_OBJ");
@@ -55,7 +54,9 @@ public interface OpenSCADTypes {
   IElementType FOR_OP = OpenSCADElementFactory.getElementType("FOR_OP");
   IElementType FULL_ARG_DECLARATION = OpenSCADElementFactory.getElementType("FULL_ARG_DECLARATION");
   IElementType FULL_ARG_DECLARATION_LIST = OpenSCADElementFactory.getElementType("FULL_ARG_DECLARATION_LIST");
+  IElementType FUNCTION_CALL_EXPR = OpenSCADElementFactory.getElementType("FUNCTION_CALL_EXPR");
   IElementType FUNCTION_DECLARATION = OpenSCADElementFactory.getElementType("FUNCTION_DECLARATION");
+  IElementType FUNCTION_NAME_REF = OpenSCADElementFactory.getElementType("FUNCTION_NAME_REF");
   IElementType HULL_OP = OpenSCADElementFactory.getElementType("HULL_OP");
   IElementType IF_ELEMENT = OpenSCADElementFactory.getElementType("IF_ELEMENT");
   IElementType IF_OP = OpenSCADElementFactory.getElementType("IF_OP");
@@ -85,8 +86,8 @@ public interface OpenSCADTypes {
   IElementType MODULE_CALL_OBJ = OpenSCADElementFactory.getElementType("MODULE_CALL_OBJ");
   IElementType MODULE_CALL_OP = OpenSCADElementFactory.getElementType("MODULE_CALL_OP");
   IElementType MODULE_DECLARATION = OpenSCADElementFactory.getElementType("MODULE_DECLARATION");
-  IElementType MODULE_OBJ_REFERENCE = OpenSCADElementFactory.getElementType("MODULE_OBJ_REFERENCE");
-  IElementType MODULE_OP_REFERENCE = OpenSCADElementFactory.getElementType("MODULE_OP_REFERENCE");
+  IElementType MODULE_OBJ_NAME_REF = OpenSCADElementFactory.getElementType("MODULE_OBJ_NAME_REF");
+  IElementType MODULE_OP_NAME_REF = OpenSCADElementFactory.getElementType("MODULE_OP_NAME_REF");
   IElementType MODULO_EXPR = OpenSCADElementFactory.getElementType("MODULO_EXPR");
   IElementType MULTMATRIX_OP = OpenSCADElementFactory.getElementType("MULTMATRIX_OP");
   IElementType MUL_EXPR = OpenSCADElementFactory.getElementType("MUL_EXPR");
@@ -300,9 +301,6 @@ public interface OpenSCADTypes {
       else if (type == BLOCK_OBJ) {
         return new OpenSCADBlockObjImpl(node);
       }
-      else if (type == CALL_EXPR) {
-        return new OpenSCADCallExprImpl(node);
-      }
       else if (type == CEIL_EXPR) {
         return new OpenSCADCeilExprImpl(node);
       }
@@ -384,8 +382,14 @@ public interface OpenSCADTypes {
       else if (type == FULL_ARG_DECLARATION_LIST) {
         return new OpenSCADFullArgDeclarationListImpl(node);
       }
+      else if (type == FUNCTION_CALL_EXPR) {
+        return new OpenSCADFunctionCallExprImpl(node);
+      }
       else if (type == FUNCTION_DECLARATION) {
         return new OpenSCADFunctionDeclarationImpl(node);
+      }
+      else if (type == FUNCTION_NAME_REF) {
+        return new OpenSCADFunctionNameRefImpl(node);
       }
       else if (type == HULL_OP) {
         return new OpenSCADHullOpImpl(node);
@@ -471,11 +475,11 @@ public interface OpenSCADTypes {
       else if (type == MODULE_DECLARATION) {
         return new OpenSCADModuleDeclarationImpl(node);
       }
-      else if (type == MODULE_OBJ_REFERENCE) {
-        return new OpenSCADModuleObjReferenceImpl(node);
+      else if (type == MODULE_OBJ_NAME_REF) {
+        return new OpenSCADModuleObjNameRefImpl(node);
       }
-      else if (type == MODULE_OP_REFERENCE) {
-        return new OpenSCADModuleOpReferenceImpl(node);
+      else if (type == MODULE_OP_NAME_REF) {
+        return new OpenSCADModuleOpNameRefImpl(node);
       }
       else if (type == MODULO_EXPR) {
         return new OpenSCADModuloExprImpl(node);

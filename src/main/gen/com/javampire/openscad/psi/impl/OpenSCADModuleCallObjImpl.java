@@ -33,8 +33,8 @@ public class OpenSCADModuleCallObjImpl extends OpenSCADObjectImpl implements Ope
 
   @Override
   @NotNull
-  public OpenSCADModuleObjReference getModuleObjReference() {
-    return findNotNullChildByClass(OpenSCADModuleObjReference.class);
+  public OpenSCADModuleObjNameRef getModuleObjNameRef() {
+    return findNotNullChildByClass(OpenSCADModuleObjNameRef.class);
   }
 
 }

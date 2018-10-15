@@ -10,21 +10,16 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.javampire.openscad.psi.*;
 import com.intellij.navigation.ItemPresentation;
-import com.javampire.openscad.psi.stub.OpenSCADFunctionStub;
-import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.PsiReference;
 
-public class OpenSCADFunctionDeclarationImpl extends OpenSCADFunctionDeclarationStubElementImpl implements OpenSCADFunctionDeclaration {
+public class OpenSCADFunctionNameRefImpl extends OpenSCADNamedElementImpl implements OpenSCADFunctionNameRef {
 
-  public OpenSCADFunctionDeclarationImpl(@NotNull OpenSCADFunctionStub stub, @NotNull IStubElementType type) {
-    super(stub, type);
-  }
-
-  public OpenSCADFunctionDeclarationImpl(@NotNull ASTNode node) {
+  public OpenSCADFunctionNameRefImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitFunctionDeclaration(this);
+    visitor.visitFunctionNameRef(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -32,20 +27,12 @@ public class OpenSCADFunctionDeclarationImpl extends OpenSCADFunctionDeclaration
     else super.accept(visitor);
   }
 
-  @Override
-  @NotNull
-  public OpenSCADArgDeclarationList getArgDeclarationList() {
-    return findNotNullChildByClass(OpenSCADArgDeclarationList.class);
-  }
-
-  @Override
-  @NotNull
-  public OpenSCADExpr getExpr() {
-    return findNotNullChildByClass(OpenSCADExpr.class);
-  }
-
   public ItemPresentation getPresentation() {
     return OpenSCADPsiImplUtil.getPresentation(this);
+  }
+
+  public String getName() {
+    return OpenSCADPsiImplUtil.getName(this);
   }
 
   public PsiElement setName(String newName) {
@@ -54,6 +41,10 @@ public class OpenSCADFunctionDeclarationImpl extends OpenSCADFunctionDeclaration
 
   public PsiElement getNameIdentifier() {
     return OpenSCADPsiImplUtil.getNameIdentifier(this);
+  }
+
+  public PsiReference getReference() {
+    return OpenSCADPsiImplUtil.getReference(this);
   }
 
 }

@@ -9,7 +9,7 @@ import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
-import com.intellij.psi.tree.IFileElementType;
+import com.intellij.psi.tree.IStubFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.javampire.openscad.parser.OpenSCADParser;
 import com.javampire.openscad.psi.OpenSCADFile;
@@ -115,11 +115,11 @@ public class OpenSCADParserDefinition implements ParserDefinition {
     public static final TokenSet NAMED_ELEMENTS = TokenSet.create(
             OpenSCADTypes.MODULE_DECLARATION, OpenSCADTypes.FUNCTION_DECLARATION,
             OpenSCADTypes.ARG_DECLARATION, OpenSCADTypes.FULL_ARG_DECLARATION,
-            OpenSCADTypes.MODULE_OP_REFERENCE, OpenSCADTypes.MODULE_OBJ_REFERENCE,
-            OpenSCADTypes.PARAMETER_REFERENCE
+            OpenSCADTypes.MODULE_OP_NAME_REF, OpenSCADTypes.MODULE_OBJ_NAME_REF,
+            OpenSCADTypes.FUNCTION_NAME_REF, OpenSCADTypes.PARAMETER_REFERENCE
     );
 
-    public static final IFileElementType FILE = new IFileElementType(OpenSCADLanguage.INSTANCE);
+    public static final IStubFileElementType FILE = new IStubFileElementType(OpenSCADLanguage.INSTANCE);
 
     @NotNull
     @Override
@@ -148,7 +148,7 @@ public class OpenSCADParserDefinition implements ParserDefinition {
     }
 
     @Override
-    public IFileElementType getFileNodeType() {
+    public IStubFileElementType getFileNodeType() {
         return FILE;
     }
 

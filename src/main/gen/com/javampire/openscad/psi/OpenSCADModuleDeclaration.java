@@ -27,8 +27,6 @@ public interface OpenSCADModuleDeclaration extends OpenSCADNamedElement, StubBas
 
   ItemPresentation getPresentation();
 
-  String getName();
-
   PsiElement setName(String newName);
 
   PsiElement getNameIdentifier();

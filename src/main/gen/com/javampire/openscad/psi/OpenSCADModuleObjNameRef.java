@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface OpenSCADModuleObjReference extends OpenSCADNamedElement {
+public interface OpenSCADModuleObjNameRef extends OpenSCADNamedElement {
 
   ItemPresentation getPresentation();
 

@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.javampire.openscad.psi.*;
 
-public class OpenSCADCallExprImpl extends OpenSCADExprImpl implements OpenSCADCallExpr {
+public class OpenSCADFunctionCallExprImpl extends OpenSCADExprImpl implements OpenSCADFunctionCallExpr {
 
-  public OpenSCADCallExprImpl(@NotNull ASTNode node) {
+  public OpenSCADFunctionCallExprImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitCallExpr(this);
+    visitor.visitFunctionCallExpr(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -33,8 +33,8 @@ public class OpenSCADCallExprImpl extends OpenSCADExprImpl implements OpenSCADCa
 
   @Override
   @NotNull
-  public OpenSCADRefExpr getRefExpr() {
-    return findNotNullChildByClass(OpenSCADRefExpr.class);
+  public OpenSCADFunctionNameRef getFunctionNameRef() {
+    return findNotNullChildByClass(OpenSCADFunctionNameRef.class);
   }
 
 }
