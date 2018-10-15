@@ -1,5 +1,6 @@
 package com.javampire.openscad.references;
 
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
@@ -17,6 +18,8 @@ import java.util.List;
 
 public class OpenSCADFunctionReference extends PsiReferenceBase<OpenSCADNamedElement> implements PsiPolyVariantReference {
 
+    private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.references.OpenSCADFunctionReference");
+
     private String functionName;
 
     public OpenSCADFunctionReference(@NotNull OpenSCADNamedElement element, TextRange textRange) {
@@ -29,19 +32,19 @@ public class OpenSCADFunctionReference extends PsiReferenceBase<OpenSCADNamedEle
     public ResolveResult[] multiResolve(boolean incompleteCode) {
         Project project = myElement.getProject();
         final Collection<OpenSCADFunctionDeclaration> functions = OpenSCADFunctionIndex.getInstance().get(this.functionName, project, GlobalSearchScope.allScope(project));
-        System.out.println("multiResolve functions:" + functions);
+        LOG.debug("multiResolve functions:" + functions);
         final List<ResolveResult> results = new ArrayList<ResolveResult>();
         for (OpenSCADFunctionDeclaration function : functions) {
             results.add(new PsiElementResolveResult(function));
         }
-        System.out.println("multiResolve results:" + results);
+        LOG.debug("multiResolve results:" + results);
         return results.toArray(new ResolveResult[0]);
     }
 
     @Nullable
     @Override
     public PsiElement resolve() {
-        System.out.println("resolve called");
+        LOG.debug("resolve called");
         final ResolveResult[] resolveResults = multiResolve(false);
         return resolveResults.length == 1 ? resolveResults[0].getElement() : null;
     }
@@ -50,7 +53,7 @@ public class OpenSCADFunctionReference extends PsiReferenceBase<OpenSCADNamedEle
     @Override
     public Object[] getVariants() {
         // TODO: implement (this is used for code completion)
-        System.out.println("getVariants called");
+        LOG.debug("getVariants called");
         return ArrayUtil.EMPTY_OBJECT_ARRAY;
     }
 

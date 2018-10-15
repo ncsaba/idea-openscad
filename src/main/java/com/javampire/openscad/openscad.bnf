@@ -200,12 +200,12 @@ private mul_group ::= mul_expr | div_expr | modulo_expr
 private add_group ::= plus_expr | minus_expr
 private call_group ::= function_call_expr | qualification_expr | index_expr
 private primary_group ::= builtin_expr
-                        | variable_ref_expr
                         | literal_expr
                         | paren_expr
                         | list_comprehension_expr
                         | range_expr
                         | vector_expr
+                        | variable_ref_expr
 
 and_expr ::= expr AND expr
 or_expr ::= expr OR expr
@@ -297,13 +297,11 @@ version_expr ::= VERSION_KEYWORD arg_assignment_list
 version_num_expr ::= VERSION_NUM_KEYWORD arg_assignment_list
 parent_module_expr ::= PARENT_MODULE_KEYWORD arg_assignment_list
 
-fake ref_expr ::= expr? DOT IDENTIFIER {
+qualification_expr ::= expr DOT IDENTIFIER {
     mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADNamedElement"
     methods=[getPresentation getName setName getNameIdentifier getReference]
 }
-variable_ref_expr ::= IDENTIFIER {extends=ref_expr elementType=ref_expr}
-qualification_expr ::= expr DOT IDENTIFIER {extends=ref_expr elementType=ref_expr}
 
 literal_expr ::= TRUE_KEYWORD
                | FALSE_KEYWORD
@@ -343,4 +341,10 @@ full_arg_declaration ::= IDENTIFIER EQUALS expr {
     implements="com.javampire.openscad.psi.OpenSCADNamedElement"
     methods=[getName setName getNameIdentifier]
     recoverWhile=recover_arg
+}
+
+variable_ref_expr ::= IDENTIFIER {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
+    methods=[getPresentation getName setName getNameIdentifier getReference]
 }

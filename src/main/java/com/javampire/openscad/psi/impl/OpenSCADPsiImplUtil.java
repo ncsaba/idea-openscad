@@ -2,6 +2,7 @@ package com.javampire.openscad.psi.impl;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
@@ -15,6 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 
 public class OpenSCADPsiImplUtil {
+
+    private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.psi.impl.OpenSCADPsiImplUtil");
 
     public static ItemPresentation getPresentation(final PsiElement element) {
         return new ItemPresentation() {
@@ -64,7 +67,7 @@ public class OpenSCADPsiImplUtil {
             if (nameNode != null) {
                 return nameNode.getText();
             }
-        } else if (element.getNode().getElementType() == OpenSCADTypes.REF_EXPR) {
+        } else if (element.getNode().getElementType() == OpenSCADTypes.QUALIFICATION_EXPR) {
             final ASTNode nameNode = element.getNode().getLastChildNode();
             if (nameNode != null && nameNode.getElementType() == OpenSCADTypes.IDENTIFIER) {
                 return nameNode.getText();
@@ -80,7 +83,7 @@ public class OpenSCADPsiImplUtil {
                 PsiElement newNameElement = OpenSCADElementFactory.createIdentifier(element.getProject(), newName);
                 element.getNode().replaceChild(nameNode, newNameElement.getNode());
             }
-        } else if (element.getNode().getElementType() == OpenSCADTypes.REF_EXPR) {
+        } else if (element.getNode().getElementType() == OpenSCADTypes.QUALIFICATION_EXPR) {
             final ASTNode nameNode = element.getNode().getLastChildNode();
             if (nameNode != null && nameNode.getElementType() == OpenSCADTypes.IDENTIFIER) {
                 PsiElement newNameElement = OpenSCADElementFactory.createIdentifier(element.getProject(), newName);
@@ -96,7 +99,7 @@ public class OpenSCADPsiImplUtil {
             if (nameNode != null) {
                 return nameNode.getPsi();
             }
-        } else if (element.getNode().getElementType() == OpenSCADTypes.REF_EXPR) {
+        } else if (element.getNode().getElementType() == OpenSCADTypes.QUALIFICATION_EXPR) {
             final ASTNode nameNode = element.getNode().getLastChildNode();
             if (nameNode != null && nameNode.getElementType() == OpenSCADTypes.IDENTIFIER) {
                 return nameNode.getPsi();
@@ -106,24 +109,26 @@ public class OpenSCADPsiImplUtil {
     }
 
     public static PsiReference getReference(PsiElement element) {
-        // TODO: implement
+        // TODO: implement variable/parameter references
+        // TODO: implement import references
         PsiReference ref;
         if (element instanceof OpenSCADNamedElement) {
             final String name = ((OpenSCADNamedElement) element).getName();
             if (name != null) {
-                System.out.println("getReference(named element): " + name);
                 if (element instanceof OpenSCADModuleObjNameRef || element instanceof OpenSCADModuleOpNameRef) {
                     ref = new OpenSCADModuleReference((OpenSCADNamedElement) element, new TextRange(0, element.getTextLength()));
-                    System.out.println("Created module ref: " + ref);
                     return ref;
                 } else if (element instanceof OpenSCADFunctionNameRef) {
                     ref = new OpenSCADFunctionReference((OpenSCADNamedElement) element, new TextRange(0, element.getTextLength()));
-                    System.out.println("Created function ref: " + ref);
                     return ref;
+                } else {
+                    LOG.warn("getReference(not handled named element of type " + element.getClass().getName() + "): " + name);
                 }
+            } else {
+                LOG.warn("getReference(named element of type " + element.getClass().getName() + "): null name");
             }
         } else {
-            System.out.println(element + "(no getName)");
+            LOG.warn(element + "(no getName)");
         }
         return null;
     }

@@ -104,9 +104,9 @@ public interface OpenSCADTypes {
   IElementType POLYHEDRON_OBJ = OpenSCADElementFactory.getElementType("POLYHEDRON_OBJ");
   IElementType POW_EXPR = OpenSCADElementFactory.getElementType("POW_EXPR");
   IElementType PROJECTION_OBJ = OpenSCADElementFactory.getElementType("PROJECTION_OBJ");
+  IElementType QUALIFICATION_EXPR = OpenSCADElementFactory.getElementType("QUALIFICATION_EXPR");
   IElementType RANDS_EXPR = OpenSCADElementFactory.getElementType("RANDS_EXPR");
   IElementType RANGE_EXPR = OpenSCADElementFactory.getElementType("RANGE_EXPR");
-  IElementType REF_EXPR = OpenSCADElementFactory.getElementType("REF_EXPR");
   IElementType RENDER_OP = OpenSCADElementFactory.getElementType("RENDER_OP");
   IElementType RESIZE_OP = OpenSCADElementFactory.getElementType("RESIZE_OP");
   IElementType ROOT_OP = OpenSCADElementFactory.getElementType("ROOT_OP");
@@ -132,6 +132,7 @@ public interface OpenSCADTypes {
   IElementType UNION_OP = OpenSCADElementFactory.getElementType("UNION_OP");
   IElementType USE_ITEM = OpenSCADElementFactory.getElementType("USE_ITEM");
   IElementType VARIABLE_DECLARATION = OpenSCADElementFactory.getElementType("VARIABLE_DECLARATION");
+  IElementType VARIABLE_REF_EXPR = OpenSCADElementFactory.getElementType("VARIABLE_REF_EXPR");
   IElementType VECTOR_EXPR = OpenSCADElementFactory.getElementType("VECTOR_EXPR");
   IElementType VERSION_EXPR = OpenSCADElementFactory.getElementType("VERSION_EXPR");
   IElementType VERSION_NUM_EXPR = OpenSCADElementFactory.getElementType("VERSION_NUM_EXPR");
@@ -526,14 +527,14 @@ public interface OpenSCADTypes {
       else if (type == PROJECTION_OBJ) {
         return new OpenSCADProjectionObjImpl(node);
       }
+      else if (type == QUALIFICATION_EXPR) {
+        return new OpenSCADQualificationExprImpl(node);
+      }
       else if (type == RANDS_EXPR) {
         return new OpenSCADRandsExprImpl(node);
       }
       else if (type == RANGE_EXPR) {
         return new OpenSCADRangeExprImpl(node);
-      }
-      else if (type == REF_EXPR) {
-        return new OpenSCADRefExprImpl(node);
       }
       else if (type == RENDER_OP) {
         return new OpenSCADRenderOpImpl(node);
@@ -609,6 +610,9 @@ public interface OpenSCADTypes {
       }
       else if (type == VARIABLE_DECLARATION) {
         return new OpenSCADVariableDeclarationImpl(node);
+      }
+      else if (type == VARIABLE_REF_EXPR) {
+        return new OpenSCADVariableRefExprImpl(node);
       }
       else if (type == VECTOR_EXPR) {
         return new OpenSCADVectorExprImpl(node);
