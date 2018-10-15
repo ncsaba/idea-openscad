@@ -133,4 +133,22 @@ public class OpenSCADPsiImplUtil {
         return null;
     }
 
+    /**
+     * Builds the declaration of a module or a function, consisting of name + argument list
+     * @param element a module or a function
+     * @return name(arg1, ...)
+     */
+    public static String getNameWithArgumentList(OpenSCADNamedElement element, boolean shortForm) {
+        StringBuilder buf = new StringBuilder();
+        buf.append(element.getName());
+        final ASTNode argListNode = element.getNode().findChildByType(OpenSCADTypes.ARG_DECLARATION_LIST);
+        if (argListNode == null) {
+            buf.append("()");
+        } else if (argListNode.getTextLength() > 100 && shortForm) {
+            buf.append("(...)");
+        } else {
+            buf.append(argListNode.getText());
+        }
+        return buf.toString();
+    }
 }

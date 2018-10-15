@@ -25,6 +25,7 @@
         <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADModuleIndex"/>
         <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADFunctionIndex"/>
         <lang.commenter language="OpenSCAD" implementationClass="com.javampire.openscad.OpenSCADCommenter"/>
+        <documentationProvider implementation="com.javampire.openscad.OpenSCADDocumentationProvider"/>
     </extensions>
 
     <depends>com.intellij.modules.lang</depends>
