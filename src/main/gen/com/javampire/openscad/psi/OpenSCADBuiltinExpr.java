@@ -7,4 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface OpenSCADBuiltinExpr extends OpenSCADExpr {
 
+  @Nullable
+  OpenSCADArgAssignmentList getArgAssignmentList();
+
+  @Nullable
+  OpenSCADExpr getExpr();
+
+  @Nullable
+  OpenSCADFullArgDeclarationList getFullArgDeclarationList();
+
 }

@@ -81,7 +81,7 @@ public class OpenSCADSyntaxHighlighter extends SyntaxHighlighterBase {
     @NotNull
     @Override
     public Lexer getHighlightingLexer() {
-        return new OpenSCADLexerAdapter();
+        return new OpenSCADLexerAdapter(new OpenSCADHighlightingLexer(null));
     }
 
     @NotNull
@@ -89,7 +89,7 @@ public class OpenSCADSyntaxHighlighter extends SyntaxHighlighterBase {
     public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
         if (ANGLE_BRACKETS_TOKENS.contains(tokenType)) {
             return ANGLE_BRACKETS_KEYS;
-        } else if (tokenType.equals(OpenSCADTypes.USE_KEYWORD) || tokenType.equals(OpenSCADTypes.INCLUDE_KEYWORD)) {
+        } else if (tokenType.equals(OpenSCADTypes.USE_ITEM) || tokenType.equals(OpenSCADTypes.INCLUDE_ITEM)) {
             return IMPORT_KEYS;
         } else if (tokenType.equals(OpenSCADTypes.INCLUDE_PATH)) {
             return IMPORT_PATH_KEYS;

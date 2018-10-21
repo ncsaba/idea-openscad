@@ -1,6 +1,5 @@
 package com.javampire.openscad;
 
-import com.intellij.lang.ASTNode;
 import com.intellij.lang.CodeDocumentationAwareCommenterEx;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiComment;

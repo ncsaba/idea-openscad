@@ -6,8 +6,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
-import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.OpenSCADParserDefinition;
 import com.javampire.openscad.psi.*;
@@ -40,7 +40,6 @@ public class OpenSCADPsiImplUtil {
                 return null;
             }
 
-            @Nullable
             @Override
             public String getLocationString() {
                 return element.getContainingFile().getName();
@@ -156,8 +155,6 @@ public class OpenSCADPsiImplUtil {
 
     @Nullable
     public static String getDocString(PsiElement element) {
-        // TODO: optimize this method
-        // TODO: save the doc-string in the stubs
         if (element == null) {
             return null;
         }
@@ -165,14 +162,14 @@ public class OpenSCADPsiImplUtil {
         if (node == null) {
             return null;
         }
-        if (node.getElementType() == OpenSCADTypes.IDENTIFIER) {
+        if (OpenSCADParserDefinition.DOC_IN_PARENT.contains(node.getElementType())) {
             return getDocString(element.getParent());
         }
         final PsiReference reference = element.getReference();
         if (reference != null) {
             return getDocString(reference.resolve());
         }
-        PsiElement docElement = getPreviousNonWSSibling(element);
+        PsiElement docElement = PsiTreeUtil.skipWhitespacesBackward(element);
         if (docElement == null) {
             return null;
         }
@@ -185,55 +182,17 @@ public class OpenSCADPsiImplUtil {
             return null;
         }
         IElementType docNodeElementType = docNode.getElementType();
-        if (docNodeElementType == OpenSCADTypes.END_OF_LINE_COMMENT) {
-            text = text.replaceFirst("(?s)^\\s*//\\s*", "");
-            final PsiElement wsElement = element.getPrevSibling();
-            if (wsElement == null) return null;
-            final ASTNode wsNode = wsElement.getNode();
-            if (wsNode == null) return null;
-            final IElementType wsNodeElementType = wsNode.getElementType();
-            if (wsNodeElementType == TokenType.WHITE_SPACE) {
-                final String wsText = wsElement.getText();
-                if (wsText != null && wsText.matches("(?s)(.*(\r|\n|\r\n)){2}.*")) {
-                    return null;
-                }
-            }
-            while (true) {
-                docElement = docElement.getPrevSibling();
-                if (docElement == null) break;
-                docNode = docElement.getNode();
-                if (docNode == null) break;
-                docNodeElementType = docNode.getElementType();
-                if (docNodeElementType != OpenSCADTypes.END_OF_LINE_COMMENT && docNodeElementType != TokenType.WHITE_SPACE) {
-                    break;
-                }
-                final String newText = docElement.getText();
-                if (newText == null || newText.matches("(?s)(.*(\r|\n|\r\n)){2}.*")) {
-                    break;
-                }
-                if (docNodeElementType != TokenType.WHITE_SPACE) {
-                    text = newText.replaceFirst("(?s)^\\s*//\\s*", "") + "<br>" + text;
-                }
-            }
+        if (docNodeElementType == OpenSCADTypes.BLOCK_COMMENT) {
+            text = text.replaceAll("(?sm)^\\s*//", "");
+            text = "<pre>" + text + "</pre>";
         } else if (docNodeElementType != OpenSCADTypes.DOC_COMMENT) {
             return null;
         } else {
-            text = text.replaceFirst("(?s)^\\s*/\\*\\*", "");
-            text = text.replaceFirst("(?s)\\*/\\s*$", "");
-            text = text.replaceAll("(?sm)^\\s*\\*\\s*", "");
-            text = text.replaceAll("\\r|\\n|\\r\\n", "<br>");
+            text = text.replaceFirst("(?s)^\\s*/\\*\\*", "<pre>");
+            text = text.replaceFirst("(?s)\\s*\\*/\\s*$", "</pre>");
+            text = text.replaceAll("(?sm)^\\s*\\*", "");
         }
         return text;
-    }
-
-    @Nullable
-    public static PsiElement getPreviousNonWSSibling(@Nullable PsiElement element) {
-        if (element != null) {
-            do {
-                element = element.getPrevSibling();
-            } while (element != null && element.getNode().getElementType() == TokenType.WHITE_SPACE);
-        }
-        return element;
     }
 
 }

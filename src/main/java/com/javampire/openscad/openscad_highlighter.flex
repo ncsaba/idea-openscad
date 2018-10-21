@@ -7,7 +7,7 @@ import com.intellij.psi.TokenType;
 
 %%
 
-%class OpenSCADLexer
+%class OpenSCADHighlightingLexer
 %implements FlexLexer
 %unicode
 %function advance
@@ -54,6 +54,81 @@ DQ_STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
     "for"                       { return OpenSCADTypes.FOR_KEYWORD; }
     "if"                        { return OpenSCADTypes.IF_KEYWORD; }
     "let"                       { return OpenSCADTypes.LET_KEYWORD; }
+
+    "include"                   { yybegin(INCLUDE_PATH); return OpenSCADTypes.INCLUDE_ITEM; }
+    "use"                       { yybegin(INCLUDE_PATH); return OpenSCADTypes.USE_ITEM; }
+
+    "assign"	                |
+    "intersection_for"          |
+
+    "linear_extrude"            |
+    "rotate_extrude"            |
+    "rotate"                    |
+    "translate"                 |
+    "scale"                     |
+    "resize"                    |
+    "mirror"                    |
+    "multmatrix"                |
+    "color"                     |
+    "offset"                    |
+    "minkowski"                 |
+    "hull"                      |
+    "union"                     |
+    "difference"                |
+    "intersection"              |
+    "projection"                |
+    "render"                    { return OpenSCADTypes.BUILTIN_OP; }
+
+    "cube"                      |
+    "cylinder"                  |
+    "echo"                      |
+    "assert"                    |
+    "sphere"                    |
+    "polyhedron"                |
+    "square"                    |
+    "circle"                    |
+    "ellipse"                   |
+    "polygon"                   |
+    "text"                      |
+    "surface"                   |
+    "child"                     |
+    "children"                  |
+    "import"                    |
+    "import_dxf"                |
+    "import_stl"                { return OpenSCADTypes.BUILTIN_OBJ; }
+
+    "cos"                       |
+    "sin"                       |
+    "tan"                       |
+    "acos"                      |
+    "asin"                      |
+    "atan"                      |
+    "atan2"                     |
+    "abs"                       |
+    "ceil"                      |
+    "concat"                    |
+    "cross"                     |
+    "exp"                       |
+    "floor"                     |
+    "ln"                        |
+    "len"                       |
+    "log"                       |
+    "lookup"                    |
+    "max"                       |
+    "min"                       |
+    "norm"                      |
+    "pow"                       |
+    "rands"                     |
+    "round"                     |
+    "sign"                      |
+    "sqrt"                      |
+    "str"                       |
+    "chr"                       |
+    "select"                    |
+    "search"                    |
+    "version"                   |
+    "version_num"               |
+    "parent_module"             { return OpenSCADTypes.BUILTIN_EXPR; }
 
     "."                         { return OpenSCADTypes.DOT; }
     "="                         { return OpenSCADTypes.EQUALS; }
