@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface OpenSCADIndexExpr extends OpenSCADExpr {
 
   @NotNull
-  List<OpenSCADExpr> getExprList();
+  OpenSCADExpr getExpr();
 
 }

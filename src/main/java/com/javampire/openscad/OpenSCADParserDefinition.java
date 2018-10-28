@@ -21,48 +21,33 @@ public class OpenSCADParserDefinition implements ParserDefinition {
     // the sets defined below are used for syntax highlighting
 
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
+
     public static final TokenSet COMMENTS = TokenSet.create(
-            OpenSCADTypes.END_OF_LINE_COMMENT, OpenSCADTypes.C_STYLE_COMMENT, OpenSCADTypes.DOC_COMMENT
+            OpenSCADTypes.END_OF_LINE_COMMENT, OpenSCADTypes.C_STYLE_COMMENT,
+            OpenSCADTypes.DOC_COMMENT, OpenSCADTypes.BLOCK_COMMENT
+    );
+
+    public static final TokenSet STRINGS = TokenSet.create(
+            OpenSCADTypes.STRING_LITERAL
     );
 
     public static final TokenSet OPERATOR_KEYWORDS = TokenSet.create(
-            OpenSCADTypes.ASSIGN_KEYWORD, OpenSCADTypes.COLOR_KEYWORD, OpenSCADTypes.DIFFERENCE_KEYWORD,
-            OpenSCADTypes.INTERSECTION_FOR_KEYWORD, OpenSCADTypes.INTERSECTION_KEYWORD,
-            OpenSCADTypes.LINEAR_EXTRUDE_KEYWORD, OpenSCADTypes.MINKOWSKI_KEYWORD,
-            OpenSCADTypes.MIRROR_KEYWORD, OpenSCADTypes.MULTMATRIX_KEYWORD, OpenSCADTypes.OFFSET_KEYWORD,
-            OpenSCADTypes.PROJECTION_KEYWORD, OpenSCADTypes.RENDER_KEYWORD, OpenSCADTypes.RESIZE_KEYWORD,
-            OpenSCADTypes.ROTATE_EXTRUDE_KEYWORD, OpenSCADTypes.ROTATE_KEYWORD, OpenSCADTypes.SCALE_KEYWORD,
-            OpenSCADTypes.TRANSLATE_KEYWORD, OpenSCADTypes.UNION_KEYWORD
+            OpenSCADTypes.BUILTIN_OP
     );
 
     public static final TokenSet LANGUAGE_KEYWORDS = TokenSet.create(
             OpenSCADTypes.ELSE_KEYWORD, OpenSCADTypes.FALSE_KEYWORD, OpenSCADTypes.FOR_KEYWORD,
-            OpenSCADTypes.FUNCTION_KEYWORD, OpenSCADTypes.IF_KEYWORD, OpenSCADTypes.INCLUDE_KEYWORD,
-            OpenSCADTypes.LET_KEYWORD, OpenSCADTypes.MODULE_KEYWORD, OpenSCADTypes.PARENT_MODULE_KEYWORD,
-            OpenSCADTypes.TRUE_KEYWORD, OpenSCADTypes.UNDEF_KEYWORD, OpenSCADTypes.USE_KEYWORD,
-            OpenSCADTypes.VERSION_KEYWORD, OpenSCADTypes.VERSION_NUM_KEYWORD
+            OpenSCADTypes.FUNCTION_KEYWORD, OpenSCADTypes.IF_KEYWORD,
+            OpenSCADTypes.LET_KEYWORD, OpenSCADTypes.MODULE_KEYWORD,
+            OpenSCADTypes.TRUE_KEYWORD, OpenSCADTypes.UNDEF_KEYWORD
     );
 
     public static final TokenSet OBJECT_KEYWORDS = TokenSet.create(
-            OpenSCADTypes.ASSERT_KEYWORD, OpenSCADTypes.CHILDREN_KEYWORD, OpenSCADTypes.CHILD_KEYWORD,
-            OpenSCADTypes.CIRCLE_KEYWORD, OpenSCADTypes.CUBE_KEYWORD, OpenSCADTypes.CYLINDER_KEYWORD,
-            OpenSCADTypes.ECHO_KEYWORD, OpenSCADTypes.ELLIPSE_KEYWORD, OpenSCADTypes.HULL_KEYWORD,
-            OpenSCADTypes.IMPORT_DXF_KEYWORD, OpenSCADTypes.IMPORT_KEYWORD, OpenSCADTypes.IMPORT_STL_KEYWORD,
-            OpenSCADTypes.SPHERE_KEYWORD, OpenSCADTypes.SQUARE_KEYWORD, OpenSCADTypes.SURFACE_KEYWORD,
-            OpenSCADTypes.TEXT_KEYWORD, OpenSCADTypes.POLYGON_KEYWORD
+            OpenSCADTypes.BUILTIN_OBJ
     );
 
     public static final TokenSet FUNCTION_KEYWORDS = TokenSet.create(
-            OpenSCADTypes.ABS_KEYWORD, OpenSCADTypes.ACOS_KEYWORD, OpenSCADTypes.ASIN_KEYWORD,
-            OpenSCADTypes.ATAN2_KEYWORD, OpenSCADTypes.ATAN_KEYWORD, OpenSCADTypes.CEIL_KEYWORD,
-            OpenSCADTypes.CHR_KEYWORD, OpenSCADTypes.CONCAT_KEYWORD, OpenSCADTypes.COS_KEYWORD,
-            OpenSCADTypes.CROSS_KEYWORD, OpenSCADTypes.EXP_KEYWORD, OpenSCADTypes.FLOOR_KEYWORD,
-            OpenSCADTypes.LEN_KEYWORD, OpenSCADTypes.LN_KEYWORD, OpenSCADTypes.LOG_KEYWORD,
-            OpenSCADTypes.LOOKUP_KEYWORD, OpenSCADTypes.MAX_KEYWORD, OpenSCADTypes.MIN_KEYWORD,
-            OpenSCADTypes.NORM_KEYWORD, OpenSCADTypes.POLYHEDRON_KEYWORD, OpenSCADTypes.POW_KEYWORD,
-            OpenSCADTypes.RANDS_KEYWORD, OpenSCADTypes.ROUND_KEYWORD, OpenSCADTypes.SEARCH_KEYWORD,
-            OpenSCADTypes.SELECT_KEYWORD, OpenSCADTypes.SIGN_KEYWORD, OpenSCADTypes.SIN_KEYWORD,
-            OpenSCADTypes.SQRT_KEYWORD, OpenSCADTypes.STR_KEYWORD, OpenSCADTypes.TAN_KEYWORD
+            OpenSCADTypes.BUILTIN_EXPR
     );
 
     public static final TokenSet PREDEFINED_SYMBOLS = TokenSet.create(
@@ -120,6 +105,11 @@ public class OpenSCADParserDefinition implements ParserDefinition {
             OpenSCADTypes.VARIABLE_REF_EXPR
     );
 
+    /** These elements have their doc-string attached to the parent */
+    public static final TokenSet DOC_IN_PARENT = TokenSet.create(
+            OpenSCADTypes.IDENTIFIER, OpenSCADTypes.VARIABLE_DECLARATION
+    );
+
     public static final IStubFileElementType FILE = new IStubFileElementType(OpenSCADLanguage.INSTANCE);
 
     @NotNull
@@ -140,7 +130,7 @@ public class OpenSCADParserDefinition implements ParserDefinition {
 
     @NotNull
     public TokenSet getStringLiteralElements() {
-        return TokenSet.EMPTY;
+        return STRINGS;
     }
 
     @NotNull

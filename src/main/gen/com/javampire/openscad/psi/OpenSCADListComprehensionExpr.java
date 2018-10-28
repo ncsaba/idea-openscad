@@ -11,7 +11,7 @@ public interface OpenSCADListComprehensionExpr extends OpenSCADExpr {
   OpenSCADExpr getExpr();
 
   @NotNull
-  OpenSCADForElement getForElement();
+  List<OpenSCADForElement> getForElementList();
 
   @NotNull
   List<OpenSCADIfElement> getIfElementList();

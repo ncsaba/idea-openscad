@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface OpenSCADBuiltinObj extends OpenSCADObject {
 
+  @NotNull
+  OpenSCADArgAssignmentList getArgAssignmentList();
+
 }

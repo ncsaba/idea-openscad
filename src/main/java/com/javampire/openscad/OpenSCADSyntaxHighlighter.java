@@ -81,7 +81,7 @@ public class OpenSCADSyntaxHighlighter extends SyntaxHighlighterBase {
     @NotNull
     @Override
     public Lexer getHighlightingLexer() {
-        return new OpenSCADLexerAdapter();
+        return new OpenSCADLexerAdapter(new OpenSCADHighlightingLexer(null));
     }
 
     @NotNull
@@ -97,7 +97,7 @@ public class OpenSCADSyntaxHighlighter extends SyntaxHighlighterBase {
             return IDENTIFIER_KEYS;
         } else if (tokenType.equals(OpenSCADTypes.NUMBER_LITERAL)) {
             return NUMBER_KEYS;
-        } else if (tokenType.equals(OpenSCADTypes.DQ_STRING_LITERAL) || tokenType.equals(OpenSCADTypes.SQ_STRING_LITERAL)) {
+        } else if (tokenType.equals(OpenSCADTypes.STRING_LITERAL)) {
             return STRING_KEYS;
         } else if (BRACES_TOKENS.contains(tokenType)) {
             return BRACES_KEYS;

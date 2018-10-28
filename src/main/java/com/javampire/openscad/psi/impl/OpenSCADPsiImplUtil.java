@@ -6,6 +6,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.OpenSCADParserDefinition;
 import com.javampire.openscad.psi.*;
@@ -38,7 +40,6 @@ public class OpenSCADPsiImplUtil {
                 return null;
             }
 
-            @Nullable
             @Override
             public String getLocationString() {
                 return element.getContainingFile().getName();
@@ -131,6 +132,67 @@ public class OpenSCADPsiImplUtil {
             LOG.warn(element + "(no getName)");
         }
         return null;
+    }
+
+    /**
+     * Builds the declaration of a module or a function, consisting of name + argument list
+     * @param element a module or a function
+     * @return name(arg1, ...)
+     */
+    public static String getNameWithArgumentList(OpenSCADNamedElement element, boolean shortForm) {
+        StringBuilder buf = new StringBuilder();
+        buf.append(element.getName());
+        final ASTNode argListNode = element.getNode().findChildByType(OpenSCADTypes.ARG_DECLARATION_LIST);
+        if (argListNode == null) {
+            buf.append("()");
+        } else if (argListNode.getTextLength() > 100 && shortForm) {
+            buf.append("(...)");
+        } else {
+            buf.append(argListNode.getText());
+        }
+        return buf.toString();
+    }
+
+    @Nullable
+    public static String getDocString(PsiElement element) {
+        if (element == null) {
+            return null;
+        }
+        final ASTNode node = element.getNode();
+        if (node == null) {
+            return null;
+        }
+        if (OpenSCADParserDefinition.DOC_IN_PARENT.contains(node.getElementType())) {
+            return getDocString(element.getParent());
+        }
+        final PsiReference reference = element.getReference();
+        if (reference != null) {
+            return getDocString(reference.resolve());
+        }
+        PsiElement docElement = PsiTreeUtil.skipWhitespacesBackward(element);
+        if (docElement == null) {
+            return null;
+        }
+        ASTNode docNode = docElement.getNode();
+        if (docNode == null) {
+            return null;
+        }
+        String text = docElement.getText();
+        if (text == null) {
+            return null;
+        }
+        IElementType docNodeElementType = docNode.getElementType();
+        if (docNodeElementType == OpenSCADTypes.BLOCK_COMMENT) {
+            text = text.replaceAll("(?sm)^\\s*//", "");
+            text = "<pre>" + text + "</pre>";
+        } else if (docNodeElementType != OpenSCADTypes.DOC_COMMENT) {
+            return null;
+        } else {
+            text = text.replaceFirst("(?s)^\\s*/\\*\\*", "<pre>");
+            text = text.replaceFirst("(?s)\\s*\\*/\\s*$", "</pre>");
+            text = text.replaceAll("(?sm)^\\s*\\*", "");
+        }
+        return text;
     }
 
 }

@@ -61,6 +61,12 @@ public class OpenSCADFoldingBuilder extends FoldingBuilderEx {
         } else if (node.getElementType() == OpenSCADTypes.C_STYLE_COMMENT) {
             foldIfMultiLine(list, element, document, "/* ... */");
             return element;
+        } else if (node.getElementType() == OpenSCADTypes.DOC_COMMENT) {
+            foldIfMultiLine(list, element, document, "/** ... */");
+            return element;
+        } else if (node.getElementType() == OpenSCADTypes.BLOCK_COMMENT) {
+            foldIfMultiLine(list, element, document, "//...");
+            return element;
         } else {
             PsiElement firstChild = element.getFirstChild();
             if (firstChild != null) {
@@ -144,17 +150,17 @@ public class OpenSCADFoldingBuilder extends FoldingBuilderEx {
     }
 
     private static void foldIfMultiLine(@NotNull List<FoldingDescriptor> list,
-                                        @NotNull PsiElement comment,
+                                        @NotNull PsiElement element,
                                         @NotNull Document document,
                                         @NotNull String placeHolderText)
     {
-        final int startOffset = comment.getTextRange().getStartOffset();
-        final int endOffset = comment.getTextRange().getEndOffset();
+        final int startOffset = element.getTextRange().getStartOffset();
+        final int endOffset = element.getTextRange().getEndOffset();
         boolean multiLine = document.getLineNumber(startOffset) != document.getLineNumber(endOffset);
         if (multiLine) {
             list.add(
                     new NamedFoldingDescriptor(
-                            comment.getNode(),
+                            element.getNode(),
                             new TextRange(startOffset, endOffset),
                             null,
                             placeHolderText,
