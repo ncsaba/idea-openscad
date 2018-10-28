@@ -28,7 +28,7 @@ public class OpenSCADParserDefinition implements ParserDefinition {
     );
 
     public static final TokenSet STRINGS = TokenSet.create(
-            OpenSCADTypes.SQ_STRING_LITERAL, OpenSCADTypes.DQ_STRING_LITERAL
+            OpenSCADTypes.STRING_LITERAL
     );
 
     public static final TokenSet OPERATOR_KEYWORDS = TokenSet.create(

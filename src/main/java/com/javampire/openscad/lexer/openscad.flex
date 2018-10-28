@@ -7,7 +7,7 @@ import com.intellij.psi.TokenType;
 
 %%
 
-%class OpenSCADHighlightingLexer
+%class OpenSCADLexer
 %implements FlexLexer
 %unicode
 %function advance
@@ -18,6 +18,8 @@ import com.intellij.psi.TokenType;
 CRLF=\R
 BLANK=[ \t\f]
 WHITE_SPACE={CRLF} | {BLANK}
+
+INCLUDE_COND={WHITE_SPACE}*"<"
 INCLUDE_PATH=[^<>]+
 
 C_STYLE_COMMENT=("/*"[^"*"]{COMMENT_TAIL})|"/*"
@@ -34,8 +36,7 @@ DECIMAL = {DIGIT}+ "."? | {DIGIT}* "." {DIGIT}+
 NUMBER_LITERAL = {DECIMAL} ([Ee] [+-]? {DIGIT}+)?
 
 ESCAPE_SEQUENCE = \\[^]
-SQ_STRING_LITERAL = "'" ([^\\\'] | {ESCAPE_SEQUENCE})* "'"?
-DQ_STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
+STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
 
 %state INCLUDE_PATH
 
@@ -55,80 +56,10 @@ DQ_STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
     "if"                        { return OpenSCADTypes.IF_KEYWORD; }
     "let"                       { return OpenSCADTypes.LET_KEYWORD; }
 
-    "include"                   { yybegin(INCLUDE_PATH); return OpenSCADTypes.INCLUDE_ITEM; }
-    "use"                       { yybegin(INCLUDE_PATH); return OpenSCADTypes.USE_ITEM; }
-
-    "assign"	                |
-    "intersection_for"          |
-
-    "linear_extrude"            |
-    "rotate_extrude"            |
-    "rotate"                    |
-    "translate"                 |
-    "scale"                     |
-    "resize"                    |
-    "mirror"                    |
-    "multmatrix"                |
-    "color"                     |
-    "offset"                    |
-    "minkowski"                 |
-    "hull"                      |
-    "union"                     |
-    "difference"                |
-    "intersection"              |
-    "projection"                |
-    "render"                    { return OpenSCADTypes.BUILTIN_OP; }
-
-    "cube"                      |
-    "cylinder"                  |
-    "echo"                      |
-    "assert"                    |
-    "sphere"                    |
-    "polyhedron"                |
-    "square"                    |
-    "circle"                    |
-    "ellipse"                   |
-    "polygon"                   |
-    "text"                      |
-    "surface"                   |
-    "child"                     |
-    "children"                  |
-    "import"                    |
-    "import_dxf"                |
-    "import_stl"                { return OpenSCADTypes.BUILTIN_OBJ; }
-
-    "cos"                       |
-    "sin"                       |
-    "tan"                       |
-    "acos"                      |
-    "asin"                      |
-    "atan"                      |
-    "atan2"                     |
-    "abs"                       |
-    "ceil"                      |
-    "concat"                    |
-    "cross"                     |
-    "exp"                       |
-    "floor"                     |
-    "ln"                        |
-    "len"                       |
-    "log"                       |
-    "lookup"                    |
-    "max"                       |
-    "min"                       |
-    "norm"                      |
-    "pow"                       |
-    "rands"                     |
-    "round"                     |
-    "sign"                      |
-    "sqrt"                      |
-    "str"                       |
-    "chr"                       |
-    "select"                    |
-    "search"                    |
-    "version"                   |
-    "version_num"               |
-    "parent_module"             { return OpenSCADTypes.BUILTIN_EXPR; }
+    "include"
+     / {INCLUDE_COND}           { yybegin(INCLUDE_PATH); return OpenSCADTypes.INCLUDE_KEYWORD; }
+    "use"
+     / {INCLUDE_COND}           { yybegin(INCLUDE_PATH); return OpenSCADTypes.USE_KEYWORD; }
 
     "."                         { return OpenSCADTypes.DOT; }
     "="                         { return OpenSCADTypes.EQUALS; }
@@ -168,8 +99,7 @@ DQ_STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
 
     {NUMBER_LITERAL}            { return OpenSCADTypes.NUMBER_LITERAL; }
     {IDENTIFIER}                { return OpenSCADTypes.IDENTIFIER; }
-    {SQ_STRING_LITERAL}         { return OpenSCADTypes.SQ_STRING_LITERAL; }
-    {DQ_STRING_LITERAL}         { return OpenSCADTypes.DQ_STRING_LITERAL; }
+    {STRING_LITERAL}            { return OpenSCADTypes.STRING_LITERAL; }
 
 }
 

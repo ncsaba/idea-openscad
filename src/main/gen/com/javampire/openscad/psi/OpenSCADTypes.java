@@ -74,7 +74,6 @@ public interface OpenSCADTypes {
   IElementType DIV = new OpenSCADTokenType("DIV");
   IElementType DOC_COMMENT = new OpenSCADTokenType("DOC_COMMENT");
   IElementType DOT = new OpenSCADTokenType("DOT");
-  IElementType DQ_STRING_LITERAL = new OpenSCADTokenType("DQ_STRING_LITERAL");
   IElementType ELSE_KEYWORD = new OpenSCADTokenType("ELSE_KEYWORD");
   IElementType END_OF_LINE_COMMENT = new OpenSCADTokenType("END_OF_LINE_COMMENT");
   IElementType EQ = new OpenSCADTokenType("EQ");
@@ -89,6 +88,7 @@ public interface OpenSCADTypes {
   IElementType IDENTIFIER = new OpenSCADTokenType("IDENTIFIER");
   IElementType IF_KEYWORD = new OpenSCADTokenType("IF_KEYWORD");
   IElementType INCLUDE_END = new OpenSCADTokenType("INCLUDE_END");
+  IElementType INCLUDE_KEYWORD = new OpenSCADTokenType("INCLUDE_KEYWORD");
   IElementType INCLUDE_PATH = new OpenSCADTokenType("INCLUDE_PATH");
   IElementType INCLUDE_START = new OpenSCADTokenType("INCLUDE_START");
   IElementType LBRACE = new OpenSCADTokenType("LBRACE");
@@ -110,9 +110,10 @@ public interface OpenSCADTypes {
   IElementType RBRACKET = new OpenSCADTokenType("RBRACKET");
   IElementType RPARENTH = new OpenSCADTokenType("RPARENTH");
   IElementType SEMICOLON = new OpenSCADTokenType("SEMICOLON");
-  IElementType SQ_STRING_LITERAL = new OpenSCADTokenType("SQ_STRING_LITERAL");
+  IElementType STRING_LITERAL = new OpenSCADTokenType("STRING_LITERAL");
   IElementType TRUE_KEYWORD = new OpenSCADTokenType("TRUE_KEYWORD");
   IElementType UNDEF_KEYWORD = new OpenSCADTokenType("UNDEF_KEYWORD");
+  IElementType USE_KEYWORD = new OpenSCADTokenType("USE_KEYWORD");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {

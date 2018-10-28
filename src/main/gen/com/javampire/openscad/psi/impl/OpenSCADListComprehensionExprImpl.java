@@ -33,8 +33,8 @@ public class OpenSCADListComprehensionExprImpl extends OpenSCADExprImpl implemen
 
   @Override
   @NotNull
-  public OpenSCADForElement getForElement() {
-    return findNotNullChildByClass(OpenSCADForElement.class);
+  public List<OpenSCADForElement> getForElementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADForElement.class);
   }
 
   @Override

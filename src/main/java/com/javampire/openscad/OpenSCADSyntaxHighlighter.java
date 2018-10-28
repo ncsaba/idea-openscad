@@ -89,7 +89,7 @@ public class OpenSCADSyntaxHighlighter extends SyntaxHighlighterBase {
     public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
         if (ANGLE_BRACKETS_TOKENS.contains(tokenType)) {
             return ANGLE_BRACKETS_KEYS;
-        } else if (tokenType.equals(OpenSCADTypes.USE_ITEM) || tokenType.equals(OpenSCADTypes.INCLUDE_ITEM)) {
+        } else if (tokenType.equals(OpenSCADTypes.USE_KEYWORD) || tokenType.equals(OpenSCADTypes.INCLUDE_KEYWORD)) {
             return IMPORT_KEYS;
         } else if (tokenType.equals(OpenSCADTypes.INCLUDE_PATH)) {
             return IMPORT_PATH_KEYS;
@@ -97,7 +97,7 @@ public class OpenSCADSyntaxHighlighter extends SyntaxHighlighterBase {
             return IDENTIFIER_KEYS;
         } else if (tokenType.equals(OpenSCADTypes.NUMBER_LITERAL)) {
             return NUMBER_KEYS;
-        } else if (tokenType.equals(OpenSCADTypes.DQ_STRING_LITERAL) || tokenType.equals(OpenSCADTypes.SQ_STRING_LITERAL)) {
+        } else if (tokenType.equals(OpenSCADTypes.STRING_LITERAL)) {
             return STRING_KEYS;
         } else if (BRACES_TOKENS.contains(tokenType)) {
             return BRACES_KEYS;

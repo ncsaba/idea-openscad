@@ -17,21 +17,23 @@
     extends(".*op")=operator
 
     psiImplUtilClass="com.javampire.openscad.psi.impl.OpenSCADPsiImplUtil"
+    parserUtilClass="com.javampire.openscad.parser.OpenSCADParserUtil"
+
 }
 
-openSCADFile ::= item_*
+openSCADFile ::= item*
 
-private item_ ::= (
-    comment_item
+private item ::= (
+    statement
     | include_item
     | use_item
-    | statement
+    | comment_item
 )
 
 private comment_item ::= C_STYLE_COMMENT | DOC_COMMENT | END_OF_LINE_COMMENT | BLOCK_COMMENT
 
-include_item ::= "include" INCLUDE_START INCLUDE_PATH INCLUDE_END { methods=[getPresentation] }
-use_item ::= "use" INCLUDE_START INCLUDE_PATH INCLUDE_END { methods=[getPresentation] }
+include_item ::= INCLUDE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END { methods=[getPresentation] }
+use_item ::= USE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END { methods=[getPresentation] }
 
 object ::= builtin_obj
          | module_call_obj
@@ -103,8 +105,8 @@ debug_op ::= HASH
 root_op ::= EXCL
 disable_op ::= MUL
 
-builtin_op ::= if_op
-             | else_op
+builtin_op ::= else_op // else_op needs to be before if_op here
+             | if_op
              | (common_op_identifier arg_assignment_list)
              | (full_arg_op_identifier full_arg_declaration_list)
 
@@ -152,11 +154,10 @@ function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS
 }
 
 expr ::= conditional_group
-       | add_group
        | boolean_group
+       | add_group
        | mul_group
        | unary_group
-       | call_group
        | primary_group
 
 // private rules to define operators with the same priority
@@ -165,13 +166,15 @@ private conditional_group ::= elvis_expr | conditional_expr
 private unary_group ::= unary_plus_expr | unary_min_expr | unary_negate_expr
 private mul_group ::= mul_expr | div_expr | modulo_expr
 private add_group ::= plus_expr | minus_expr
-private call_group ::= function_call_expr | qualification_expr | index_expr
-private primary_group ::= builtin_expr
-                        | literal_expr
-                        | paren_expr
+private primary_group ::= paren_expr
                         | list_comprehension_expr
                         | range_expr
                         | vector_expr
+                        | literal_expr
+                        | builtin_expr
+                        | function_call_expr
+                        | index_expr
+                        | qualification_expr
                         | variable_ref_expr
 
 and_expr ::= expr AND expr
@@ -190,16 +193,15 @@ paren_expr ::= LPARENTH expr RPARENTH
 vector_expr ::= LBRACKET [ vector_item ( COMMA+ (vector_item | &RBRACKET) )* ] RBRACKET { pin(".*")=1 }
 private vector_item ::= expr { recoverWhile=recover_vector }
 private recover_vector ::= ! (COMMA | RBRACKET)
-index_expr ::= expr LBRACKET expr RBRACKET
+index_expr ::= expr LBRACKET <<innerExpression>> RBRACKET
 range_expr ::= LBRACKET expr COLON expr [ COLON expr ] RBRACKET
-list_comprehension_expr ::= LBRACKET for_element (if_element | let_element)* expr RBRACKET
+list_comprehension_expr ::= LBRACKET for_element (for_element | if_element | let_element)* expr RBRACKET
 for_element ::= FOR_KEYWORD full_arg_declaration_list
 if_element ::= IF_KEYWORD LPARENTH expr RPARENTH
 let_element ::= LET_KEYWORD full_arg_declaration_list
 builtin_expr ::= builtin_expr_identifier arg_assignment_list
                | LET_KEYWORD full_arg_declaration_list expr
-private builtin_expr_identifier ::= "let"
-                                  | "cos"
+private builtin_expr_identifier ::= "cos"
                                   | "sin"
                                   | "tan"
                                   | "acos"
@@ -242,8 +244,7 @@ literal_expr ::= TRUE_KEYWORD
                | FALSE_KEYWORD
                | UNDEF_KEYWORD
                | NUMBER_LITERAL
-               | SQ_STRING_LITERAL
-               | DQ_STRING_LITERAL
+               | STRING_LITERAL
 
 function_call_expr ::= function_name_ref arg_assignment_list
 function_name_ref ::= IDENTIFIER {
@@ -262,7 +263,7 @@ parameter_reference ::= IDENTIFIER {
     methods=[getPresentation getName setName getNameIdentifier getReference]
 }
 
-arg_declaration_list ::= LPARENTH arg_declaration? ( COMMA+ arg_declaration )* RPARENTH {pin(".*")=1}
+arg_declaration_list ::= LPARENTH arg_declaration? ( COMMA arg_declaration? )* RPARENTH {pin(".*")=1}
 arg_declaration ::= IDENTIFIER [EQUALS expr] {
     mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADNamedElement"
