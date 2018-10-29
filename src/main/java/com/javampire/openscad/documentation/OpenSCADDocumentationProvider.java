@@ -1,4 +1,4 @@
-package com.javampire.openscad;
+package com.javampire.openscad.documentation;
 
 import com.intellij.lang.documentation.AbstractDocumentationProvider;
 import com.intellij.openapi.diagnostic.Logger;

@@ -1,4 +1,4 @@
-package com.javampire.openscad;
+package com.javampire.openscad.structureview;
 
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.structureView.StructureViewTreeElement;

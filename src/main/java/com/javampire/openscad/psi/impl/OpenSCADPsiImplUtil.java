@@ -9,7 +9,7 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.javampire.openscad.OpenSCADIcons;
-import com.javampire.openscad.OpenSCADParserDefinition;
+import com.javampire.openscad.parser.OpenSCADParserDefinition;
 import com.javampire.openscad.psi.*;
 import com.javampire.openscad.references.OpenSCADFunctionReference;
 import com.javampire.openscad.references.OpenSCADModuleReference;

@@ -1,4 +1,4 @@
-package com.javampire.openscad;
+package com.javampire.openscad.highlighting;
 
 import com.intellij.lang.BracePair;
 import com.intellij.lang.PairedBraceMatcher;

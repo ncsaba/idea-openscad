@@ -1,4 +1,4 @@
-package com.javampire.openscad;
+package com.javampire.openscad.lexer;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;

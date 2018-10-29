@@ -1,9 +1,11 @@
-package com.javampire.openscad;
+package com.javampire.openscad.structureview;
 
 import com.intellij.ide.util.treeView.AbstractTreeNode;
 import com.intellij.ide.util.treeView.smartTree.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.util.PlatformIcons;
+import com.javampire.openscad.OpenSCADBundle;
+import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.psi.OpenSCADFunctionDeclaration;
 import com.javampire.openscad.psi.OpenSCADIncludeItem;
 import com.javampire.openscad.psi.OpenSCADModuleDeclaration;

@@ -12,6 +12,6 @@ public class OpenSCADParserUtil extends GeneratedParserUtilBase {
      */
     public static boolean innerExpression(PsiBuilder builder, int level) {
         return OpenSCADParser.expr(builder, level, 0);
-    };
+    }
 
 }

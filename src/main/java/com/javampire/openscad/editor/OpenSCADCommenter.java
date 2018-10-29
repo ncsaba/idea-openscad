@@ -1,4 +1,4 @@
-package com.javampire.openscad;
+package com.javampire.openscad.editor;
 
 import com.intellij.lang.CodeDocumentationAwareCommenterEx;
 import com.intellij.openapi.diagnostic.Logger;
