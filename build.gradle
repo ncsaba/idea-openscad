@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.javampire'
-version '1.2-SNAPSHOT'
+version '1.3.0'
 
 sourceCompatibility = 1.8
 
@@ -22,7 +22,13 @@ intellij {
 }
 patchPluginXml {
     changeNotes """
-      Initial version supporting syntax highlighting and code folding."""
+    <![CDATA[
+        <html>
+        Changes are documented in our [change log](https://github.com/ncsaba/idea-openscad/blob/master/Changes.md)
+        on the project page.
+        </html>
+    ]]>
+    """
 }
 
 sourceSets.main.java.srcDirs = ['src/main/java','src/main/gen']
