@@ -31,4 +31,10 @@ public class OpenSCADBuiltinObjImpl extends OpenSCADObjectImpl implements OpenSC
     return findNotNullChildByClass(OpenSCADArgAssignmentList.class);
   }
 
+  @Override
+  @NotNull
+  public OpenSCADBuiltinObjRef getBuiltinObjRef() {
+    return findNotNullChildByClass(OpenSCADBuiltinObjRef.class);
+  }
+
 }

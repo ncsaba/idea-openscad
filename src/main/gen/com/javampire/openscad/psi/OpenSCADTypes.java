@@ -13,12 +13,14 @@ public interface OpenSCADTypes {
   IElementType ARG_ASSIGNMENT_LIST = OpenSCADElementFactory.getElementType("ARG_ASSIGNMENT_LIST");
   IElementType ARG_DECLARATION = OpenSCADElementFactory.getElementType("ARG_DECLARATION");
   IElementType ARG_DECLARATION_LIST = OpenSCADElementFactory.getElementType("ARG_DECLARATION_LIST");
-  IElementType ASSIGNMENT = OpenSCADElementFactory.getElementType("ASSIGNMENT");
   IElementType BACKGROUND_OP = OpenSCADElementFactory.getElementType("BACKGROUND_OP");
   IElementType BLOCK_OBJ = OpenSCADElementFactory.getElementType("BLOCK_OBJ");
   IElementType BUILTIN_EXPR = OpenSCADElementFactory.getElementType("BUILTIN_EXPR");
+  IElementType BUILTIN_EXPR_REF = OpenSCADElementFactory.getElementType("BUILTIN_EXPR_REF");
   IElementType BUILTIN_OBJ = OpenSCADElementFactory.getElementType("BUILTIN_OBJ");
+  IElementType BUILTIN_OBJ_REF = OpenSCADElementFactory.getElementType("BUILTIN_OBJ_REF");
   IElementType BUILTIN_OP = OpenSCADElementFactory.getElementType("BUILTIN_OP");
+  IElementType COMMON_OP_REF = OpenSCADElementFactory.getElementType("COMMON_OP_REF");
   IElementType CONDITIONAL_EXPR = OpenSCADElementFactory.getElementType("CONDITIONAL_EXPR");
   IElementType DEBUG_OP = OpenSCADElementFactory.getElementType("DEBUG_OP");
   IElementType DISABLE_OP = OpenSCADElementFactory.getElementType("DISABLE_OP");
@@ -118,7 +120,7 @@ public interface OpenSCADTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-       if (type == AND_EXPR) {
+      if (type == AND_EXPR) {
         return new OpenSCADAndExprImpl(node);
       }
       else if (type == ARG_ASSIGNMENT) {
@@ -133,9 +135,6 @@ public interface OpenSCADTypes {
       else if (type == ARG_DECLARATION_LIST) {
         return new OpenSCADArgDeclarationListImpl(node);
       }
-      else if (type == ASSIGNMENT) {
-        return new OpenSCADAssignmentImpl(node);
-      }
       else if (type == BACKGROUND_OP) {
         return new OpenSCADBackgroundOpImpl(node);
       }
@@ -145,11 +144,20 @@ public interface OpenSCADTypes {
       else if (type == BUILTIN_EXPR) {
         return new OpenSCADBuiltinExprImpl(node);
       }
+      else if (type == BUILTIN_EXPR_REF) {
+        return new OpenSCADBuiltinExprRefImpl(node);
+      }
       else if (type == BUILTIN_OBJ) {
         return new OpenSCADBuiltinObjImpl(node);
       }
+      else if (type == BUILTIN_OBJ_REF) {
+        return new OpenSCADBuiltinObjRefImpl(node);
+      }
       else if (type == BUILTIN_OP) {
         return new OpenSCADBuiltinOpImpl(node);
+      }
+      else if (type == COMMON_OP_REF) {
+        return new OpenSCADCommonOpRefImpl(node);
       }
       else if (type == CONDITIONAL_EXPR) {
         return new OpenSCADConditionalExprImpl(node);

@@ -35,20 +35,26 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     else if (t == ARG_DECLARATION_LIST) {
       r = arg_declaration_list(b, 0);
     }
-    else if (t == ASSIGNMENT) {
-      r = assignment(b, 0);
-    }
     else if (t == BACKGROUND_OP) {
       r = background_op(b, 0);
     }
     else if (t == BLOCK_OBJ) {
       r = block_obj(b, 0);
     }
+    else if (t == BUILTIN_EXPR_REF) {
+      r = builtin_expr_ref(b, 0);
+    }
     else if (t == BUILTIN_OBJ) {
       r = builtin_obj(b, 0);
     }
+    else if (t == BUILTIN_OBJ_REF) {
+      r = builtin_obj_ref(b, 0);
+    }
     else if (t == BUILTIN_OP) {
       r = builtin_op(b, 0);
+    }
+    else if (t == COMMON_OP_REF) {
+      r = common_op_ref(b, 0);
     }
     else if (t == DEBUG_OP) {
       r = debug_op(b, 0);
@@ -327,21 +333,6 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // variable_declaration EQUALS expr SEMICOLON
-  public static boolean assignment(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "assignment")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = variable_declaration(b, l + 1);
-    r = r && consumeToken(b, EQUALS);
-    r = r && expr(b, l + 1, -1);
-    r = r && consumeToken(b, SEMICOLON);
-    exit_section_(b, m, ASSIGNMENT, r);
-    return r;
-  }
-
-  /* ********************************************************** */
   // PERC
   public static boolean background_op(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "background_op")) return false;
@@ -380,41 +371,41 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // "cos"
-  //                                   | "sin"
-  //                                   | "tan"
-  //                                   | "acos"
-  //                                   | "asin"
-  //                                   | "atan"
-  //                                   | "atan2"
-  //                                   | "abs"
-  //                                   | "ceil"
-  //                                   | "concat"
-  //                                   | "cross"
-  //                                   | "exp"
-  //                                   | "floor"
-  //                                   | "ln"
-  //                                   | "len"
-  //                                   | "log"
-  //                                   | "lookup"
-  //                                   | "max"
-  //                                   | "min"
-  //                                   | "norm"
-  //                                   | "pow"
-  //                                   | "rands"
-  //                                   | "round"
-  //                                   | "sign"
-  //                                   | "sqrt"
-  //                                   | "str"
-  //                                   | "chr"
-  //                                   | "select"
-  //                                   | "search"
-  //                                   | "version"
-  //                                   | "version_num"
-  //                                   | "parent_module"
-  static boolean builtin_expr_identifier(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "builtin_expr_identifier")) return false;
+  //                    | "sin"
+  //                    | "tan"
+  //                    | "acos"
+  //                    | "asin"
+  //                    | "atan"
+  //                    | "atan2"
+  //                    | "abs"
+  //                    | "ceil"
+  //                    | "concat"
+  //                    | "cross"
+  //                    | "exp"
+  //                    | "floor"
+  //                    | "ln"
+  //                    | "len"
+  //                    | "log"
+  //                    | "lookup"
+  //                    | "max"
+  //                    | "min"
+  //                    | "norm"
+  //                    | "pow"
+  //                    | "rands"
+  //                    | "round"
+  //                    | "sign"
+  //                    | "sqrt"
+  //                    | "str"
+  //                    | "chr"
+  //                    | "select"
+  //                    | "search"
+  //                    | "version"
+  //                    | "version_num"
+  //                    | "parent_module"
+  public static boolean builtin_expr_ref(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "builtin_expr_ref")) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, BUILTIN_EXPR_REF, "<builtin expr ref>");
     r = consumeToken(b, "cos");
     if (!r) r = consumeToken(b, "sin");
     if (!r) r = consumeToken(b, "tan");
@@ -447,17 +438,17 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, "version");
     if (!r) r = consumeToken(b, "version_num");
     if (!r) r = consumeToken(b, "parent_module");
-    exit_section_(b, m, null, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
-  // builtin_obj_identifier arg_assignment_list SEMICOLON
+  // builtin_obj_ref arg_assignment_list SEMICOLON
   public static boolean builtin_obj(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "builtin_obj")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, BUILTIN_OBJ, "<builtin obj>");
-    r = builtin_obj_identifier(b, l + 1);
+    r = builtin_obj_ref(b, l + 1);
     r = r && arg_assignment_list(b, l + 1);
     r = r && consumeToken(b, SEMICOLON);
     exit_section_(b, l, m, r, false, null);
@@ -466,26 +457,25 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // "cube"
-  //                                  | "cylinder"
-  //                                  | "echo"
-  //                                  | "assert"
-  //                                  | "sphere"
-  //                                  | "polyhedron"
-  //                                  | "square"
-  //                                  | "circle"
-  //                                  | "ellipse"
-  //                                  | "polygon"
-  //                                  | "text"
-  //                                  | "surface"
-  //                                  | "child"
-  //                                  | "children"
-  //                                  | "import"
-  //                                  | "import_dxf"
-  //                                  | "import_stl"
-  static boolean builtin_obj_identifier(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "builtin_obj_identifier")) return false;
+  //                   | "cylinder"
+  //                   | "echo"
+  //                   | "assert"
+  //                   | "sphere"
+  //                   | "polyhedron"
+  //                   | "square"
+  //                   | "circle"
+  //                   | "polygon"
+  //                   | "text"
+  //                   | "surface"
+  //                   | "child"
+  //                   | "children"
+  //                   | "import"
+  //                   | "import_dxf"
+  //                   | "import_stl"
+  public static boolean builtin_obj_ref(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "builtin_obj_ref")) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, BUILTIN_OBJ_REF, "<builtin obj ref>");
     r = consumeToken(b, "cube");
     if (!r) r = consumeToken(b, "cylinder");
     if (!r) r = consumeToken(b, "echo");
@@ -494,7 +484,6 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, "polyhedron");
     if (!r) r = consumeToken(b, "square");
     if (!r) r = consumeToken(b, "circle");
-    if (!r) r = consumeToken(b, "ellipse");
     if (!r) r = consumeToken(b, "polygon");
     if (!r) r = consumeToken(b, "text");
     if (!r) r = consumeToken(b, "surface");
@@ -503,14 +492,14 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, "import");
     if (!r) r = consumeToken(b, "import_dxf");
     if (!r) r = consumeToken(b, "import_stl");
-    exit_section_(b, m, null, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
   // else_op // else_op needs to be before if_op here
   //              | if_op
-  //              | (common_op_identifier arg_assignment_list)
+  //              | (common_op_ref arg_assignment_list)
   //              | (full_arg_op_identifier full_arg_declaration_list)
   public static boolean builtin_op(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "builtin_op")) return false;
@@ -524,12 +513,12 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // common_op_identifier arg_assignment_list
+  // common_op_ref arg_assignment_list
   private static boolean builtin_op_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "builtin_op_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = common_op_identifier(b, l + 1);
+    r = common_op_ref(b, l + 1);
     r = r && arg_assignment_list(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -560,26 +549,26 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // "linear_extrude"
-  //                                | "rotate_extrude"
-  //                                | "rotate"
-  //                                | "translate"
-  //                                | "scale"
-  //                                | "resize"
-  //                                | "mirror"
-  //                                | "multmatrix"
-  //                                | "color"
-  //                                | "offset"
-  //                                | "minkowski"
-  //                                | "hull"
-  //                                | "union"
-  //                                | "difference"
-  //                                | "intersection"
-  //                                | "render"
-  //                                | "projection"
-  static boolean common_op_identifier(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "common_op_identifier")) return false;
+  //                 | "rotate_extrude"
+  //                 | "rotate"
+  //                 | "translate"
+  //                 | "scale"
+  //                 | "resize"
+  //                 | "mirror"
+  //                 | "multmatrix"
+  //                 | "color"
+  //                 | "offset"
+  //                 | "minkowski"
+  //                 | "hull"
+  //                 | "union"
+  //                 | "difference"
+  //                 | "intersection"
+  //                 | "render"
+  //                 | "projection"
+  public static boolean common_op_ref(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "common_op_ref")) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, COMMON_OP_REF, "<common op ref>");
     r = consumeToken(b, "linear_extrude");
     if (!r) r = consumeToken(b, "rotate_extrude");
     if (!r) r = consumeToken(b, "rotate");
@@ -597,7 +586,7 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, "intersection");
     if (!r) r = consumeToken(b, "render");
     if (!r) r = consumeToken(b, "projection");
-    exit_section_(b, m, null, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -626,11 +615,11 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // assignment | module_declaration | function_declaration
+  // variable_declaration | module_declaration | function_declaration
   static boolean declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "declaration")) return false;
     boolean r;
-    r = assignment(b, l + 1);
+    r = variable_declaration(b, l + 1);
     if (!r) r = module_declaration(b, l + 1);
     if (!r) r = function_declaration(b, l + 1);
     return r;
@@ -1088,13 +1077,15 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER
+  // IDENTIFIER EQUALS expr SEMICOLON
   public static boolean variable_declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_declaration")) return false;
     if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, IDENTIFIER);
+    r = consumeTokens(b, 0, IDENTIFIER, EQUALS);
+    r = r && expr(b, l + 1, -1);
+    r = r && consumeToken(b, SEMICOLON);
     exit_section_(b, m, VARIABLE_DECLARATION, r);
     return r;
   }
@@ -1464,7 +1455,7 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // builtin_expr_identifier arg_assignment_list
+  // builtin_expr_ref arg_assignment_list
   //                | LET_KEYWORD full_arg_declaration_list expr
   public static boolean builtin_expr(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "builtin_expr")) return false;
@@ -1476,12 +1467,12 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // builtin_expr_identifier arg_assignment_list
+  // builtin_expr_ref arg_assignment_list
   private static boolean builtin_expr_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "builtin_expr_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = builtin_expr_identifier(b, l + 1);
+    r = builtin_expr_ref(b, l + 1);
     r = r && arg_assignment_list(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -1534,12 +1525,12 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  final static Parser recover_arg_parser_ = new Parser() {
+  static final Parser recover_arg_parser_ = new Parser() {
     public boolean parse(PsiBuilder b, int l) {
       return recover_arg(b, l + 1);
     }
   };
-  final static Parser recover_vector_parser_ = new Parser() {
+  static final Parser recover_vector_parser_ = new Parser() {
     public boolean parse(PsiBuilder b, int l) {
       return recover_vector(b, l + 1);
     }

@@ -8,6 +8,7 @@ import com.intellij.psi.PsiFile;
 import com.javampire.openscad.psi.OpenSCADFunctionDeclaration;
 import com.javampire.openscad.psi.OpenSCADModuleDeclaration;
 import com.javampire.openscad.psi.OpenSCADNamedElement;
+import com.javampire.openscad.psi.OpenSCADVariableDeclaration;
 import com.javampire.openscad.psi.impl.OpenSCADPsiImplUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,6 +42,8 @@ public class OpenSCADDocumentationProvider extends AbstractDocumentationProvider
         } else if (element instanceof OpenSCADFunctionDeclaration) {
             return getLocationString(element) + "\nfunction " +
                     OpenSCADPsiImplUtil.getNameWithArgumentList((OpenSCADNamedElement) element, true);
+        } else if (element instanceof OpenSCADVariableDeclaration) {
+            return getLocationString(element) + "\n" + element.getText();
         }
         return null;
     }

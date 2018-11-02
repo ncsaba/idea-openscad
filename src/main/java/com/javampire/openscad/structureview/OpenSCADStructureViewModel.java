@@ -21,7 +21,8 @@ public class OpenSCADStructureViewModel
                 OpenSCADModuleDeclaration.class,
                 OpenSCADFunctionDeclaration.class,
                 OpenSCADUseItem.class,
-                OpenSCADIncludeItem.class
+                OpenSCADIncludeItem.class,
+                OpenSCADVariableDeclaration.class
         );
         withSorters(Sorter.ALPHA_SORTER);
     }

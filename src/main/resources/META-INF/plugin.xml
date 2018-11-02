@@ -24,9 +24,11 @@
         <stubElementTypeHolder class="com.javampire.openscad.psi.OpenSCADTypes"/>
         <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADModuleIndex"/>
         <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADFunctionIndex"/>
+        <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADVariableIndex"/>
         <lang.commenter language="OpenSCAD" implementationClass="com.javampire.openscad.editor.OpenSCADCommenter"/>
         <documentationProvider implementation="com.javampire.openscad.documentation.OpenSCADDocumentationProvider"/>
         <lang.braceMatcher language="OpenSCAD" implementationClass="com.javampire.openscad.highlighting.OpenSCADBraceMatcher"/>
+        <indexedRootsProvider implementation="com.javampire.openscad.psi.stub.index.BuiltinIndexContributor"/>
     </extensions>
 
     <depends>com.intellij.modules.lang</depends>

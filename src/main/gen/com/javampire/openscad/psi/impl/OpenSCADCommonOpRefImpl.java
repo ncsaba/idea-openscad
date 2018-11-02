@@ -8,17 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.javampire.openscad.psi.*;
+import com.intellij.psi.PsiReference;
 
-public class OpenSCADAssignmentImpl extends ASTWrapperPsiElement implements OpenSCADAssignment {
+public class OpenSCADCommonOpRefImpl extends OpenSCADNamedElementImpl implements OpenSCADCommonOpRef {
 
-  public OpenSCADAssignmentImpl(@NotNull ASTNode node) {
+  public OpenSCADCommonOpRefImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitAssignment(this);
+    visitor.visitCommonOpRef(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -26,16 +26,20 @@ public class OpenSCADAssignmentImpl extends ASTWrapperPsiElement implements Open
     else super.accept(visitor);
   }
 
-  @Override
-  @NotNull
-  public OpenSCADExpr getExpr() {
-    return findNotNullChildByClass(OpenSCADExpr.class);
+  public String getName() {
+    return OpenSCADPsiImplUtil.getName(this);
   }
 
-  @Override
-  @NotNull
-  public OpenSCADVariableDeclaration getVariableDeclaration() {
-    return findNotNullChildByClass(OpenSCADVariableDeclaration.class);
+  public PsiElement setName(String newName) {
+    return OpenSCADPsiImplUtil.setName(this, newName);
+  }
+
+  public PsiElement getNameIdentifier() {
+    return OpenSCADPsiImplUtil.getNameIdentifier(this);
+  }
+
+  public PsiReference getReference() {
+    return OpenSCADPsiImplUtil.getReference(this);
   }
 
 }
