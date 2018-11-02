@@ -1,13 +1,12 @@
-package com.javampire.openscad;
+package com.javampire.openscad.structureview;
 
 import com.intellij.ide.util.treeView.AbstractTreeNode;
 import com.intellij.ide.util.treeView.smartTree.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.util.PlatformIcons;
-import com.javampire.openscad.psi.OpenSCADFunctionDeclaration;
-import com.javampire.openscad.psi.OpenSCADIncludeItem;
-import com.javampire.openscad.psi.OpenSCADModuleDeclaration;
-import com.javampire.openscad.psi.OpenSCADUseItem;
+import com.javampire.openscad.OpenSCADBundle;
+import com.javampire.openscad.OpenSCADIcons;
+import com.javampire.openscad.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,6 +30,11 @@ public class OpenSCADElementGrouper implements Grouper {
             OpenSCADIcons.FILE
     );
 
+    private static final ItemPresentation VARIABLE_GROUP_ITEM = new GroupPresentation(
+            OpenSCADBundle.message("com.javampire.openscad.grouper.variables"),
+            PlatformIcons.VARIABLE_ICON
+    );
+
     private static final ItemPresentation NO_GROUP_ITEM = new GroupPresentation(
             OpenSCADBundle.message("com.javampire.openscad.grouper.invalid"),
             PlatformIcons.INVALID_ENTRY_ICON
@@ -42,6 +46,7 @@ public class OpenSCADElementGrouper implements Grouper {
         ITEM_PRESENTATION_MAP.put(OpenSCADIncludeItem.class, IMPORT_GROUP_ITEM);
         ITEM_PRESENTATION_MAP.put(OpenSCADFunctionDeclaration.class, FUNCTION_GROUP_ITEM);
         ITEM_PRESENTATION_MAP.put(OpenSCADModuleDeclaration.class, MODULE_GROUP_ITEM);
+        ITEM_PRESENTATION_MAP.put(OpenSCADVariableDeclaration.class, VARIABLE_GROUP_ITEM);
     }
 
     @NotNull

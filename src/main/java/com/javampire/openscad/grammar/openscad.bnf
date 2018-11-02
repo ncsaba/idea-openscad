@@ -41,24 +41,27 @@ object ::= builtin_obj
          | compound_obj
          | empty_obj
 
-builtin_obj ::= builtin_obj_identifier arg_assignment_list SEMICOLON
-private builtin_obj_identifier ::= "cube"
-                                 | "cylinder"
-                                 | "echo"
-                                 | "assert"
-                                 | "sphere"
-                                 | "polyhedron"
-                                 | "square"
-                                 | "circle"
-                                 | "ellipse"
-                                 | "polygon"
-                                 | "text"
-                                 | "surface"
-                                 | "child"
-                                 | "children"
-                                 | "import"
-                                 | "import_dxf"
-                                 | "import_stl"
+builtin_obj ::= builtin_obj_ref arg_assignment_list SEMICOLON
+builtin_obj_ref ::= "cube"
+                  | "cylinder"
+                  | "echo"
+                  | "assert"
+                  | "sphere"
+                  | "polyhedron"
+                  | "square"
+                  | "circle"
+                  | "polygon"
+                  | "text"
+                  | "surface"
+                  | "child"
+                  | "children"
+                  | "import"
+                  | "import_dxf"
+                  | "import_stl" {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
+    methods=[getName setName getNameIdentifier getReference]
+}
 
 module_call_obj ::= module_obj_name_ref arg_assignment_list SEMICOLON
 module_obj_name_ref ::= IDENTIFIER {
@@ -73,13 +76,33 @@ empty_obj ::= SEMICOLON
 
 private statement ::= object | declaration
 
-private declaration ::= assignment | module_declaration | function_declaration
+private declaration ::= variable_declaration | module_declaration | function_declaration
 
-assignment ::= variable_declaration EQUALS expr SEMICOLON
-variable_declaration ::= IDENTIFIER {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
-    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
-    methods=[getName setName getNameIdentifier]
+variable_declaration ::= IDENTIFIER EQUALS expr SEMICOLON {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADVariableDeclarationStubElementImpl"
+    implements=[
+        "com.javampire.openscad.psi.OpenSCADNamedElement"
+        "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.OpenSCADVariableStub>"
+    ]
+    methods=[getPresentation getName setName getNameIdentifier]
+}
+
+module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADModuleDeclarationStubElementImpl"
+    implements=[
+        "com.javampire.openscad.psi.OpenSCADNamedElement"
+        "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.OpenSCADModuleStub>"
+    ]
+    methods=[getPresentation setName getNameIdentifier]
+}
+
+function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS expr SEMICOLON {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADFunctionDeclarationStubElementImpl"
+    implements=[
+        "com.javampire.openscad.psi.OpenSCADNamedElement"
+        "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.OpenSCADFunctionStub>"
+    ]
+    methods=[getPresentation setName getNameIdentifier]
 }
 
 private compound_obj ::= operator object;
@@ -107,26 +130,30 @@ disable_op ::= MUL
 
 builtin_op ::= else_op // else_op needs to be before if_op here
              | if_op
-             | (common_op_identifier arg_assignment_list)
+             | (common_op_ref arg_assignment_list)
              | (full_arg_op_identifier full_arg_declaration_list)
 
-private common_op_identifier ::= "linear_extrude"
-                               | "rotate_extrude"
-                               | "rotate"
-                               | "translate"
-                               | "scale"
-                               | "resize"
-                               | "mirror"
-                               | "multmatrix"
-                               | "color"
-                               | "offset"
-                               | "minkowski"
-                               | "hull"
-                               | "union"
-                               | "difference"
-                               | "intersection"
-                               | "render"
-                               | "projection"
+common_op_ref ::= "linear_extrude"
+                | "rotate_extrude"
+                | "rotate"
+                | "translate"
+                | "scale"
+                | "resize"
+                | "mirror"
+                | "multmatrix"
+                | "color"
+                | "offset"
+                | "minkowski"
+                | "hull"
+                | "union"
+                | "difference"
+                | "intersection"
+                | "render"
+                | "projection" {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
+    methods=[getName setName getNameIdentifier getReference]
+}
 
 private full_arg_op_identifier ::= "intersection_for"
                                  | "assign"
@@ -135,23 +162,6 @@ private full_arg_op_identifier ::= "intersection_for"
 
 else_op ::= if_op object ELSE_KEYWORD
 if_op ::= IF_KEYWORD LPARENTH expr RPARENTH
-
-module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADModuleDeclarationStubElementImpl"
-    implements=[
-        "com.javampire.openscad.psi.OpenSCADNamedElement"
-        "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.OpenSCADModuleStub>"
-    ]
-    methods=[getPresentation setName getNameIdentifier]
-}
-function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS expr SEMICOLON {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADFunctionDeclarationStubElementImpl"
-    implements=[
-        "com.javampire.openscad.psi.OpenSCADNamedElement"
-        "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.OpenSCADFunctionStub>"
-    ]
-    methods=[getPresentation setName getNameIdentifier]
-}
 
 expr ::= conditional_group
        | boolean_group
@@ -199,40 +209,44 @@ list_comprehension_expr ::= LBRACKET for_element (for_element | if_element | let
 for_element ::= FOR_KEYWORD full_arg_declaration_list
 if_element ::= IF_KEYWORD LPARENTH expr RPARENTH
 let_element ::= LET_KEYWORD full_arg_declaration_list
-builtin_expr ::= builtin_expr_identifier arg_assignment_list
+builtin_expr ::= builtin_expr_ref arg_assignment_list
                | LET_KEYWORD full_arg_declaration_list expr
-private builtin_expr_identifier ::= "cos"
-                                  | "sin"
-                                  | "tan"
-                                  | "acos"
-                                  | "asin"
-                                  | "atan"
-                                  | "atan2"
-                                  | "abs"
-                                  | "ceil"
-                                  | "concat"
-                                  | "cross"
-                                  | "exp"
-                                  | "floor"
-                                  | "ln"
-                                  | "len"
-                                  | "log"
-                                  | "lookup"
-                                  | "max"
-                                  | "min"
-                                  | "norm"
-                                  | "pow"
-                                  | "rands"
-                                  | "round"
-                                  | "sign"
-                                  | "sqrt"
-                                  | "str"
-                                  | "chr"
-                                  | "select"
-                                  | "search"
-                                  | "version"
-                                  | "version_num"
-                                  | "parent_module"
+builtin_expr_ref ::= "cos"
+                   | "sin"
+                   | "tan"
+                   | "acos"
+                   | "asin"
+                   | "atan"
+                   | "atan2"
+                   | "abs"
+                   | "ceil"
+                   | "concat"
+                   | "cross"
+                   | "exp"
+                   | "floor"
+                   | "ln"
+                   | "len"
+                   | "log"
+                   | "lookup"
+                   | "max"
+                   | "min"
+                   | "norm"
+                   | "pow"
+                   | "rands"
+                   | "round"
+                   | "sign"
+                   | "sqrt"
+                   | "str"
+                   | "chr"
+                   | "select"
+                   | "search"
+                   | "version"
+                   | "version_num"
+                   | "parent_module" {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    implements="com.javampire.openscad.psi.OpenSCADNamedElement"
+    methods=[getName setName getNameIdentifier getReference]
+}
 
 qualification_expr ::= expr DOT IDENTIFIER {
     mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"

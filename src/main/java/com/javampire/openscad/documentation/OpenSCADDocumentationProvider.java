@@ -1,4 +1,4 @@
-package com.javampire.openscad;
+package com.javampire.openscad.documentation;
 
 import com.intellij.lang.documentation.AbstractDocumentationProvider;
 import com.intellij.openapi.diagnostic.Logger;
@@ -8,6 +8,7 @@ import com.intellij.psi.PsiFile;
 import com.javampire.openscad.psi.OpenSCADFunctionDeclaration;
 import com.javampire.openscad.psi.OpenSCADModuleDeclaration;
 import com.javampire.openscad.psi.OpenSCADNamedElement;
+import com.javampire.openscad.psi.OpenSCADVariableDeclaration;
 import com.javampire.openscad.psi.impl.OpenSCADPsiImplUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,14 +22,14 @@ public class OpenSCADDocumentationProvider extends AbstractDocumentationProvider
     public PsiElement getCustomDocumentationElement(
             @NotNull Editor editor, @NotNull PsiFile file, @Nullable PsiElement contextElement
     ) {
-        LOG.info("getCustomDocumentationElement called with: " + contextElement);
+        LOG.debug("getCustomDocumentationElement called with: " + contextElement);
         // return super.getCustomDocumentationElement(editor, file, contextElement);
         return contextElement;
     }
 
     @Override
     public String generateDoc(PsiElement element, @Nullable PsiElement originalElement) {
-        LOG.info("generateDoc called with: " + element + ", " + originalElement);
+        LOG.debug("generateDoc called with: " + element + ", " + originalElement);
         return OpenSCADPsiImplUtil.getDocString(element);
     }
 
@@ -41,6 +42,8 @@ public class OpenSCADDocumentationProvider extends AbstractDocumentationProvider
         } else if (element instanceof OpenSCADFunctionDeclaration) {
             return getLocationString(element) + "\nfunction " +
                     OpenSCADPsiImplUtil.getNameWithArgumentList((OpenSCADNamedElement) element, true);
+        } else if (element instanceof OpenSCADVariableDeclaration) {
+            return getLocationString(element) + "\n" + element.getText();
         }
         return null;
     }

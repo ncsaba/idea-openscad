@@ -5,6 +5,7 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
+import com.javampire.openscad.psi.stub.OpenSCADVariableStub;
 import com.javampire.openscad.psi.stub.OpenSCADModuleStub;
 import com.javampire.openscad.psi.stub.OpenSCADFunctionStub;
 
@@ -30,10 +31,6 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitAssignment(@NotNull OpenSCADAssignment o) {
-    visitPsiElement(o);
-  }
-
   public void visitBackgroundOp(@NotNull OpenSCADBackgroundOp o) {
     visitOperator(o);
   }
@@ -46,12 +43,24 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitExpr(o);
   }
 
+  public void visitBuiltinExprRef(@NotNull OpenSCADBuiltinExprRef o) {
+    visitNamedElement(o);
+  }
+
   public void visitBuiltinObj(@NotNull OpenSCADBuiltinObj o) {
     visitObject(o);
   }
 
+  public void visitBuiltinObjRef(@NotNull OpenSCADBuiltinObjRef o) {
+    visitNamedElement(o);
+  }
+
   public void visitBuiltinOp(@NotNull OpenSCADBuiltinOp o) {
     visitOperator(o);
+  }
+
+  public void visitCommonOpRef(@NotNull OpenSCADCommonOpRef o) {
+    visitNamedElement(o);
   }
 
   public void visitConditionalExpr(@NotNull OpenSCADConditionalExpr o) {
@@ -231,6 +240,7 @@ public class OpenSCADVisitor extends PsiElementVisitor {
 
   public void visitVariableDeclaration(@NotNull OpenSCADVariableDeclaration o) {
     visitNamedElement(o);
+    // visitStubBasedPsiElement(o);
   }
 
   public void visitVariableRefExpr(@NotNull OpenSCADVariableRefExpr o) {

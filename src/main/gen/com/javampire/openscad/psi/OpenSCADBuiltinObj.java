@@ -10,4 +10,7 @@ public interface OpenSCADBuiltinObj extends OpenSCADObject {
   @NotNull
   OpenSCADArgAssignmentList getArgAssignmentList();
 
+  @NotNull
+  OpenSCADBuiltinObjRef getBuiltinObjRef();
+
 }

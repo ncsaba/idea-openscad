@@ -1,4 +1,4 @@
-package com.javampire.openscad;
+package com.javampire.openscad.highlighting;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
@@ -7,21 +7,12 @@ import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
+import com.javampire.openscad.lexer.OpenSCADLexerAdapter;
 import com.javampire.openscad.psi.OpenSCADTypes;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
-import static com.javampire.openscad.OpenSCADParserDefinition.COMMENTS;
-import static com.javampire.openscad.OpenSCADParserDefinition.OPERATOR_KEYWORDS;
-import static com.javampire.openscad.OpenSCADParserDefinition.OBJECT_KEYWORDS;
-import static com.javampire.openscad.OpenSCADParserDefinition.FUNCTION_KEYWORDS;
-import static com.javampire.openscad.OpenSCADParserDefinition.LANGUAGE_KEYWORDS;
-import static com.javampire.openscad.OpenSCADParserDefinition.PREDEFINED_SYMBOLS;
-import static com.javampire.openscad.OpenSCADParserDefinition.SEPARATOR_SYMBOLS;
-import static com.javampire.openscad.OpenSCADParserDefinition.ANGLE_BRACKETS_TOKENS;
-import static com.javampire.openscad.OpenSCADParserDefinition.BRACES_TOKENS;
-import static com.javampire.openscad.OpenSCADParserDefinition.BRACKETS_TOKENS;
-import static com.javampire.openscad.OpenSCADParserDefinition.PARENTHESES_TOKENS;
+import static com.javampire.openscad.parser.OpenSCADParserDefinition.*;
 
 public class OpenSCADSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey SEPARATOR =

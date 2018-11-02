@@ -1,10 +1,11 @@
-package com.javampire.openscad;
+package com.javampire.openscad.structureview;
 
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.structureView.StructureViewTreeElement;
 import com.intellij.ide.util.treeView.smartTree.SortableTreeElement;
 import com.intellij.ide.util.treeView.smartTree.TreeElement;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.NavigatablePsiElement;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OpenSCADStructureViewElement implements StructureViewTreeElement, SortableTreeElement {
+
+    private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.structureview.OpenSCADStructureViewElement");
 
     private NavigatablePsiElement element;
 
@@ -68,8 +71,9 @@ public class OpenSCADStructureViewElement implements StructureViewTreeElement, S
             final List<PsiElement> navigatableElements = PsiTreeUtil.getChildrenOfAnyType(
                     element,
                     OpenSCADModuleDeclaration.class, OpenSCADFunctionDeclaration.class,
-                    OpenSCADUseItem.class, OpenSCADIncludeItem.class
+                    OpenSCADUseItem.class, OpenSCADIncludeItem.class, OpenSCADVariableDeclaration.class
             );
+            LOG.info("navigatable elements: " + navigatableElements);
             for (PsiElement element : navigatableElements) {
                 final OpenSCADStructureViewElement child = new OpenSCADStructureViewElement((NavigatablePsiElement)element);
                 treeElements.add(child);

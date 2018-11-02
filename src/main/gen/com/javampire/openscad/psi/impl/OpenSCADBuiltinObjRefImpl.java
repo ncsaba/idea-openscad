@@ -9,37 +9,21 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.javampire.openscad.psi.*;
-import com.intellij.navigation.ItemPresentation;
-import com.javampire.openscad.psi.stub.OpenSCADVariableStub;
-import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.PsiReference;
 
-public class OpenSCADVariableDeclarationImpl extends OpenSCADVariableDeclarationStubElementImpl implements OpenSCADVariableDeclaration {
+public class OpenSCADBuiltinObjRefImpl extends OpenSCADNamedElementImpl implements OpenSCADBuiltinObjRef {
 
-  public OpenSCADVariableDeclarationImpl(@NotNull OpenSCADVariableStub stub, @NotNull IStubElementType type) {
-    super(stub, type);
-  }
-
-  public OpenSCADVariableDeclarationImpl(@NotNull ASTNode node) {
+  public OpenSCADBuiltinObjRefImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitVariableDeclaration(this);
+    visitor.visitBuiltinObjRef(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public OpenSCADExpr getExpr() {
-    return findNotNullChildByClass(OpenSCADExpr.class);
-  }
-
-  public ItemPresentation getPresentation() {
-    return OpenSCADPsiImplUtil.getPresentation(this);
   }
 
   public String getName() {
@@ -52,6 +36,10 @@ public class OpenSCADVariableDeclarationImpl extends OpenSCADVariableDeclaration
 
   public PsiElement getNameIdentifier() {
     return OpenSCADPsiImplUtil.getNameIdentifier(this);
+  }
+
+  public PsiReference getReference() {
+    return OpenSCADPsiImplUtil.getReference(this);
   }
 
 }

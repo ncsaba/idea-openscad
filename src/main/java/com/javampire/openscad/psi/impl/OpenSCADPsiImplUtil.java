@@ -8,14 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.util.PlatformIcons;
 import com.javampire.openscad.OpenSCADIcons;
-import com.javampire.openscad.OpenSCADParserDefinition;
+import com.javampire.openscad.parser.OpenSCADParserDefinition;
 import com.javampire.openscad.psi.*;
 import com.javampire.openscad.references.OpenSCADFunctionReference;
 import com.javampire.openscad.references.OpenSCADModuleReference;
+import com.javampire.openscad.references.OpenSCADVariableReference;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.regex.Pattern;
 
 public class OpenSCADPsiImplUtil {
 
@@ -54,6 +57,9 @@ public class OpenSCADPsiImplUtil {
                 if (element.getNode().getElementType() == OpenSCADTypes.FUNCTION_DECLARATION) {
                     return OpenSCADIcons.FUNCTION;
                 }
+                if (element.getNode().getElementType() == OpenSCADTypes.VARIABLE_DECLARATION) {
+                    return PlatformIcons.VARIABLE_ICON;
+                }
                 if (OpenSCADParserDefinition.IMPORT_TOKENS.contains(element.getNode().getElementType())) {
                     return OpenSCADIcons.FILE;
                 }
@@ -78,7 +84,10 @@ public class OpenSCADPsiImplUtil {
     }
 
     public static PsiElement setName(PsiElement element, String newName) {
-        if (OpenSCADParserDefinition.NAMED_ELEMENTS.contains(element.getNode().getElementType())) {
+        if (OpenSCADParserDefinition.NON_RENAMABLE_ELEMENTS.contains(element.getNode().getElementType())) {
+            // Builtin functions/modules can't be renamed
+            return element;
+        } else if (OpenSCADParserDefinition.NAMED_ELEMENTS.contains(element.getNode().getElementType())) {
             final ASTNode nameNode = element.getNode().findChildByType(OpenSCADTypes.IDENTIFIER);
             if (nameNode != null) {
                 PsiElement newNameElement = OpenSCADElementFactory.createIdentifier(element.getProject(), newName);
@@ -122,6 +131,18 @@ public class OpenSCADPsiImplUtil {
                 } else if (element instanceof OpenSCADFunctionNameRef) {
                     ref = new OpenSCADFunctionReference((OpenSCADNamedElement) element, new TextRange(0, element.getTextLength()));
                     return ref;
+                } else if (element instanceof OpenSCADVariableRefExpr) {
+                    ref = new OpenSCADVariableReference((OpenSCADNamedElement) element, new TextRange(0, element.getTextLength()));
+                    return ref;
+                } else if (element instanceof OpenSCADBuiltinExprRef) {
+                    ref = new OpenSCADFunctionReference((OpenSCADNamedElement) element, new TextRange(0, element.getTextLength()));
+                    return ref;
+                } else if (element instanceof OpenSCADBuiltinObjRef) {
+                    ref = new OpenSCADModuleReference((OpenSCADNamedElement) element, new TextRange(0, element.getTextLength()));
+                    return ref;
+                } else if (element instanceof OpenSCADCommonOpRef) {
+                    ref = new OpenSCADModuleReference((OpenSCADNamedElement) element, new TextRange(0, element.getTextLength()));
+                    return ref;
                 } else {
                     LOG.warn("getReference(not handled named element of type " + element.getClass().getName() + "): " + name);
                 }
@@ -151,6 +172,12 @@ public class OpenSCADPsiImplUtil {
             buf.append(argListNode.getText());
         }
         return buf.toString();
+    }
+
+    public static Pattern MULTILINE_PATTERN = Pattern.compile("\\R");
+
+    public static boolean isMultiLine(PsiElement element) {
+        return MULTILINE_PATTERN.matcher(element.getText()).find();
     }
 
     @Nullable
@@ -184,14 +211,40 @@ public class OpenSCADPsiImplUtil {
         IElementType docNodeElementType = docNode.getElementType();
         if (docNodeElementType == OpenSCADTypes.BLOCK_COMMENT) {
             text = text.replaceAll("(?sm)^\\s*//", "");
-            text = "<pre>" + text + "</pre>";
         } else if (docNodeElementType != OpenSCADTypes.DOC_COMMENT) {
-            return null;
+            text = null;
         } else {
-            text = text.replaceFirst("(?s)^\\s*/\\*\\*", "<pre>");
-            text = text.replaceFirst("(?s)\\s*\\*/\\s*$", "</pre>");
+            text = text.replaceFirst("(?s)^\\s*/\\*\\*", "");
+            text = text.replaceFirst("(?s)\\s*\\*/\\s*$", "");
             text = text.replaceAll("(?sm)^\\s*\\*", "");
         }
+        // If there's no documentation comment placed before the element, and if the element
+        // is on one line with an end of line comment, take that comment as documentation
+        if (text == null && ! isMultiLine(element)) {
+            final PsiElement nextComment = PsiTreeUtil.skipWhitespacesForward(element);
+            if (nextComment == null) {
+                return null;
+            }
+            final ASTNode commentNode = nextComment.getNode();
+            if (commentNode == null) {
+                return null;
+            }
+            if (commentNode.getElementType() == OpenSCADTypes.END_OF_LINE_COMMENT) {
+                for (PsiElement wsElement : PsiTreeUtil.getElementsOfRange(element, nextComment)) {
+                    if (isMultiLine(wsElement)) {
+                        return null;
+                    }
+                }
+                text = commentNode.getText();
+                text = text.replaceAll("(?sm)^\\s*//", "");
+            }
+        }
+        if (text != null) {
+            text = text.replaceAll("<", "&lt;");
+            text = text.replaceAll(">", "&gt;");
+            text = "<pre>" + text + "</pre>";
+        }
+        LOG.debug("Help text: " + text);
         return text;
     }
 

@@ -1,4 +1,4 @@
-package com.javampire.openscad;
+package com.javampire.openscad.highlighting;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
@@ -164,7 +164,7 @@ STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
     "||"                        { return OpenSCADTypes.OR; }
     "!"                         { return OpenSCADTypes.EXCL; }
 
-    {BLOCK_COMMENT_BODY}
+    ^{BLOCK_COMMENT_BODY}
     / {BLOCK_COMMENT_END}       { return OpenSCADTypes.BLOCK_COMMENT; }
     {C_STYLE_COMMENT}           { return OpenSCADTypes.C_STYLE_COMMENT; }
     {DOC_COMMENT}               { return OpenSCADTypes.DOC_COMMENT; }

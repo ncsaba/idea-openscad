@@ -1,4 +1,4 @@
-package com.javampire.openscad;
+package com.javampire.openscad.parser;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.ParserDefinition;
@@ -11,7 +11,8 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IStubFileElementType;
 import com.intellij.psi.tree.TokenSet;
-import com.javampire.openscad.parser.OpenSCADParser;
+import com.javampire.openscad.OpenSCADLanguage;
+import com.javampire.openscad.lexer.OpenSCADLexerAdapter;
 import com.javampire.openscad.psi.OpenSCADFile;
 import com.javampire.openscad.psi.OpenSCADTypes;
 import org.jetbrains.annotations.NotNull;
@@ -102,12 +103,20 @@ public class OpenSCADParserDefinition implements ParserDefinition {
             OpenSCADTypes.ARG_DECLARATION, OpenSCADTypes.FULL_ARG_DECLARATION,
             OpenSCADTypes.MODULE_OP_NAME_REF, OpenSCADTypes.MODULE_OBJ_NAME_REF,
             OpenSCADTypes.FUNCTION_NAME_REF, OpenSCADTypes.PARAMETER_REFERENCE,
-            OpenSCADTypes.VARIABLE_REF_EXPR
+            OpenSCADTypes.VARIABLE_REF_EXPR, OpenSCADTypes.VARIABLE_DECLARATION,
+            OpenSCADTypes.BUILTIN_EXPR_REF, OpenSCADTypes.BUILTIN_OBJ_REF,
+            OpenSCADTypes.COMMON_OP_REF
+    );
+
+    /** These elements can't be renamed */
+    public static final TokenSet NON_RENAMABLE_ELEMENTS = TokenSet.create(
+            OpenSCADTypes.BUILTIN_EXPR_REF, OpenSCADTypes.BUILTIN_OBJ_REF,
+            OpenSCADTypes.COMMON_OP_REF
     );
 
     /** These elements have their doc-string attached to the parent */
     public static final TokenSet DOC_IN_PARENT = TokenSet.create(
-            OpenSCADTypes.IDENTIFIER, OpenSCADTypes.VARIABLE_DECLARATION
+            OpenSCADTypes.IDENTIFIER
     );
 
     public static final IStubFileElementType FILE = new IStubFileElementType(OpenSCADLanguage.INSTANCE);

@@ -27,12 +27,6 @@ public class OpenSCADBlockObjImpl extends OpenSCADObjectImpl implements OpenSCAD
 
   @Override
   @NotNull
-  public List<OpenSCADAssignment> getAssignmentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADAssignment.class);
-  }
-
-  @Override
-  @NotNull
   public List<OpenSCADFunctionDeclaration> getFunctionDeclarationList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADFunctionDeclaration.class);
   }
@@ -47,6 +41,12 @@ public class OpenSCADBlockObjImpl extends OpenSCADObjectImpl implements OpenSCAD
   @NotNull
   public List<OpenSCADObject> getObjectList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADObject.class);
+  }
+
+  @Override
+  @NotNull
+  public List<OpenSCADVariableDeclaration> getVariableDeclarationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADVariableDeclaration.class);
   }
 
 }

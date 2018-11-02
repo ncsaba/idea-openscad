@@ -11,6 +11,9 @@ public interface OpenSCADBuiltinExpr extends OpenSCADExpr {
   OpenSCADArgAssignmentList getArgAssignmentList();
 
   @Nullable
+  OpenSCADBuiltinExprRef getBuiltinExprRef();
+
+  @Nullable
   OpenSCADExpr getExpr();
 
   @Nullable

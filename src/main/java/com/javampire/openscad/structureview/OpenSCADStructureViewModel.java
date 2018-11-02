@@ -1,4 +1,4 @@
-package com.javampire.openscad;
+package com.javampire.openscad.structureview;
 
 import com.intellij.ide.structureView.StructureViewModel;
 import com.intellij.ide.structureView.StructureViewModelBase;
@@ -21,7 +21,8 @@ public class OpenSCADStructureViewModel
                 OpenSCADModuleDeclaration.class,
                 OpenSCADFunctionDeclaration.class,
                 OpenSCADUseItem.class,
-                OpenSCADIncludeItem.class
+                OpenSCADIncludeItem.class,
+                OpenSCADVariableDeclaration.class
         );
         withSorters(Sorter.ALPHA_SORTER);
     }

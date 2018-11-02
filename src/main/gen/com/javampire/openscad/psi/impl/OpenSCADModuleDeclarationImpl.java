@@ -40,12 +40,6 @@ public class OpenSCADModuleDeclarationImpl extends OpenSCADModuleDeclarationStub
 
   @Override
   @Nullable
-  public OpenSCADAssignment getAssignment() {
-    return findChildByClass(OpenSCADAssignment.class);
-  }
-
-  @Override
-  @Nullable
   public OpenSCADFunctionDeclaration getFunctionDeclaration() {
     return findChildByClass(OpenSCADFunctionDeclaration.class);
   }
@@ -60,6 +54,12 @@ public class OpenSCADModuleDeclarationImpl extends OpenSCADModuleDeclarationStub
   @Nullable
   public OpenSCADObject getObject() {
     return findChildByClass(OpenSCADObject.class);
+  }
+
+  @Override
+  @Nullable
+  public OpenSCADVariableDeclaration getVariableDeclaration() {
+    return findChildByClass(OpenSCADVariableDeclaration.class);
   }
 
   public ItemPresentation getPresentation() {

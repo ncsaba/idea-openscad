@@ -7,6 +7,7 @@ import com.intellij.psi.tree.IElementType;
 import com.javampire.openscad.OpenSCADFileType;
 import com.javampire.openscad.psi.stub.OpenSCADFunctionStubElementType;
 import com.javampire.openscad.psi.stub.OpenSCADModuleStubElementType;
+import com.javampire.openscad.psi.stub.OpenSCADVariableStubElementType;
 
 public class OpenSCADElementFactory {
 
@@ -26,6 +27,8 @@ public class OpenSCADElementFactory {
             return OpenSCADModuleStubElementType.INSTANCE;
         } else if ("FUNCTION_DECLARATION".equals(debugName)) {
             return OpenSCADFunctionStubElementType.INSTANCE;
+        } else if ("VARIABLE_DECLARATION".equals(debugName)) {
+            return OpenSCADVariableStubElementType.INSTANCE;
         } else {
             return new OpenSCADElementType(debugName);
         }

@@ -11,6 +11,9 @@ public interface OpenSCADBuiltinOp extends OpenSCADOperator {
   OpenSCADArgAssignmentList getArgAssignmentList();
 
   @Nullable
+  OpenSCADCommonOpRef getCommonOpRef();
+
+  @Nullable
   OpenSCADFullArgDeclarationList getFullArgDeclarationList();
 
 }

@@ -1,4 +1,4 @@
-package com.javampire.openscad;
+package com.javampire.openscad.editor;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.folding.FoldingBuilderEx;
@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.javampire.openscad.OpenSCADParserDefinition.IMPORT_FOLDING_TOKENS;
-import static com.javampire.openscad.OpenSCADParserDefinition.LINE_COMMENT_TOKENS;
+import static com.javampire.openscad.parser.OpenSCADParserDefinition.IMPORT_FOLDING_TOKENS;
+import static com.javampire.openscad.parser.OpenSCADParserDefinition.LINE_COMMENT_TOKENS;
 
 public class OpenSCADFoldingBuilder extends FoldingBuilderEx {
     @NotNull

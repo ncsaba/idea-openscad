@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface OpenSCADBlockObj extends OpenSCADObject {
 
   @NotNull
-  List<OpenSCADAssignment> getAssignmentList();
-
-  @NotNull
   List<OpenSCADFunctionDeclaration> getFunctionDeclarationList();
 
   @NotNull
@@ -18,5 +15,8 @@ public interface OpenSCADBlockObj extends OpenSCADObject {
 
   @NotNull
   List<OpenSCADObject> getObjectList();
+
+  @NotNull
+  List<OpenSCADVariableDeclaration> getVariableDeclarationList();
 
 }

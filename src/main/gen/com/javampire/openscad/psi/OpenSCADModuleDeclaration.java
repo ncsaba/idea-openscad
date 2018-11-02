@@ -14,9 +14,6 @@ public interface OpenSCADModuleDeclaration extends OpenSCADNamedElement, StubBas
   OpenSCADArgDeclarationList getArgDeclarationList();
 
   @Nullable
-  OpenSCADAssignment getAssignment();
-
-  @Nullable
   OpenSCADFunctionDeclaration getFunctionDeclaration();
 
   @Nullable
@@ -24,6 +21,9 @@ public interface OpenSCADModuleDeclaration extends OpenSCADNamedElement, StubBas
 
   @Nullable
   OpenSCADObject getObject();
+
+  @Nullable
+  OpenSCADVariableDeclaration getVariableDeclaration();
 
   ItemPresentation getPresentation();
 
