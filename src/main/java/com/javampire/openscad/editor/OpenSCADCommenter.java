@@ -72,13 +72,13 @@ public class OpenSCADCommenter implements CodeDocumentationAwareCommenterEx {
 
     @Override
     public boolean isDocumentationComment(final PsiComment element) {
-        LOG.info("isDocumentationComment called with: " + element);
+        LOG.debug("isDocumentationComment called with: " + element);
         return false;
     }
 
     @Override
     public boolean isDocumentationCommentText(final PsiElement element) {
-        LOG.info("isDocumentationCommentText called with: " + element);
+        LOG.debug("isDocumentationCommentText called with: " + element);
         return false;
     }
 }
