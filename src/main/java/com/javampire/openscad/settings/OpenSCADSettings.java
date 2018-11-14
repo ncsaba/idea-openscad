@@ -37,11 +37,16 @@ public class OpenSCADSettings implements PersistentStateComponent<OpenSCADSettin
 
     public static boolean hasExecutable() {
         String executable = OpenSCADSettings.getInstance().getOpenSCADExecutable();
-        return !StringUtil.isEmptyOrSpaces(executable) && new File(executable).canExecute();
+        return ! StringUtil.isEmptyOrSpaces(executable) && new File(executable).canExecute();
     }
 
     public void setOpenSCADExecutable(@NotNull final String openSCADExecutable) {
         this.openSCADExecutable = openSCADExecutable;
     }
 
+    @Override
+    public void noStateLoaded() {
+        // First run, let's try to set up OpenSCAD executable from default choices
+        // TODO: implement
+    }
 }

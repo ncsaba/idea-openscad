@@ -34,7 +34,7 @@
                              id="OpenSCADSettings" displayName="OpenSCAD Language">
         </projectConfigurable>
 
-        <applicationService serviceImplementation="com.javampire.openscad.settings.OpenSCADSettings"/>
+        <projectService serviceImplementation="com.javampire.openscad.settings.OpenSCADSettings"/>
     </extensions>
 
     <depends>com.intellij.modules.lang</depends>

@@ -35,7 +35,7 @@ public class OpenSCADPsiImplUtil {
                         return nameNode.getText();
                     }
                 } else if (OpenSCADParserDefinition.IMPORT_TOKENS.contains(element.getNode().getElementType())) {
-                    final ASTNode pathNode = element.getNode().findChildByType(OpenSCADTypes.INCLUDE_PATH);
+                    final ASTNode pathNode = element.getNode().findChildByType(OpenSCADTypes.INCLUDE_PATH_REF);
                     if (pathNode != null) {
                         return pathNode.getText().replaceAll("^.*/([^/]*)$", "$1");
                     }
@@ -120,7 +120,6 @@ public class OpenSCADPsiImplUtil {
 
     public static PsiReference getReference(PsiElement element) {
         // TODO: implement variable/parameter references
-        // TODO: implement import references
         PsiReference ref;
         if (element instanceof OpenSCADNamedElement) {
             final String name = ((OpenSCADNamedElement) element).getName();

@@ -38,6 +38,7 @@ public interface OpenSCADTypes {
   IElementType IF_ELEMENT = OpenSCADElementFactory.getElementType("IF_ELEMENT");
   IElementType IF_OP = OpenSCADElementFactory.getElementType("IF_OP");
   IElementType INCLUDE_ITEM = OpenSCADElementFactory.getElementType("INCLUDE_ITEM");
+  IElementType INCLUDE_PATH_REF = OpenSCADElementFactory.getElementType("INCLUDE_PATH_REF");
   IElementType INDEX_EXPR = OpenSCADElementFactory.getElementType("INDEX_EXPR");
   IElementType LET_ELEMENT = OpenSCADElementFactory.getElementType("LET_ELEMENT");
   IElementType LIST_COMPREHENSION_EXPR = OpenSCADElementFactory.getElementType("LIST_COMPREHENSION_EXPR");
@@ -206,6 +207,9 @@ public interface OpenSCADTypes {
       }
       else if (type == INCLUDE_ITEM) {
         return new OpenSCADIncludeItemImpl(node);
+      }
+      else if (type == INCLUDE_PATH_REF) {
+        return new OpenSCADIncludePathRefImpl(node);
       }
       else if (type == INDEX_EXPR) {
         return new OpenSCADIndexExprImpl(node);

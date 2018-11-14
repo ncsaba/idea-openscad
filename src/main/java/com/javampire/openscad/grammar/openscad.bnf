@@ -32,8 +32,16 @@ private item ::= (
 
 private comment_item ::= C_STYLE_COMMENT | DOC_COMMENT | END_OF_LINE_COMMENT | BLOCK_COMMENT
 
-include_item ::= INCLUDE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END { methods=[getPresentation] }
-use_item ::= USE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END { methods=[getPresentation] }
+include_item ::= INCLUDE_KEYWORD INCLUDE_START include_path_ref INCLUDE_END {
+    methods=[getPresentation]
+}
+use_item ::= USE_KEYWORD INCLUDE_START include_path_ref INCLUDE_END {
+    methods=[getPresentation]
+}
+
+include_path_ref ::= INCLUDE_PATH {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADImportElementImpl"
+}
 
 object ::= builtin_obj
          | module_call_obj

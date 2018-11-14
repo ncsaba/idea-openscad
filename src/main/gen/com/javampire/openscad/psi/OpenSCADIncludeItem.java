@@ -8,6 +8,9 @@ import com.intellij.navigation.ItemPresentation;
 
 public interface OpenSCADIncludeItem extends PsiElement {
 
+  @NotNull
+  OpenSCADIncludePathRef getIncludePathRef();
+
   ItemPresentation getPresentation();
 
 }

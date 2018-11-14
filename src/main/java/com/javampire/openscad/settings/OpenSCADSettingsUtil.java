@@ -8,13 +8,13 @@ import com.intellij.openapi.util.text.StringUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class OpenSCADSettingsUtil {
 
     public static final int MINUTE = 60 * 1000;
+
+    private static final Map<String, OpenSCADInfo> INFO_MAP = Collections.synchronizedMap(new HashMap<>());
 
     private static List<String> getLibraryPaths() {
         final OpenSCADInfo openSCADInfo = getOpenSCADInfo();
@@ -27,13 +27,19 @@ public class OpenSCADSettingsUtil {
             return null;
         }
         final String openSCADExecutable = OpenSCADSettings.getInstance().getOpenSCADExecutable();
+        OpenSCADInfo result = INFO_MAP.get(openSCADExecutable);
+        if (result != null) {
+            return result;
+        }
         try {
             String infoString = new CapturingProcessHandler(
                 new GeneralCommandLine(openSCADExecutable, "--info")
             ).runProcess(5 * MINUTE).getStdout().trim();
 
             if (!infoString.isEmpty()) {
-                return new OpenSCADInfo(infoString);
+                result = new OpenSCADInfo(infoString);
+                INFO_MAP.put(openSCADExecutable, result);
+                return result;
             }
         } catch (ExecutionException e) {
             e.printStackTrace();

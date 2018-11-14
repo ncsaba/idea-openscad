@@ -132,6 +132,10 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitIncludePathRef(@NotNull OpenSCADIncludePathRef o) {
+    visitPsiElement(o);
+  }
+
   public void visitIndexExpr(@NotNull OpenSCADIndexExpr o) {
     visitExpr(o);
   }

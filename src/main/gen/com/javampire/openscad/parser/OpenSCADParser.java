@@ -95,6 +95,9 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     else if (t == INCLUDE_ITEM) {
       r = include_item(b, 0);
     }
+    else if (t == INCLUDE_PATH_REF) {
+      r = include_path_ref(b, 0);
+    }
     else if (t == LET_ELEMENT) {
       r = let_element(b, 0);
     }
@@ -823,14 +826,28 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // INCLUDE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END
+  // INCLUDE_KEYWORD INCLUDE_START include_path_ref INCLUDE_END
   public static boolean include_item(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "include_item")) return false;
     if (!nextTokenIs(b, INCLUDE_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, INCLUDE_KEYWORD, INCLUDE_START, INCLUDE_PATH, INCLUDE_END);
+    r = consumeTokens(b, 0, INCLUDE_KEYWORD, INCLUDE_START);
+    r = r && include_path_ref(b, l + 1);
+    r = r && consumeToken(b, INCLUDE_END);
     exit_section_(b, m, INCLUDE_ITEM, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // INCLUDE_PATH
+  public static boolean include_path_ref(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "include_path_ref")) return false;
+    if (!nextTokenIs(b, INCLUDE_PATH)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, INCLUDE_PATH);
+    exit_section_(b, m, INCLUDE_PATH_REF, r);
     return r;
   }
 
@@ -1065,13 +1082,15 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // USE_KEYWORD INCLUDE_START INCLUDE_PATH INCLUDE_END
+  // USE_KEYWORD INCLUDE_START include_path_ref INCLUDE_END
   public static boolean use_item(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "use_item")) return false;
     if (!nextTokenIs(b, USE_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, USE_KEYWORD, INCLUDE_START, INCLUDE_PATH, INCLUDE_END);
+    r = consumeTokens(b, 0, USE_KEYWORD, INCLUDE_START);
+    r = r && include_path_ref(b, l + 1);
+    r = r && consumeToken(b, INCLUDE_END);
     exit_section_(b, m, USE_ITEM, r);
     return r;
   }
