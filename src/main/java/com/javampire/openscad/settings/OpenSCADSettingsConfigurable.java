@@ -12,15 +12,15 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.List;
 import java.util.Objects;
 
 public class OpenSCADSettingsConfigurable implements SearchableConfigurable.Parent, Configurable.NoScroll {
     private final Project myProject;
 
+    @SuppressWarnings("unused")
     private JPanel settingsPanel;
 
-    private TextFieldWithBrowseButton opanSCADExecutableField;
+    private TextFieldWithBrowseButton openSCADExecutableField;
 
     OpenSCADSettingsConfigurable(Project project) {
         myProject = project;
@@ -59,23 +59,17 @@ public class OpenSCADSettingsConfigurable implements SearchableConfigurable.Pare
     @Override
     public boolean isModified() {
         final OpenSCADSettings openSCADSettings = OpenSCADSettings.getInstance();
-        return !Objects.equals(openSCADSettings.getOpenSCADExecutable(), opanSCADExecutableField.getText());
+        return !Objects.equals(openSCADSettings.getOpenSCADExecutable(), openSCADExecutableField.getText());
     }
 
     @Override
     public void apply() {
         final OpenSCADSettings openSCADSettings = OpenSCADSettings.getInstance();
-        final String openSCADExecutable = opanSCADExecutableField.getText();
+        final String openSCADExecutable = openSCADExecutableField.getText();
 
         openSCADSettings.setOpenSCADExecutable(openSCADExecutable);
 
-        OpenSCADInfo info = OpenSCADSettingsUtil.getOpenSCADInfo();
-        if (info != null) {
-            final List<String> libraryPaths = info.getLibraryPaths();
-            if (! libraryPaths.isEmpty()) {
-                LibraryUtil.createLibrary(myProject, "OpenSCAD Libraries", libraryPaths, true);
-            }
-        }
+        LibraryUtil.updateOpenSCADLibraries(myProject);
     }
 
     @Override
@@ -83,7 +77,7 @@ public class OpenSCADSettingsConfigurable implements SearchableConfigurable.Pare
         final OpenSCADSettings openSCADSettings = OpenSCADSettings.getInstance();
 
         final String openSCADExecutable = openSCADSettings.getOpenSCADExecutable();
-        opanSCADExecutableField.setText(openSCADExecutable != null ? openSCADExecutable : "");
+        openSCADExecutableField.setText(openSCADExecutable != null ? openSCADExecutable : "");
     }
 
     @Override
@@ -91,12 +85,12 @@ public class OpenSCADSettingsConfigurable implements SearchableConfigurable.Pare
     }
 
     private void createUIComponents() {
-        opanSCADExecutableField = new TextFieldWithBrowseButton();
+        openSCADExecutableField = new TextFieldWithBrowseButton();
 
         final FileChooserDescriptor executableDescriptor = FileChooserDescriptorFactory.createSingleLocalFileDescriptor().withFileFilter(
                 virtualFile -> virtualFile.isInLocalFileSystem() && new File(virtualFile.getPath()).canExecute()
         );
-        opanSCADExecutableField.addBrowseFolderListener(
+        openSCADExecutableField.addBrowseFolderListener(
                 "Choose OpenSCAD Executable",
                 "Choose OpenSCAD executable",
                 myProject,
@@ -104,6 +98,7 @@ public class OpenSCADSettingsConfigurable implements SearchableConfigurable.Pare
         );
     }
 
+    @NotNull
     @Override
     public Configurable[] getConfigurables() {
         return new Configurable[0];

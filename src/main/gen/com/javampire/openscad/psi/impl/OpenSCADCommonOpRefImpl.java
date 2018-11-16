@@ -9,9 +9,8 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.javampire.openscad.psi.*;
-import com.intellij.psi.PsiReference;
 
-public class OpenSCADCommonOpRefImpl extends OpenSCADNamedElementImpl implements OpenSCADCommonOpRef {
+public class OpenSCADCommonOpRefImpl extends OpenSCADResolvableElementImpl implements OpenSCADCommonOpRef {
 
   public OpenSCADCommonOpRefImpl(@NotNull ASTNode node) {
     super(node);
@@ -26,20 +25,12 @@ public class OpenSCADCommonOpRefImpl extends OpenSCADNamedElementImpl implements
     else super.accept(visitor);
   }
 
-  public String getName() {
-    return OpenSCADPsiImplUtil.getName(this);
-  }
-
   public PsiElement setName(String newName) {
     return OpenSCADPsiImplUtil.setName(this, newName);
   }
 
   public PsiElement getNameIdentifier() {
     return OpenSCADPsiImplUtil.getNameIdentifier(this);
-  }
-
-  public PsiReference getReference() {
-    return OpenSCADPsiImplUtil.getReference(this);
   }
 
 }

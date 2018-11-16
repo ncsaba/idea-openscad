@@ -11,10 +11,6 @@ public interface OpenSCADParameterReference extends OpenSCADNamedElement {
 
   ItemPresentation getPresentation();
 
-  String getName();
-
-  PsiElement setName(String newName);
-
   PsiElement getNameIdentifier();
 
   PsiReference getReference();

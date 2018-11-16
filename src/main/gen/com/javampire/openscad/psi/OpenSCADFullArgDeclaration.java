@@ -10,10 +10,6 @@ public interface OpenSCADFullArgDeclaration extends OpenSCADNamedElement {
   @NotNull
   OpenSCADExpr getExpr();
 
-  String getName();
-
-  PsiElement setName(String newName);
-
   PsiElement getNameIdentifier();
 
 }

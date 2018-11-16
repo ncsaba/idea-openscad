@@ -3,18 +3,16 @@ package com.javampire.openscad.psi.impl;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.PlatformIcons;
 import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.parser.OpenSCADParserDefinition;
-import com.javampire.openscad.psi.*;
-import com.javampire.openscad.references.OpenSCADFunctionReference;
-import com.javampire.openscad.references.OpenSCADModuleReference;
-import com.javampire.openscad.references.OpenSCADVariableReference;
+import com.javampire.openscad.psi.OpenSCADNamedElement;
+import com.javampire.openscad.psi.OpenSCADTypes;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -68,37 +66,9 @@ public class OpenSCADPsiImplUtil {
         };
     }
 
-    public static String getName(final PsiElement element) {
-        if (OpenSCADParserDefinition.NAMED_ELEMENTS.contains(element.getNode().getElementType())) {
-            final ASTNode nameNode = element.getNode().findChildByType(OpenSCADTypes.IDENTIFIER);
-            if (nameNode != null) {
-                return nameNode.getText();
-            }
-        } else if (element.getNode().getElementType() == OpenSCADTypes.QUALIFICATION_EXPR) {
-            final ASTNode nameNode = element.getNode().getLastChildNode();
-            if (nameNode != null && nameNode.getElementType() == OpenSCADTypes.IDENTIFIER) {
-                return nameNode.getText();
-            }
-        }
-        return null;
-    }
-
     public static PsiElement setName(PsiElement element, String newName) {
         if (OpenSCADParserDefinition.NON_RENAMABLE_ELEMENTS.contains(element.getNode().getElementType())) {
-            // Builtin functions/modules can't be renamed
-            return element;
-        } else if (OpenSCADParserDefinition.NAMED_ELEMENTS.contains(element.getNode().getElementType())) {
-            final ASTNode nameNode = element.getNode().findChildByType(OpenSCADTypes.IDENTIFIER);
-            if (nameNode != null) {
-                PsiElement newNameElement = OpenSCADElementFactory.createIdentifier(element.getProject(), newName);
-                element.getNode().replaceChild(nameNode, newNameElement.getNode());
-            }
-        } else if (element.getNode().getElementType() == OpenSCADTypes.QUALIFICATION_EXPR) {
-            final ASTNode nameNode = element.getNode().getLastChildNode();
-            if (nameNode != null && nameNode.getElementType() == OpenSCADTypes.IDENTIFIER) {
-                PsiElement newNameElement = OpenSCADElementFactory.createIdentifier(element.getProject(), newName);
-                element.getNode().replaceChild(nameNode, newNameElement.getNode());
-            }
+            throw new IncorrectOperationException("Builtin functions/modules can't be renamed");
         }
         return element;
     }
@@ -119,38 +89,8 @@ public class OpenSCADPsiImplUtil {
     }
 
     public static PsiReference getReference(PsiElement element) {
-        // TODO: implement variable/parameter references
-        PsiReference ref;
-        if (element instanceof OpenSCADNamedElement) {
-            final String name = ((OpenSCADNamedElement) element).getName();
-            if (name != null) {
-                if (element instanceof OpenSCADModuleObjNameRef || element instanceof OpenSCADModuleOpNameRef) {
-                    ref = new OpenSCADModuleReference((OpenSCADNamedElement) element, new TextRange(0, element.getTextLength()));
-                    return ref;
-                } else if (element instanceof OpenSCADFunctionNameRef) {
-                    ref = new OpenSCADFunctionReference((OpenSCADNamedElement) element, new TextRange(0, element.getTextLength()));
-                    return ref;
-                } else if (element instanceof OpenSCADVariableRefExpr) {
-                    ref = new OpenSCADVariableReference((OpenSCADNamedElement) element, new TextRange(0, element.getTextLength()));
-                    return ref;
-                } else if (element instanceof OpenSCADBuiltinExprRef) {
-                    ref = new OpenSCADFunctionReference((OpenSCADNamedElement) element, new TextRange(0, element.getTextLength()));
-                    return ref;
-                } else if (element instanceof OpenSCADBuiltinObjRef) {
-                    ref = new OpenSCADModuleReference((OpenSCADNamedElement) element, new TextRange(0, element.getTextLength()));
-                    return ref;
-                } else if (element instanceof OpenSCADCommonOpRef) {
-                    ref = new OpenSCADModuleReference((OpenSCADNamedElement) element, new TextRange(0, element.getTextLength()));
-                    return ref;
-                } else {
-                    LOG.warn("getReference(not handled named element of type " + element.getClass().getName() + "): " + name);
-                }
-            } else {
-                LOG.warn("getReference(named element of type " + element.getClass().getName() + "): null name");
-            }
-        } else {
-            LOG.warn(element + "(no getName)");
-        }
+        // TODO: implement parameter references
+        LOG.warn("Unhandled reference element: " + element);
         return null;
     }
 

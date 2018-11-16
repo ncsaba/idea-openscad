@@ -10,9 +10,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.javampire.openscad.psi.*;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiReference;
 
-public class OpenSCADFunctionNameRefImpl extends OpenSCADNamedElementImpl implements OpenSCADFunctionNameRef {
+public class OpenSCADFunctionNameRefImpl extends OpenSCADResolvableElementImpl implements OpenSCADFunctionNameRef {
 
   public OpenSCADFunctionNameRefImpl(@NotNull ASTNode node) {
     super(node);
@@ -31,20 +30,8 @@ public class OpenSCADFunctionNameRefImpl extends OpenSCADNamedElementImpl implem
     return OpenSCADPsiImplUtil.getPresentation(this);
   }
 
-  public String getName() {
-    return OpenSCADPsiImplUtil.getName(this);
-  }
-
-  public PsiElement setName(String newName) {
-    return OpenSCADPsiImplUtil.setName(this, newName);
-  }
-
   public PsiElement getNameIdentifier() {
     return OpenSCADPsiImplUtil.getNameIdentifier(this);
-  }
-
-  public PsiReference getReference() {
-    return OpenSCADPsiImplUtil.getReference(this);
   }
 
 }

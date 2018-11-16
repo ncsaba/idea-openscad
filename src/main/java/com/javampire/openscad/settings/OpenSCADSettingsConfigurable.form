@@ -21,7 +21,7 @@
               <text value="OpenSCAD Executable : "/>
             </properties>
           </component>
-          <component id="91849" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="opanSCADExecutableField" custom-create="true">
+          <component id="91849" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="openSCADExecutableField" custom-create="true">
             <constraints border-constraint="Center"/>
             <properties/>
           </component>

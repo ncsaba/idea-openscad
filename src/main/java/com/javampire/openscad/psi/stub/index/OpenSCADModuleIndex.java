@@ -6,11 +6,15 @@ import com.intellij.psi.stubs.StringStubIndexExtension;
 import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.stubs.StubIndexKey;
 import com.javampire.openscad.psi.OpenSCADModuleDeclaration;
+import com.javampire.openscad.references.OpenSCADReferenceResolver;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public class OpenSCADModuleIndex extends StringStubIndexExtension<OpenSCADModuleDeclaration> {
+public class OpenSCADModuleIndex
+        extends StringStubIndexExtension<OpenSCADModuleDeclaration>
+        implements OpenSCADReferenceResolver
+{
 
     public static final StubIndexKey<String, OpenSCADModuleDeclaration> MODULE = StubIndexKey.createIndexKey("OpenSCAD.module.name");
 

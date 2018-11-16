@@ -11,10 +11,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 
-@State(name = "OpenSCADSettings", storages = @Storage("rSettings.xml"))
+@State(name = "OpenSCADSettings", storages = @Storage("OpenSCADSettings.xml"))
 public class OpenSCADSettings implements PersistentStateComponent<OpenSCADSettings> {
 
-    public String openSCADExecutable = OpenSCADSettingsUtil.suggestExecutablePath();
+    public String openSCADExecutable = null;
 
     public static OpenSCADSettings getInstance() {
         return ServiceManager.getService(OpenSCADSettings.class);
@@ -44,9 +44,4 @@ public class OpenSCADSettings implements PersistentStateComponent<OpenSCADSettin
         this.openSCADExecutable = openSCADExecutable;
     }
 
-    @Override
-    public void noStateLoaded() {
-        // First run, let's try to set up OpenSCAD executable from default choices
-        // TODO: implement
-    }
 }

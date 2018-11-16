@@ -18,8 +18,6 @@ public interface OpenSCADFunctionDeclaration extends OpenSCADNamedElement, StubB
 
   ItemPresentation getPresentation();
 
-  PsiElement setName(String newName);
-
   PsiElement getNameIdentifier();
 
 }
