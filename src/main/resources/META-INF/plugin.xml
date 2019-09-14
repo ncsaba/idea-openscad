@@ -8,13 +8,16 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      Release 0.0.1: Initial release.<br>
+    Release 1.3.0: Fix known grammar parsing issues, Added structure view, Partial code navigation (modules/functions/variables without considering context), Documentation popups.<br>
+    Release 1.2.0-SNAPSHOT: Fixed change-log from the default text.<br>
+    Release 1.1.0-SNAPSHOT: Updated plugin name to conform to standards for uploading to the jetbrains plugin repository.<br>
+    Release 1.0.0-SNAPSHOT: Syntax highlighting, Code folding.<br>
     ]]>
     </change-notes>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Extension points for openscad -->
-        <fileTypeFactory implementation="com.javampire.openscad.OpenSCADFileTypeFactory"/>
+        <fileType name="OpenSCAD file" implementationClass="com.javampire.openscad.OpenSCADFileType" fieldName="INSTANCE" language="OpenSCAD" extensions="scad"/>
         <lang.parserDefinition language="OpenSCAD" implementationClass="com.javampire.openscad.parser.OpenSCADParserDefinition"/>
         <lang.syntaxHighlighterFactory language="OpenSCAD" implementationClass="com.javampire.openscad.highlighting.OpenSCADSyntaxHighlighterFactory"/>
         <colorSettingsPage implementation="com.javampire.openscad.highlighting.OpenSCADColorSettingsPage"/>
@@ -29,6 +32,7 @@
         <documentationProvider implementation="com.javampire.openscad.documentation.OpenSCADDocumentationProvider"/>
         <lang.braceMatcher language="OpenSCAD" implementationClass="com.javampire.openscad.highlighting.OpenSCADBraceMatcher"/>
         <indexedRootsProvider implementation="com.javampire.openscad.psi.stub.index.BuiltinIndexContributor"/>
+        <lang.formatter implementationClass="com.javampire.openscad.formatter.OpenSCADFormattingModelBuilder" />
     </extensions>
 
     <depends>com.intellij.modules.lang</depends>

@@ -8,8 +8,9 @@ import com.intellij.ide.util.treeView.smartTree.Sorter;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiFile;
 import com.javampire.openscad.psi.*;
-import org.fest.util.Arrays;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 public class OpenSCADStructureViewModel
         extends StructureViewModelBase
@@ -40,6 +41,6 @@ public class OpenSCADStructureViewModel
     @NotNull
     @Override
     public Grouper[] getGroupers() {
-        return Arrays.array(new OpenSCADElementGrouper());
+        return new Grouper[] {new OpenSCADElementGrouper()};
     }
 }
