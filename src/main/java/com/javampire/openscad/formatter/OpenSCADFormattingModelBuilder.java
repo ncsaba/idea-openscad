@@ -40,7 +40,8 @@ public class OpenSCADFormattingModelBuilder implements FormattingModelBuilder {
         OpenSCADCodeStyleSettings customSettings = settings.getCustomSettings(OpenSCADCodeStyleSettings.class);
         LOG.info("customSettings : " + customSettings.toString());
 
-        final OpenSCADBlock block = new OpenSCADBlock(astNode, Indent.getAbsoluteNoneIndent(), null, new FormattingContext(openSCADSettings, new AlignmentProvider(), customSettings, false));
-        return new PsiBasedFormattingModel(containingFile, block, FormattingDocumentModelImpl.createOn(containingFile));
+        /*final OpenSCADBlock block = new OpenSCADBlock(astNode, Indent.getAbsoluteNoneIndent(), null, new FormattingContext(openSCADSettings, new AlignmentProvider(), customSettings, false));
+        return new PsiBasedFormattingModel(containingFile, block, FormattingDocumentModelImpl.createOn(containingFile));*/
+        return null;
     }
 }

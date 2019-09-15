@@ -3,7 +3,6 @@ package com.javampire.openscad.editor;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.folding.FoldingBuilderEx;
 import com.intellij.lang.folding.FoldingDescriptor;
-import com.intellij.lang.folding.NamedFoldingDescriptor;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
@@ -135,7 +134,7 @@ public class OpenSCADFoldingBuilder extends FoldingBuilderEx {
             final boolean isMultiLine = document.getLineNumber(startOffset) != document.getLineNumber(endOffset);
             if (isMultiLine) {
                 list.add(
-                    new NamedFoldingDescriptor(
+                    new FoldingDescriptor(
                         element.getNode(),
                         new TextRange(startOffset, endOffset),
                         null,
@@ -159,7 +158,7 @@ public class OpenSCADFoldingBuilder extends FoldingBuilderEx {
         boolean multiLine = document.getLineNumber(startOffset) != document.getLineNumber(endOffset);
         if (multiLine) {
             list.add(
-                    new NamedFoldingDescriptor(
+                    new FoldingDescriptor(
                             element.getNode(),
                             new TextRange(startOffset, endOffset),
                             null,
