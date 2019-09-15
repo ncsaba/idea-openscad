@@ -683,7 +683,7 @@ class OpenSCADLexer implements FlexLexer {
 
 
   /**
-   * Reports an error that occured while scanning.
+   * Reports an error that occurred while scanning.
    *
    * In a wellformed scanner (no or only correct usage of
    * yypushback(int) and a match-all fallback rule) this method
@@ -764,11 +764,11 @@ class OpenSCADLexer implements FlexLexer {
       if (zzMarkedPosL > zzStartRead) {
         switch (zzBufferL.charAt(zzMarkedPosL-1)) {
         case '\n':
-        case '\u000B':  // fall though
-        case '\u000C':  // fall though
-        case '\u0085':  // fall though
-        case '\u2028':  // fall though
-        case '\u2029':  // fall though
+        case '\u000B':  // fall through
+        case '\u000C':  // fall through
+        case '\u0085':  // fall through
+        case '\u2028':  // fall through
+        case '\u2029':  // fall through
           zzAtBOL = true;
           break;
         case '\r': 

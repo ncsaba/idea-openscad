@@ -27,6 +27,7 @@ public class OpenSCADIncludeItemImpl extends ASTWrapperPsiElement implements Ope
     else super.accept(visitor);
   }
 
+  @Override
   public ItemPresentation getPresentation() {
     return OpenSCADPsiImplUtil.getPresentation(this);
   }

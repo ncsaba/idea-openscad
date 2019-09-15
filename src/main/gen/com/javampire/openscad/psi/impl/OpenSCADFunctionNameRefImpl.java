@@ -27,22 +27,27 @@ public class OpenSCADFunctionNameRefImpl extends OpenSCADNamedElementImpl implem
     else super.accept(visitor);
   }
 
+  @Override
   public ItemPresentation getPresentation() {
     return OpenSCADPsiImplUtil.getPresentation(this);
   }
 
+  @Override
   public String getName() {
     return OpenSCADPsiImplUtil.getName(this);
   }
 
+  @Override
   public PsiElement setName(String newName) {
     return OpenSCADPsiImplUtil.setName(this, newName);
   }
 
+  @Override
   public PsiElement getNameIdentifier() {
     return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }
 
+  @Override
   public PsiReference getReference() {
     return OpenSCADPsiImplUtil.getReference(this);
   }

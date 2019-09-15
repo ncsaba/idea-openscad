@@ -26,18 +26,22 @@ public class OpenSCADCommonOpRefImpl extends OpenSCADNamedElementImpl implements
     else super.accept(visitor);
   }
 
+  @Override
   public String getName() {
     return OpenSCADPsiImplUtil.getName(this);
   }
 
+  @Override
   public PsiElement setName(String newName) {
     return OpenSCADPsiImplUtil.setName(this, newName);
   }
 
+  @Override
   public PsiElement getNameIdentifier() {
     return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }
 
+  @Override
   public PsiReference getReference() {
     return OpenSCADPsiImplUtil.getReference(this);
   }

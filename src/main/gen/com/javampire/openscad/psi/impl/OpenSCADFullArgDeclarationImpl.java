@@ -31,14 +31,17 @@ public class OpenSCADFullArgDeclarationImpl extends OpenSCADNamedElementImpl imp
     return findNotNullChildByClass(OpenSCADExpr.class);
   }
 
+  @Override
   public String getName() {
     return OpenSCADPsiImplUtil.getName(this);
   }
 
+  @Override
   public PsiElement setName(String newName) {
     return OpenSCADPsiImplUtil.setName(this, newName);
   }
 
+  @Override
   public PsiElement getNameIdentifier() {
     return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }

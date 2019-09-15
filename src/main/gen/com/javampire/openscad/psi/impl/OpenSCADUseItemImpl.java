@@ -27,6 +27,7 @@ public class OpenSCADUseItemImpl extends ASTWrapperPsiElement implements OpenSCA
     else super.accept(visitor);
   }
 
+  @Override
   public ItemPresentation getPresentation() {
     return OpenSCADPsiImplUtil.getPresentation(this);
   }
