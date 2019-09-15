@@ -1,43 +1,41 @@
 <idea-plugin>
-    <id>com.javampire.idea-openscad</id>
-    <name>OpenSCAD Language Support</name>
-    <vendor email="idea-openscad@javampire.com" url="http://github.com/ncsaba/idea-openscad">Csaba Nagy</vendor>
+  <id>com.javampire.idea-openscad</id>
+  <name>OpenSCAD Language Support</name>
+  <vendor email="idea-openscad@javampire.com" url="http://github.com/ncsaba/idea-openscad">Csaba Nagy</vendor>
 
-    <description><![CDATA[
+  <idea-version since-build="192" />
+
+  <description><![CDATA[
     Syntax highlighting and refactoring support for OpenSCAD files.
     ]]></description>
 
-    <change-notes>
-        Changes are documented in our [change log](https://github.com/ncsaba/idea-openscad/blob/master/Changes.md)
-    </change-notes>
+  <change-notes>
+    Changes are documented in our [change log](https://github.com/ncsaba/idea-openscad/blob/master/Changes.md)
+  </change-notes>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <!-- Extension points for openscad -->
-        <fileType name="OpenSCAD" implementationClass="com.javampire.openscad.OpenSCADFileType" fieldName="INSTANCE" language="OpenSCAD" extensions="scad"/>
-        <lang.parserDefinition language="OpenSCAD" implementationClass="com.javampire.openscad.parser.OpenSCADParserDefinition"/>
-        <lang.syntaxHighlighterFactory language="OpenSCAD" implementationClass="com.javampire.openscad.highlighting.OpenSCADSyntaxHighlighterFactory"/>
-        <colorSettingsPage implementation="com.javampire.openscad.highlighting.OpenSCADColorSettingsPage"/>
-        <bundledColorScheme path="com/javampire/openscad/color_schemes/OpenSCADDefault"/>
-        <lang.foldingBuilder language="OpenSCAD" implementationClass="com.javampire.openscad.editor.OpenSCADFoldingBuilder"/>
-        <lang.psiStructureViewFactory language="OpenSCAD" implementationClass="com.javampire.openscad.structureview.OpenSCADStructureViewFactory"/>
-        <stubElementTypeHolder class="com.javampire.openscad.psi.OpenSCADTypes"/>
-        <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADModuleIndex"/>
-        <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADFunctionIndex"/>
-        <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADVariableIndex"/>
-        <lang.commenter language="OpenSCAD" implementationClass="com.javampire.openscad.editor.OpenSCADCommenter"/>
-        <documentationProvider implementation="com.javampire.openscad.documentation.OpenSCADDocumentationProvider"/>
-        <lang.braceMatcher language="OpenSCAD" implementationClass="com.javampire.openscad.highlighting.OpenSCADBraceMatcher"/>
-        <indexedRootsProvider implementation="com.javampire.openscad.psi.stub.index.BuiltinIndexContributor"/>
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Extension points for openscad -->
+    <fileType name="OpenSCAD" implementationClass="com.javampire.openscad.OpenSCADFileType" fieldName="INSTANCE" language="OpenSCAD" extensions="scad" />
+    <lang.parserDefinition language="OpenSCAD" implementationClass="com.javampire.openscad.parser.OpenSCADParserDefinition" />
+    <lang.syntaxHighlighterFactory language="OpenSCAD" implementationClass="com.javampire.openscad.highlighting.OpenSCADSyntaxHighlighterFactory" />
+    <colorSettingsPage implementation="com.javampire.openscad.highlighting.OpenSCADColorSettingsPage" />
+    <bundledColorScheme path="com/javampire/openscad/color_schemes/OpenSCADDefault" />
+    <lang.foldingBuilder language="OpenSCAD" implementationClass="com.javampire.openscad.editor.OpenSCADFoldingBuilder" />
+    <lang.psiStructureViewFactory language="OpenSCAD" implementationClass="com.javampire.openscad.structureview.OpenSCADStructureViewFactory" />
+    <stubElementTypeHolder class="com.javampire.openscad.psi.OpenSCADTypes" />
+    <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADModuleIndex" />
+    <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADFunctionIndex" />
+    <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADVariableIndex" />
+    <lang.commenter language="OpenSCAD" implementationClass="com.javampire.openscad.editor.OpenSCADCommenter" />
+    <documentationProvider implementation="com.javampire.openscad.documentation.OpenSCADDocumentationProvider" />
+    <lang.braceMatcher language="OpenSCAD" implementationClass="com.javampire.openscad.highlighting.OpenSCADBraceMatcher" />
+    <indexedRootsProvider implementation="com.javampire.openscad.psi.stub.index.BuiltinIndexContributor" />
+    <projectConfigurable groupId="language" instance="com.javampire.openscad.settings.OpenSCADSettingsConfigurable" id="OpenSCADSettings" displayName="OpenSCAD Language"/>
+    <applicationService serviceImplementation="com.javampire.openscad.settings.OpenSCADSettings" />
+    <postStartupActivity implementation="com.javampire.openscad.settings.LibraryUtil" />
+    <lang.formatter language="OpenSCAD" implementationClass="com.javampire.openscad.formatter.OpenSCADFormattingModelBuilder" />
+  </extensions>
 
-        <projectConfigurable groupId="language" instance="com.javampire.openscad.settings.OpenSCADSettingsConfigurable"
-                             id="OpenSCADSettings" displayName="OpenSCAD Language">
-        </projectConfigurable>
-
-        <applicationService serviceImplementation="com.javampire.openscad.settings.OpenSCADSettings"/>
-        <postStartupActivity implementation="com.javampire.openscad.settings.LibraryUtil"/>
-	<!--lang.formatter implementationClass="com.javampire.openscad.formatter.OpenSCADFormattingModelBuilder" /-->
-    </extensions>
-
-    <depends>com.intellij.modules.lang</depends>
+  <depends>com.intellij.modules.lang</depends>
 
 </idea-plugin>

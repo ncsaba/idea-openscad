@@ -1,4 +1,3 @@
-
 plugins {
     id 'java'
     id 'org.jetbrains.intellij' version '0.4.10'
@@ -18,6 +17,8 @@ dependencies {
 }
 
 intellij {
+    plugins = ['psiviewer:193-SNAPSHOT']
+    updateSinceUntilBuild = false
     sandboxDirectory = "$project.buildDir/myCustom-sandbox"
 }
 
@@ -32,4 +33,4 @@ patchPluginXml {
     """
 }
 
-sourceSets.main.java.srcDirs = ['src/main/java','src/main/gen']
+sourceSets.main.java.srcDirs = ['src/main/java', 'src/main/gen']

@@ -26,15 +26,39 @@ public class OpenSCADBuiltinObjImpl extends OpenSCADObjectImpl implements OpenSC
   }
 
   @Override
-  @NotNull
+  @Nullable
   public OpenSCADArgAssignmentList getArgAssignmentList() {
-    return findNotNullChildByClass(OpenSCADArgAssignmentList.class);
+    return findChildByClass(OpenSCADArgAssignmentList.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public OpenSCADBuiltinObjRef getBuiltinObjRef() {
-    return findNotNullChildByClass(OpenSCADBuiltinObjRef.class);
+    return findChildByClass(OpenSCADBuiltinObjRef.class);
+  }
+
+  @Override
+  @Nullable
+  public OpenSCADBuiltinOp getBuiltinOp() {
+    return findChildByClass(OpenSCADBuiltinOp.class);
+  }
+
+  @Override
+  @Nullable
+  public OpenSCADFunctionDeclaration getFunctionDeclaration() {
+    return findChildByClass(OpenSCADFunctionDeclaration.class);
+  }
+
+  @Override
+  @Nullable
+  public OpenSCADModuleDeclaration getModuleDeclaration() {
+    return findChildByClass(OpenSCADModuleDeclaration.class);
+  }
+
+  @Override
+  @Nullable
+  public OpenSCADVariableDeclaration getVariableDeclaration() {
+    return findChildByClass(OpenSCADVariableDeclaration.class);
   }
 
 }

@@ -90,7 +90,7 @@ public class OpenSCADPsiImplUtil {
 
     public static PsiReference getReference(PsiElement element) {
         // TODO: implement parameter references
-        LOG.warn("Unhandled reference element: " + element);
+        LOG.warn("Unhandled reference element in file: " + element.getContainingFile().getOriginalFile().getName() + ", offset: " + element.getTextOffset() + ". Element: " + element + ", text: " + element.getText());
         return null;
     }
 

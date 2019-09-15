@@ -9,15 +9,16 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.javampire.openscad.psi.*;
+import com.intellij.navigation.ItemPresentation;
 
-public class OpenSCADElseOpImpl extends OpenSCADOperatorImpl implements OpenSCADElseOp {
+public class OpenSCADVariableRefExprImpl extends OpenSCADResolvableElementImpl implements OpenSCADVariableRefExpr {
 
-  public OpenSCADElseOpImpl(@NotNull ASTNode node) {
+  public OpenSCADVariableRefExprImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitElseOp(this);
+    visitor.visitVariableRefExpr(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -26,15 +27,13 @@ public class OpenSCADElseOpImpl extends OpenSCADOperatorImpl implements OpenSCAD
   }
 
   @Override
-  @NotNull
-  public OpenSCADIfOp getIfOp() {
-    return findNotNullChildByClass(OpenSCADIfOp.class);
+  public ItemPresentation getPresentation() {
+    return OpenSCADPsiImplUtil.getPresentation(this);
   }
 
   @Override
-  @NotNull
-  public OpenSCADObject getObject() {
-    return findNotNullChildByClass(OpenSCADObject.class);
+  public PsiElement getNameIdentifier() {
+    return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }
 
 }
