@@ -10,12 +10,13 @@ import com.intellij.psi.PsiFile;
 import com.javampire.openscad.psi.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-
 public class OpenSCADStructureViewModel
         extends StructureViewModelBase
         implements StructureViewModel.ElementInfoProvider
 {
+
+    private static final Grouper[] GROUPERS = { new OpenSCADElementGrouper() };
+
     public OpenSCADStructureViewModel(PsiFile psiFile, Editor editor) {
         super(psiFile, editor, new OpenSCADStructureViewElement(psiFile));
         withSuitableClasses(
@@ -41,6 +42,6 @@ public class OpenSCADStructureViewModel
     @NotNull
     @Override
     public Grouper[] getGroupers() {
-        return new Grouper[] {new OpenSCADElementGrouper()};
+        return GROUPERS;
     }
 }

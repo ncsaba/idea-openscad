@@ -6,9 +6,8 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.ArrayUtil;
-import com.javampire.openscad.psi.OpenSCADModuleDeclaration;
 import com.javampire.openscad.psi.OpenSCADNamedElement;
-import com.javampire.openscad.psi.stub.index.OpenSCADModuleIndex;
+import com.javampire.openscad.psi.OpenSCADResolvableElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,26 +15,32 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class OpenSCADModuleReference extends PsiReferenceBase<OpenSCADNamedElement> implements PsiPolyVariantReference {
+public class OpenSCADCallReference extends PsiReferenceBase<OpenSCADResolvableElement> implements PsiPolyVariantReference {
 
-    private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.references.OpenSCADModuleReference");
+    private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.references.OpenSCADCallReference");
 
-    private String moduleName;
+    private String referencedName;
 
-    public OpenSCADModuleReference(@NotNull OpenSCADNamedElement element, TextRange textRange) {
+    public OpenSCADCallReference(@NotNull OpenSCADResolvableElement element, TextRange textRange) {
         super(element, textRange);
-        moduleName = element.getName();
+        referencedName = element.getName();
     }
 
     @NotNull
     @Override
     public ResolveResult[] multiResolve(boolean incompleteCode) {
         Project project = myElement.getProject();
-        final Collection<OpenSCADModuleDeclaration> modules = OpenSCADModuleIndex.getInstance().get(this.moduleName, project, GlobalSearchScope.allScope(project));
-        LOG.debug("multiResolve modules:" + modules);
-        final List<ResolveResult> results = new ArrayList<ResolveResult>();
-        for (OpenSCADModuleDeclaration module : modules) {
-            results.add(new PsiElementResolveResult(module));
+        final OpenSCADReferenceResolver resolver = myElement.getReferenceResolver();
+        if (resolver == null) {
+            return ResolveResult.EMPTY_ARRAY;
+        }
+        final Collection<? extends OpenSCADNamedElement> elementResults = resolver.get(
+                this.referencedName, project, GlobalSearchScope.allScope(project)
+        );
+        LOG.debug("multiResolve elementResults:" + elementResults);
+        final List<ResolveResult> results = new ArrayList<>();
+        for (OpenSCADNamedElement calledElement : elementResults) {
+            results.add(new PsiElementResolveResult(calledElement));
         }
         LOG.debug("multiResolve results:" + results);
         return results.toArray(new ResolveResult[0]);
@@ -59,7 +64,6 @@ public class OpenSCADModuleReference extends PsiReferenceBase<OpenSCADNamedEleme
 
     @Override
     public String toString() {
-        return "ModuleReference(" + this.moduleName + ", " + getRangeInElement() + ")";
+        return "OpenSCADCallReference(" + this.referencedName + ", " + getRangeInElement() + ")";
     }
-
 }

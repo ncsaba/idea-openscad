@@ -28,7 +28,14 @@
         <documentationProvider implementation="com.javampire.openscad.documentation.OpenSCADDocumentationProvider"/>
         <lang.braceMatcher language="OpenSCAD" implementationClass="com.javampire.openscad.highlighting.OpenSCADBraceMatcher"/>
         <indexedRootsProvider implementation="com.javampire.openscad.psi.stub.index.BuiltinIndexContributor"/>
-        <!--lang.formatter implementationClass="com.javampire.openscad.formatter.OpenSCADFormattingModelBuilder" /-->
+
+        <projectConfigurable groupId="language" instance="com.javampire.openscad.settings.OpenSCADSettingsConfigurable"
+                             id="OpenSCADSettings" displayName="OpenSCAD Language">
+        </projectConfigurable>
+
+        <applicationService serviceImplementation="com.javampire.openscad.settings.OpenSCADSettings"/>
+        <postStartupActivity implementation="com.javampire.openscad.settings.LibraryUtil"/>
+	<!--lang.formatter implementationClass="com.javampire.openscad.formatter.OpenSCADFormattingModelBuilder" /-->
     </extensions>
 
     <depends>com.intellij.modules.lang</depends>
