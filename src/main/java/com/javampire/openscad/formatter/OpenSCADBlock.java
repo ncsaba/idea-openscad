@@ -56,4 +56,10 @@ public class OpenSCADBlock extends AbstractBlock {
     public boolean isLeaf() {
         return myNode.getFirstChildNode() == null;
     }
+
+    @NotNull
+    @Override
+    public ChildAttributes getChildAttributes(int newChildIndex) {
+        return ChildAttributes.DELEGATE_TO_PREV_CHILD;
+    }
 }

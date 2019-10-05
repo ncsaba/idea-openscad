@@ -1,7 +1,15 @@
 Version History
 ===============
 
-# Changes in 1.3.X
+# Changes in version 1.4.0
+
+* Add code formatter
+* Add settings for OpenSCAD libraries and executable
+* Handle import reference
+* Refactoring grammar
+* Fix deprecated calls
+* Set compatibility version from 192 to no limit
+* Add editor context menu open OpenSCAD and generate actions
 
 ## Changes in version 1.3.0
 
