@@ -6,17 +6,24 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.PlatformIcons;
 import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.parser.OpenSCADParserDefinition;
-import com.javampire.openscad.psi.OpenSCADNamedElement;
-import com.javampire.openscad.psi.OpenSCADTypes;
+import com.javampire.openscad.psi.*;
+import com.javampire.openscad.psi.stub.OpenSCADFunctionStubElementType;
+import com.javampire.openscad.psi.stub.OpenSCADModuleStubElementType;
+import com.javampire.openscad.psi.stub.OpenSCADVariableStubElementType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class OpenSCADPsiImplUtil {
 
@@ -96,6 +103,7 @@ public class OpenSCADPsiImplUtil {
 
     /**
      * Builds the declaration of a module or a function, consisting of name + argument list
+     *
      * @param element a module or a function
      * @return name(arg1, ...)
      */
@@ -159,7 +167,7 @@ public class OpenSCADPsiImplUtil {
         }
         // If there's no documentation comment placed before the element, and if the element
         // is on one line with an end of line comment, take that comment as documentation
-        if (text == null && ! isMultiLine(element)) {
+        if (text == null && !isMultiLine(element)) {
             final PsiElement nextComment = PsiTreeUtil.skipWhitespacesForward(element);
             if (nextComment == null) {
                 return null;
@@ -187,4 +195,50 @@ public class OpenSCADPsiImplUtil {
         return text;
     }
 
+
+    /**
+     * Recursively get all variables declaration accessible from node, i.e. children of node or children of upper parents.
+     *
+     * @param element Element for which accessible variables will be returned.
+     * @return Accessible variables declarations.
+     */
+    public static List<OpenSCADVariableDeclaration> getAccessibleVariableDeclaration(final PsiElement element) {
+        final PsiElement parent = element.getParent();
+
+        // Get parent accessible variables if any
+        List<OpenSCADVariableDeclaration> list = (parent == null || parent.getNode().getElementType() == OpenSCADParserDefinition.FILE) ? new ArrayList<>() : getAccessibleVariableDeclaration(parent);
+
+        // Loop from first sibling to element (variables declared after elements are not accessible)
+        for (PsiElement sibling = parent.getFirstChild(); sibling != null && sibling != element; sibling = sibling.getNextSibling()) {
+            if (sibling.getNode().getElementType() == OpenSCADVariableStubElementType.INSTANCE) {
+                list.add((OpenSCADVariableDeclaration) sibling);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Get all modules declared in the element containing file.
+     *
+     * @param element Element.
+     * @return List of modules declarations.
+     */
+    public static List<OpenSCADModuleDeclaration> getModuleDeclarations(final PsiElement element) {
+        final PsiElement root = element.getContainingFile().getNode().getPsi();
+        ASTNode[] moduleNodes = root.getNode().getChildren(TokenSet.create(OpenSCADModuleStubElementType.INSTANCE));
+        return Arrays.asList(moduleNodes).stream().map(it -> (OpenSCADModuleDeclaration) it.getPsi()).collect(Collectors.toList());
+    }
+
+    /**
+     * Get all functions declared in the element containing file.
+     *
+     * @param element Element.
+     * @return List of functions declarations.
+     */
+    public static List<OpenSCADFunctionDeclaration> getFunctionDeclarations(final PsiElement element) {
+        final PsiElement root = element.getContainingFile().getNode().getPsi();
+        ASTNode[] moduleNodes = root.getNode().getChildren(TokenSet.create(OpenSCADFunctionStubElementType.INSTANCE));
+        return Arrays.asList(moduleNodes).stream().map(it -> (OpenSCADFunctionDeclaration) it.getPsi()).collect(Collectors.toList());
+    }
 }

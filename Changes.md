@@ -10,6 +10,7 @@ Version History
 * Fix deprecated calls
 * Set compatibility version from 192 to no limit
 * Add editor context menu open OpenSCAD and generate actions
+* Add completion for variables, modules, functions
 
 ## Changes in version 1.3.0
 

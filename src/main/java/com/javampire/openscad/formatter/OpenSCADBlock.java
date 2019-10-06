@@ -11,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.javampire.openscad.psi.OpenSCADTypes.BLOCK_OBJ;
+
 public class OpenSCADBlock extends AbstractBlock {
 
     private final OpenSCADIndentBuilder myOpenSCADIndentBuilder;
@@ -60,6 +62,10 @@ public class OpenSCADBlock extends AbstractBlock {
     @NotNull
     @Override
     public ChildAttributes getChildAttributes(int newChildIndex) {
-        return ChildAttributes.DELEGATE_TO_PREV_CHILD;
+        if (myNode.getElementType() == BLOCK_OBJ) {
+            return new ChildAttributes(Indent.getNormalIndent(), null);
+        } else {
+            return new ChildAttributes(Indent.getNoneIndent(), null);
+        }
     }
 }

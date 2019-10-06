@@ -34,7 +34,7 @@ public class LibraryUtil implements StartupActivity {
                 // warn user
                 DialogBuilder db = new DialogBuilder();
                 db.setTitle("Could not find the OpenSCAD executable");
-                db.setCenterPanel(new JLabel("No OpenSCAD executable defined. You can set one under Preferences->Custom Languages->OpenSCAD"));
+                db.setCenterPanel(new JLabel("No OpenSCAD executable defined. You can set one under Settings -> Languages & Frameworks -> OpenSCAD Language"));
                 db.addOkAction();
                 db.show();
             } else {

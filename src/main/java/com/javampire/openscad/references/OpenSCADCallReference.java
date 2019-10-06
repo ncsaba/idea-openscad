@@ -5,7 +5,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.ArrayUtil;
 import com.javampire.openscad.psi.OpenSCADNamedElement;
 import com.javampire.openscad.psi.OpenSCADResolvableElement;
 import org.jetbrains.annotations.NotNull;
@@ -52,14 +51,6 @@ public class OpenSCADCallReference extends PsiReferenceBase<OpenSCADResolvableEl
         LOG.debug("resolve called");
         final ResolveResult[] resolveResults = multiResolve(false);
         return resolveResults.length == 1 ? resolveResults[0].getElement() : null;
-    }
-
-    @NotNull
-    @Override
-    public Object[] getVariants() {
-        // TODO: implement (this is used for code completion)
-        LOG.debug("getVariants called");
-        return ArrayUtil.EMPTY_OBJECT_ARRAY;
     }
 
     @Override
