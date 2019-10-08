@@ -95,6 +95,10 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitForObj(@NotNull OpenSCADForObj o) {
+    visitObject(o);
+  }
+
   public void visitFullArgDeclaration(@NotNull OpenSCADFullArgDeclaration o) {
     visitNamedElement(o);
   }

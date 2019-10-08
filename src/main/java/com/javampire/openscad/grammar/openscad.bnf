@@ -45,6 +45,7 @@ include_path_ref ::= INCLUDE_PATH {
 
 object ::= builtin_obj
          | if_obj
+         | for_obj
          | module_call_obj
          | block_obj
          | compound_obj
@@ -86,6 +87,7 @@ block_obj ::= LBRACE statement* RBRACE
 empty_obj ::= SEMICOLON
 
 if_obj ::= IF_KEYWORD paren_expr (block_obj | statement) (ELSE_KEYWORD IF_KEYWORD paren_expr (block_obj | statement))* [ELSE_KEYWORD (block_obj | statement)]
+for_obj ::=  full_arg_op_identifier full_arg_declaration_list (block_obj | statement)
 
 private statement ::= object | declaration
 
@@ -141,8 +143,7 @@ debug_op ::= HASH
 root_op ::= EXCL
 disable_op ::= MUL
 
-builtin_op ::= (common_op_ref arg_assignment_list)
-             | (full_arg_op_identifier full_arg_declaration_list)
+builtin_op ::= common_op_ref arg_assignment_list
 
 common_op_ref ::= "linear_extrude"
                 | "rotate_extrude"

@@ -91,30 +91,6 @@ public class OpenSCADParserDefinition implements ParserDefinition {
             END_OF_LINE_COMMENT, INCLUDE_ITEM, USE_ITEM
     );
 
-    // The sets below are used for spacing
-
-    public static final TokenSet ONE_BEFORE_SPACING_TOKENS = TokenSet.create(
-            INCLUDE_START, BUILTIN_OBJ_REF, COMMON_OP_REF, BUILTIN_EXPR_REF, END_OF_LINE_COMMENT, BLOCK_OBJ
-    );
-
-    public static final TokenSet ONE_AFTER_SPACING_TOKENS = TokenSet.create(
-            INCLUDE_END, BUILTIN_OP, COMMA
-    );
-
-    public static final TokenSet ONE_AROUND_SPACING_TOKENS = TokenSet.orSet(
-            LANGUAGE_KEYWORDS,
-            BRACES_TOKENS,
-            PREDEFINED_SYMBOLS
-    );
-
-    public static final TokenSet NONE_BEFORE_SPACING_TOKENS = TokenSet.create(
-            SEMICOLON, RPARENTH
-    );
-
-    public static final TokenSet NONE_AFTER_SPACING_TOKENS = TokenSet.create(
-            LPARENTH
-    );
-
     // The sets below are used for element naming/renaming
 
     /** These elements have their name in the first child with INCLUDE_PATH token type */
@@ -142,6 +118,28 @@ public class OpenSCADParserDefinition implements ParserDefinition {
     /** These elements have their doc-string attached to the parent */
     public static final TokenSet DOC_IN_PARENT = TokenSet.create(
             IDENTIFIER
+    );
+
+    // The sets below are used for spacing feature in formatting
+
+    public static final TokenSet LOGICAL_OPERATORS = TokenSet.create(
+            AND, OR
+    );
+
+    public static final TokenSet EQUALITY_OPERATORS = TokenSet.create(
+            EQ, NE
+    );
+
+    public static final TokenSet RELATIONAL_OPERATORS = TokenSet.create(
+            LT, LE, GT, GE
+    );
+
+    public static final TokenSet ADDITIVE_OPERATORS = TokenSet.create(
+            MINUS, PLUS
+    );
+
+    public static final TokenSet MULTIPLICATIVE_OPERATORS = TokenSet.create(
+            DIV, MUL, PERC
     );
 
     public static final IStubFileElementType FILE = new IStubFileElementType(OpenSCADLanguage.INSTANCE);

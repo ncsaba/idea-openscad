@@ -36,8 +36,8 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   public static final TokenSet[] EXTENDS_SETS_ = new TokenSet[] {
-    create_token_set_(BLOCK_OBJ, BUILTIN_OBJ, EMPTY_OBJ, IF_OBJ,
-      MODULE_CALL_OBJ, OBJECT),
+    create_token_set_(BLOCK_OBJ, BUILTIN_OBJ, EMPTY_OBJ, FOR_OBJ,
+      IF_OBJ, MODULE_CALL_OBJ, OBJECT),
     create_token_set_(BACKGROUND_OP, BUILTIN_OP, DEBUG_OP, DISABLE_OP,
       MODIFIER_OP, MODULE_CALL_OP, OPERATOR, ROOT_OP),
     create_token_set_(AND_EXPR, BUILTIN_EXPR, CONDITIONAL_EXPR, DIV_EXPR,
@@ -423,37 +423,14 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (common_op_ref arg_assignment_list)
-  //              | (full_arg_op_identifier full_arg_declaration_list)
+  // common_op_ref arg_assignment_list
   public static boolean builtin_op(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "builtin_op")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, BUILTIN_OP, "<builtin op>");
-    r = builtin_op_0(b, l + 1);
-    if (!r) r = builtin_op_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // common_op_ref arg_assignment_list
-  private static boolean builtin_op_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "builtin_op_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
     r = common_op_ref(b, l + 1);
     r = r && arg_assignment_list(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // full_arg_op_identifier full_arg_declaration_list
-  private static boolean builtin_op_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "builtin_op_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = full_arg_op_identifier(b, l + 1);
-    r = r && full_arg_declaration_list(b, l + 1);
-    exit_section_(b, m, null, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -581,6 +558,28 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, FOR_KEYWORD);
     r = r && full_arg_declaration_list(b, l + 1);
     exit_section_(b, m, FOR_ELEMENT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // full_arg_op_identifier full_arg_declaration_list (block_obj | statement)
+  public static boolean for_obj(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "for_obj")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, FOR_OBJ, "<for obj>");
+    r = full_arg_op_identifier(b, l + 1);
+    r = r && full_arg_declaration_list(b, l + 1);
+    r = r && for_obj_2(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // block_obj | statement
+  private static boolean for_obj_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "for_obj_2")) return false;
+    boolean r;
+    r = block_obj(b, l + 1);
+    if (!r) r = statement(b, l + 1);
     return r;
   }
 
@@ -939,6 +938,7 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // builtin_obj
   //          | if_obj
+  //          | for_obj
   //          | module_call_obj
   //          | block_obj
   //          | compound_obj
@@ -949,6 +949,7 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _COLLAPSE_, OBJECT, "<object>");
     r = builtin_obj(b, l + 1);
     if (!r) r = if_obj(b, l + 1);
+    if (!r) r = for_obj(b, l + 1);
     if (!r) r = module_call_obj(b, l + 1);
     if (!r) r = block_obj(b, l + 1);
     if (!r) r = compound_obj(b, l + 1);

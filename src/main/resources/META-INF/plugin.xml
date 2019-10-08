@@ -34,6 +34,8 @@
     <applicationService serviceImplementation="com.javampire.openscad.settings.OpenSCADSettings" />
     <postStartupActivity implementation="com.javampire.openscad.settings.LibraryUtil" />
     <lang.formatter language="OpenSCAD" implementationClass="com.javampire.openscad.formatter.OpenSCADFormattingModelBuilder" />
+    <codeStyleSettingsProvider implementation="com.javampire.openscad.formatter.OpenSCADCodeStyleSettingsProvider" />
+    <langCodeStyleSettingsProvider implementation="com.javampire.openscad.formatter.OpenSCADLanguageCodeStyleSettingsProvider" />
     <completion.contributor language="OpenSCAD" implementationClass="com.javampire.openscad.completion.OpenSCADCompletionContributor" />
   </extensions>
 

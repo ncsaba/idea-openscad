@@ -29,6 +29,7 @@ public interface OpenSCADTypes {
   IElementType EMPTY_OBJ = OpenSCADElementFactory.getElementType("EMPTY_OBJ");
   IElementType EXPR = OpenSCADElementFactory.getElementType("EXPR");
   IElementType FOR_ELEMENT = OpenSCADElementFactory.getElementType("FOR_ELEMENT");
+  IElementType FOR_OBJ = OpenSCADElementFactory.getElementType("FOR_OBJ");
   IElementType FULL_ARG_DECLARATION = OpenSCADElementFactory.getElementType("FULL_ARG_DECLARATION");
   IElementType FULL_ARG_DECLARATION_LIST = OpenSCADElementFactory.getElementType("FULL_ARG_DECLARATION_LIST");
   IElementType FUNCTION_CALL_EXPR = OpenSCADElementFactory.getElementType("FUNCTION_CALL_EXPR");
@@ -179,6 +180,9 @@ public interface OpenSCADTypes {
       }
       else if (type == FOR_ELEMENT) {
         return new OpenSCADForElementImpl(node);
+      }
+      else if (type == FOR_OBJ) {
+        return new OpenSCADForObjImpl(node);
       }
       else if (type == FULL_ARG_DECLARATION) {
         return new OpenSCADFullArgDeclarationImpl(node);
