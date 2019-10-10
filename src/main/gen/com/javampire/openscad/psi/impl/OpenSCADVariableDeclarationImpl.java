@@ -42,14 +42,6 @@ public class OpenSCADVariableDeclarationImpl extends OpenSCADVariableDeclaration
     return OpenSCADPsiImplUtil.getPresentation(this);
   }
 
-  public String getName() {
-    return OpenSCADPsiImplUtil.getName(this);
-  }
-
-  public PsiElement setName(String newName) {
-    return OpenSCADPsiImplUtil.setName(this, newName);
-  }
-
   public PsiElement getNameIdentifier() {
     return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }

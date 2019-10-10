@@ -10,10 +10,6 @@ public interface OpenSCADArgDeclaration extends OpenSCADNamedElement {
   @Nullable
   OpenSCADExpr getExpr();
 
-  String getName();
-
-  PsiElement setName(String newName);
-
   PsiElement getNameIdentifier();
 
 }

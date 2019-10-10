@@ -15,10 +15,6 @@ public interface OpenSCADVariableDeclaration extends OpenSCADNamedElement, StubB
 
   ItemPresentation getPresentation();
 
-  String getName();
-
-  PsiElement setName(String newName);
-
   PsiElement getNameIdentifier();
 
 }

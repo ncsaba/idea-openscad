@@ -5,18 +5,11 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiReference;
 
-public interface OpenSCADVariableRefExpr extends OpenSCADExpr, OpenSCADNamedElement {
+public interface OpenSCADVariableRefExpr extends OpenSCADExpr, OpenSCADResolvableElement {
 
   ItemPresentation getPresentation();
 
-  String getName();
-
-  PsiElement setName(String newName);
-
   PsiElement getNameIdentifier();
-
-  PsiReference getReference();
 
 }

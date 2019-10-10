@@ -48,10 +48,6 @@ public class OpenSCADFunctionDeclarationImpl extends OpenSCADFunctionDeclaration
     return OpenSCADPsiImplUtil.getPresentation(this);
   }
 
-  public PsiElement setName(String newName) {
-    return OpenSCADPsiImplUtil.setName(this, newName);
-  }
-
   public PsiElement getNameIdentifier() {
     return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }
