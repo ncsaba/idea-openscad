@@ -25,10 +25,12 @@ public class OpenSCADCommonOpRefImpl extends OpenSCADResolvableElementImpl imple
     else super.accept(visitor);
   }
 
+  @Override
   public PsiElement setName(String newName) {
     return OpenSCADPsiImplUtil.setName(this, newName);
   }
 
+  @Override
   public PsiElement getNameIdentifier() {
     return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }

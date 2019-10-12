@@ -44,10 +44,12 @@ public class OpenSCADFunctionDeclarationImpl extends OpenSCADFunctionDeclaration
     return findNotNullChildByClass(OpenSCADExpr.class);
   }
 
+  @Override
   public ItemPresentation getPresentation() {
     return OpenSCADPsiImplUtil.getPresentation(this);
   }
 
+  @Override
   public PsiElement getNameIdentifier() {
     return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }

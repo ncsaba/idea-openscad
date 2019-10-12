@@ -33,6 +33,7 @@ public class OpenSCADIncludeItemImpl extends ASTWrapperPsiElement implements Ope
     return findNotNullChildByClass(OpenSCADIncludePathRef.class);
   }
 
+  @Override
   public ItemPresentation getPresentation() {
     return OpenSCADPsiImplUtil.getPresentation(this);
   }

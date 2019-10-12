@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.3.11'
+    id 'org.jetbrains.intellij' version '0.4.10'
 }
 
 group 'com.javampire'
-version '1.3.0'
+version '1.4.0'
 
 sourceCompatibility = 1.8
 
@@ -17,9 +17,11 @@ dependencies {
 }
 
 intellij {
-    version '2018.2.4'
+    plugins = ['psiviewer:193-SNAPSHOT']
+    updateSinceUntilBuild = false
     sandboxDirectory = "$project.buildDir/myCustom-sandbox"
 }
+
 patchPluginXml {
     changeNotes """
     <![CDATA[
@@ -31,4 +33,4 @@ patchPluginXml {
     """
 }
 
-sourceSets.main.java.srcDirs = ['src/main/java','src/main/gen']
+sourceSets.main.java.srcDirs = ['src/main/java', 'src/main/gen']

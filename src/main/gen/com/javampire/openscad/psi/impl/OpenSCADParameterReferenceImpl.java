@@ -27,14 +27,17 @@ public class OpenSCADParameterReferenceImpl extends OpenSCADNamedElementImpl imp
     else super.accept(visitor);
   }
 
+  @Override
   public ItemPresentation getPresentation() {
     return OpenSCADPsiImplUtil.getPresentation(this);
   }
 
+  @Override
   public PsiElement getNameIdentifier() {
     return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }
 
+  @Override
   public PsiReference getReference() {
     return OpenSCADPsiImplUtil.getReference(this);
   }

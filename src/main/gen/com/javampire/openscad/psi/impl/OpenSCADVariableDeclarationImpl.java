@@ -38,10 +38,12 @@ public class OpenSCADVariableDeclarationImpl extends OpenSCADVariableDeclaration
     return findNotNullChildByClass(OpenSCADExpr.class);
   }
 
+  @Override
   public ItemPresentation getPresentation() {
     return OpenSCADPsiImplUtil.getPresentation(this);
   }
 
+  @Override
   public PsiElement getNameIdentifier() {
     return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }
