@@ -35,6 +35,24 @@
     <postStartupActivity implementation="com.javampire.openscad.settings.LibraryUtil" />
   </extensions>
 
+  <actions>
+    <action class="com.javampire.openscad.action.RenderAction" description="Render in OpenSCAD" id="Render" text="Render this file" />
+    <action class="com.javampire.openscad.action.GenerateSTL" description="Generate STL" id="Generate STL" text="Generate STL" />
+    <action class="com.javampire.openscad.action.GeneratePNG" description="Generate PNG" id="Generate PNG" text="Generate PNG" />
+    <action class="com.javampire.openscad.action.GenerateSVG" description="Generate SVG" id="Generate SVG" text="Generate SVG" />
+
+    <group id="OpenSCADEditorPopupMenuEntries" popup="true" text="OpenSCAD" icon="/com/javampire/openscad/icons/openscad.png">
+      <reference ref="Render" />
+      <group id="OpenSCADGenerate" popup="true" text="Generate">
+        <reference ref="Generate STL" />
+        <reference ref="Generate PNG" />
+        <reference ref="Generate SVG" />
+      </group>
+      <add-to-group group-id="EditorPopupMenu" anchor="last" />
+      <add-to-group group-id="EditorTabPopupMenu" anchor="last" />
+    </group>
+  </actions>
+
   <depends>com.intellij.modules.lang</depends>
 
 </idea-plugin>
