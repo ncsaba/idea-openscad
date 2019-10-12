@@ -23,127 +23,15 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     boolean r;
     b = adapt_builder_(t, b, this, EXTENDS_SETS_);
     Marker m = enter_section_(b, 0, _COLLAPSE_, null);
-    if (t == ARG_ASSIGNMENT) {
-      r = arg_assignment(b, 0);
-    }
-    else if (t == ARG_ASSIGNMENT_LIST) {
-      r = arg_assignment_list(b, 0);
-    }
-    else if (t == ARG_DECLARATION) {
-      r = arg_declaration(b, 0);
-    }
-    else if (t == ARG_DECLARATION_LIST) {
-      r = arg_declaration_list(b, 0);
-    }
-    else if (t == BACKGROUND_OP) {
-      r = background_op(b, 0);
-    }
-    else if (t == BLOCK_OBJ) {
-      r = block_obj(b, 0);
-    }
-    else if (t == BUILTIN_EXPR_REF) {
-      r = builtin_expr_ref(b, 0);
-    }
-    else if (t == BUILTIN_OBJ) {
-      r = builtin_obj(b, 0);
-    }
-    else if (t == BUILTIN_OBJ_REF) {
-      r = builtin_obj_ref(b, 0);
-    }
-    else if (t == BUILTIN_OP) {
-      r = builtin_op(b, 0);
-    }
-    else if (t == COMMON_OP_REF) {
-      r = common_op_ref(b, 0);
-    }
-    else if (t == DEBUG_OP) {
-      r = debug_op(b, 0);
-    }
-    else if (t == DISABLE_OP) {
-      r = disable_op(b, 0);
-    }
-    else if (t == ELSE_OP) {
-      r = else_op(b, 0);
-    }
-    else if (t == EMPTY_OBJ) {
-      r = empty_obj(b, 0);
-    }
-    else if (t == EXPR) {
-      r = expr(b, 0, -1);
-    }
-    else if (t == FOR_ELEMENT) {
-      r = for_element(b, 0);
-    }
-    else if (t == FULL_ARG_DECLARATION) {
-      r = full_arg_declaration(b, 0);
-    }
-    else if (t == FULL_ARG_DECLARATION_LIST) {
-      r = full_arg_declaration_list(b, 0);
-    }
-    else if (t == FUNCTION_DECLARATION) {
-      r = function_declaration(b, 0);
-    }
-    else if (t == FUNCTION_NAME_REF) {
-      r = function_name_ref(b, 0);
-    }
-    else if (t == IF_ELEMENT) {
-      r = if_element(b, 0);
-    }
-    else if (t == IF_OP) {
-      r = if_op(b, 0);
-    }
-    else if (t == INCLUDE_ITEM) {
-      r = include_item(b, 0);
-    }
-    else if (t == INCLUDE_PATH_REF) {
-      r = include_path_ref(b, 0);
-    }
-    else if (t == LET_ELEMENT) {
-      r = let_element(b, 0);
-    }
-    else if (t == MODIFIER_OP) {
-      r = modifier_op(b, 0);
-    }
-    else if (t == MODULE_CALL_OBJ) {
-      r = module_call_obj(b, 0);
-    }
-    else if (t == MODULE_CALL_OP) {
-      r = module_call_op(b, 0);
-    }
-    else if (t == MODULE_DECLARATION) {
-      r = module_declaration(b, 0);
-    }
-    else if (t == MODULE_OBJ_NAME_REF) {
-      r = module_obj_name_ref(b, 0);
-    }
-    else if (t == MODULE_OP_NAME_REF) {
-      r = module_op_name_ref(b, 0);
-    }
-    else if (t == OBJECT) {
-      r = object(b, 0);
-    }
-    else if (t == OPERATOR) {
-      r = operator(b, 0);
-    }
-    else if (t == PARAMETER_REFERENCE) {
-      r = parameter_reference(b, 0);
-    }
-    else if (t == ROOT_OP) {
-      r = root_op(b, 0);
-    }
-    else if (t == USE_ITEM) {
-      r = use_item(b, 0);
-    }
-    else if (t == VARIABLE_DECLARATION) {
-      r = variable_declaration(b, 0);
-    }
-    else {
-      r = parse_root_(t, b, 0);
-    }
+    r = parse_root_(t, b);
     exit_section_(b, 0, m, t, r, true, TRUE_CONDITION);
   }
 
-  protected boolean parse_root_(IElementType t, PsiBuilder b, int l) {
+  protected boolean parse_root_(IElementType t, PsiBuilder b) {
+    return parse_root_(t, b, 0);
+  }
+
+  static boolean parse_root_(IElementType t, PsiBuilder b, int l) {
     return openSCADFile(b, l + 1);
   }
 

@@ -62,10 +62,12 @@ public class OpenSCADModuleDeclarationImpl extends OpenSCADModuleDeclarationStub
     return findChildByClass(OpenSCADVariableDeclaration.class);
   }
 
+  @Override
   public ItemPresentation getPresentation() {
     return OpenSCADPsiImplUtil.getPresentation(this);
   }
 
+  @Override
   public PsiElement getNameIdentifier() {
     return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }

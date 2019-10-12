@@ -1,7 +1,12 @@
 Version History
 ===============
 
-# Changes in 1.3.X
+# Changes in version 1.4.0
+
+* Add settings for OpenSCAD libraries and executable
+* Add import reference
+* Fix deprecated calls
+* Update compatibility version from 192.2549 to no limit
 
 ## Changes in version 1.3.0
 

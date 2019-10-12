@@ -96,6 +96,7 @@ public class OpenSCADPsiImplUtil {
 
     /**
      * Builds the declaration of a module or a function, consisting of name + argument list
+     *
      * @param element a module or a function
      * @return name(arg1, ...)
      */
@@ -159,7 +160,7 @@ public class OpenSCADPsiImplUtil {
         }
         // If there's no documentation comment placed before the element, and if the element
         // is on one line with an end of line comment, take that comment as documentation
-        if (text == null && ! isMultiLine(element)) {
+        if (text == null && !isMultiLine(element)) {
             final PsiElement nextComment = PsiTreeUtil.skipWhitespacesForward(element);
             if (nextComment == null) {
                 return null;

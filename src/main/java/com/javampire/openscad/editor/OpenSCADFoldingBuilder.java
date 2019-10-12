@@ -3,7 +3,6 @@ package com.javampire.openscad.editor;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.folding.FoldingBuilderEx;
 import com.intellij.lang.folding.FoldingDescriptor;
-import com.intellij.lang.folding.NamedFoldingDescriptor;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
@@ -44,8 +43,7 @@ public class OpenSCADFoldingBuilder extends FoldingBuilderEx {
     private static PsiElement addFoldsForElement(@NotNull List<FoldingDescriptor> list,
                                                  @NotNull PsiElement element,
                                                  @NotNull Document document,
-                                                 boolean quick)
-    {
+                                                 boolean quick) {
         ASTNode node = element.getNode();
         if (node == null) {
             return element;
@@ -97,19 +95,18 @@ public class OpenSCADFoldingBuilder extends FoldingBuilderEx {
      *     // this is comment line 1
      *     // this is comment line 2
      * </pre>
-     *
+     * <p>
      * This method is also used to fold include and use statements.
      *
-     * @param list        fold descriptors holder to store newly created descriptor (if any)
-     * @param element     element to check
-     * @return            the last element processed (possibly the same as the original one)
+     * @param list    fold descriptors holder to store newly created descriptor (if any)
+     * @param element element to check
+     * @return the last element processed (possibly the same as the original one)
      */
     private static PsiElement addFoldsForStatementBlock(@NotNull List<FoldingDescriptor> list,
                                                         @NotNull PsiElement element,
                                                         @NotNull Document document,
                                                         @NotNull TokenSet allowedTokens,
-                                                        @NotNull String placeHolderText)
-    {
+                                                        @NotNull String placeHolderText) {
         ASTNode node = element.getNode();
         if (node == null) {
             return element;
@@ -135,14 +132,14 @@ public class OpenSCADFoldingBuilder extends FoldingBuilderEx {
             final boolean isMultiLine = document.getLineNumber(startOffset) != document.getLineNumber(endOffset);
             if (isMultiLine) {
                 list.add(
-                    new NamedFoldingDescriptor(
-                        element.getNode(),
-                        new TextRange(startOffset, endOffset),
-                        null,
-                        placeHolderText,
-                        false,
-                        Collections.emptySet()
-                    )
+                        new FoldingDescriptor(
+                                element.getNode(),
+                                new TextRange(startOffset, endOffset),
+                                null,
+                                placeHolderText,
+                                false,
+                                Collections.emptySet()
+                        )
                 );
             }
         }
@@ -152,14 +149,13 @@ public class OpenSCADFoldingBuilder extends FoldingBuilderEx {
     private static void foldIfMultiLine(@NotNull List<FoldingDescriptor> list,
                                         @NotNull PsiElement element,
                                         @NotNull Document document,
-                                        @NotNull String placeHolderText)
-    {
+                                        @NotNull String placeHolderText) {
         final int startOffset = element.getTextRange().getStartOffset();
         final int endOffset = element.getTextRange().getEndOffset();
         boolean multiLine = document.getLineNumber(startOffset) != document.getLineNumber(endOffset);
         if (multiLine) {
             list.add(
-                    new NamedFoldingDescriptor(
+                    new FoldingDescriptor(
                             element.getNode(),
                             new TextRange(startOffset, endOffset),
                             null,
