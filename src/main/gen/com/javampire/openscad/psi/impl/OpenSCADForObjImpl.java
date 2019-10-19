@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.javampire.openscad.psi.*;
 
-public class OpenSCADBuiltinObjImpl extends OpenSCADObjectImpl implements OpenSCADBuiltinObj {
+public class OpenSCADForObjImpl extends OpenSCADObjectImpl implements OpenSCADForObj {
 
-  public OpenSCADBuiltinObjImpl(@NotNull ASTNode node) {
+  public OpenSCADForObjImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitBuiltinObj(this);
+    visitor.visitForObj(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -26,21 +26,9 @@ public class OpenSCADBuiltinObjImpl extends OpenSCADObjectImpl implements OpenSC
   }
 
   @Override
-  @Nullable
-  public OpenSCADArgAssignmentList getArgAssignmentList() {
-    return findChildByClass(OpenSCADArgAssignmentList.class);
-  }
-
-  @Override
-  @Nullable
-  public OpenSCADBuiltinObjRef getBuiltinObjRef() {
-    return findChildByClass(OpenSCADBuiltinObjRef.class);
-  }
-
-  @Override
-  @Nullable
-  public OpenSCADBuiltinOp getBuiltinOp() {
-    return findChildByClass(OpenSCADBuiltinOp.class);
+  @NotNull
+  public OpenSCADFullArgDeclarationList getFullArgDeclarationList() {
+    return findNotNullChildByClass(OpenSCADFullArgDeclarationList.class);
   }
 
   @Override

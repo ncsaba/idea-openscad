@@ -79,10 +79,6 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitExpr(o);
   }
 
-  public void visitElseOp(@NotNull OpenSCADElseOp o) {
-    visitOperator(o);
-  }
-
   public void visitElvisExpr(@NotNull OpenSCADElvisExpr o) {
     visitExpr(o);
   }
@@ -97,6 +93,10 @@ public class OpenSCADVisitor extends PsiElementVisitor {
 
   public void visitForElement(@NotNull OpenSCADForElement o) {
     visitPsiElement(o);
+  }
+
+  public void visitForObj(@NotNull OpenSCADForObj o) {
+    visitObject(o);
   }
 
   public void visitFullArgDeclaration(@NotNull OpenSCADFullArgDeclaration o) {
@@ -124,8 +124,8 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitIfOp(@NotNull OpenSCADIfOp o) {
-    visitOperator(o);
+  public void visitIfObj(@NotNull OpenSCADIfObj o) {
+    visitObject(o);
   }
 
   public void visitIncludeItem(@NotNull OpenSCADIncludeItem o) {

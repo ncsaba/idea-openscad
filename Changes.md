@@ -3,6 +3,7 @@ Version History
 
 # Changes in version 1.4.0
 
+* Add code formatter
 * Add settings for OpenSCAD libraries and executable
 * Add import reference
 * Fix deprecated calls

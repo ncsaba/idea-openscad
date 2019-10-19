@@ -7,13 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface OpenSCADBuiltinOp extends OpenSCADOperator {
 
-  @Nullable
+  @NotNull
   OpenSCADArgAssignmentList getArgAssignmentList();
 
-  @Nullable
+  @NotNull
   OpenSCADCommonOpRef getCommonOpRef();
-
-  @Nullable
-  OpenSCADFullArgDeclarationList getFullArgDeclarationList();
 
 }

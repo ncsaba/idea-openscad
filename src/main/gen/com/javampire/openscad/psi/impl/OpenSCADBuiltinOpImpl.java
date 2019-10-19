@@ -26,21 +26,15 @@ public class OpenSCADBuiltinOpImpl extends OpenSCADOperatorImpl implements OpenS
   }
 
   @Override
-  @Nullable
+  @NotNull
   public OpenSCADArgAssignmentList getArgAssignmentList() {
-    return findChildByClass(OpenSCADArgAssignmentList.class);
+    return findNotNullChildByClass(OpenSCADArgAssignmentList.class);
   }
 
   @Override
-  @Nullable
+  @NotNull
   public OpenSCADCommonOpRef getCommonOpRef() {
-    return findChildByClass(OpenSCADCommonOpRef.class);
-  }
-
-  @Override
-  @Nullable
-  public OpenSCADFullArgDeclarationList getFullArgDeclarationList() {
-    return findChildByClass(OpenSCADFullArgDeclarationList.class);
+    return findNotNullChildByClass(OpenSCADCommonOpRef.class);
   }
 
 }

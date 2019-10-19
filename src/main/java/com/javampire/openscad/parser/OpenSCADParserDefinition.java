@@ -14,8 +14,9 @@ import com.intellij.psi.tree.TokenSet;
 import com.javampire.openscad.OpenSCADLanguage;
 import com.javampire.openscad.lexer.OpenSCADLexerAdapter;
 import com.javampire.openscad.psi.OpenSCADFile;
-import com.javampire.openscad.psi.OpenSCADTypes;
 import org.jetbrains.annotations.NotNull;
+
+import static com.javampire.openscad.psi.OpenSCADTypes.*;
 
 public class OpenSCADParserDefinition implements ParserDefinition {
 
@@ -24,99 +25,121 @@ public class OpenSCADParserDefinition implements ParserDefinition {
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
 
     public static final TokenSet COMMENTS = TokenSet.create(
-            OpenSCADTypes.END_OF_LINE_COMMENT, OpenSCADTypes.C_STYLE_COMMENT,
-            OpenSCADTypes.DOC_COMMENT, OpenSCADTypes.BLOCK_COMMENT
+            END_OF_LINE_COMMENT, C_STYLE_COMMENT,
+            DOC_COMMENT, BLOCK_COMMENT
     );
 
     public static final TokenSet STRINGS = TokenSet.create(
-            OpenSCADTypes.STRING_LITERAL
+            STRING_LITERAL
     );
 
     public static final TokenSet OPERATOR_KEYWORDS = TokenSet.create(
-            OpenSCADTypes.BUILTIN_OP
+            BUILTIN_OP
     );
 
     public static final TokenSet LANGUAGE_KEYWORDS = TokenSet.create(
-            OpenSCADTypes.ELSE_KEYWORD, OpenSCADTypes.FALSE_KEYWORD, OpenSCADTypes.FOR_KEYWORD,
-            OpenSCADTypes.FUNCTION_KEYWORD, OpenSCADTypes.IF_KEYWORD,
-            OpenSCADTypes.LET_KEYWORD, OpenSCADTypes.MODULE_KEYWORD,
-            OpenSCADTypes.TRUE_KEYWORD, OpenSCADTypes.UNDEF_KEYWORD
+            ELSE_KEYWORD, FALSE_KEYWORD, FOR_KEYWORD,
+            FUNCTION_KEYWORD, IF_KEYWORD,
+            LET_KEYWORD, MODULE_KEYWORD,
+            TRUE_KEYWORD, UNDEF_KEYWORD
     );
 
     public static final TokenSet OBJECT_KEYWORDS = TokenSet.create(
-            OpenSCADTypes.BUILTIN_OBJ
+            BUILTIN_OBJ
     );
 
     public static final TokenSet FUNCTION_KEYWORDS = TokenSet.create(
-            OpenSCADTypes.BUILTIN_EXPR
+            BUILTIN_EXPR
     );
 
     public static final TokenSet PREDEFINED_SYMBOLS = TokenSet.create(
-            OpenSCADTypes.AND, OpenSCADTypes.OR, OpenSCADTypes.PLUS,
-            OpenSCADTypes.MINUS, OpenSCADTypes.PERC, OpenSCADTypes.DIV,
-            OpenSCADTypes.MUL, OpenSCADTypes.LT, OpenSCADTypes.LE,
-            OpenSCADTypes.GT, OpenSCADTypes.GE, OpenSCADTypes.NE,
-            OpenSCADTypes.EQ, OpenSCADTypes.EQUALS
+            AND, OR, PLUS,
+            MINUS, PERC, DIV,
+            MUL, LT, LE,
+            GT, GE, NE,
+            EQ, EQUALS
     );
 
     public static final TokenSet SEPARATOR_SYMBOLS = TokenSet.create(
-            OpenSCADTypes.COLON, OpenSCADTypes.SEMICOLON, OpenSCADTypes.COMMA
+            COLON, SEMICOLON, COMMA
     );
 
     public static final TokenSet ANGLE_BRACKETS_TOKENS = TokenSet.create(
-            OpenSCADTypes.INCLUDE_START, OpenSCADTypes.INCLUDE_END
+            INCLUDE_START, INCLUDE_END
     );
 
     public static final TokenSet PARENTHESES_TOKENS = TokenSet.create(
-            OpenSCADTypes.LPARENTH, OpenSCADTypes.RPARENTH
+            LPARENTH, RPARENTH
     );
 
     public static final TokenSet BRACES_TOKENS = TokenSet.create(
-            OpenSCADTypes.LBRACE, OpenSCADTypes.RBRACE
+            LBRACE, RBRACE
     );
 
     public static final TokenSet BRACKETS_TOKENS = TokenSet.create(
-            OpenSCADTypes.LBRACKET, OpenSCADTypes.RBRACKET
+            LBRACKET, RBRACKET
     );
 
     public static final TokenSet LINE_COMMENT_TOKENS = TokenSet.create(
-            OpenSCADTypes.END_OF_LINE_COMMENT
+            END_OF_LINE_COMMENT
     );
 
     // The sets below are used for code folding
 
     /** Used for folding import section (can include comments too) */
     public static final TokenSet IMPORT_FOLDING_TOKENS = TokenSet.create(
-            OpenSCADTypes.END_OF_LINE_COMMENT, OpenSCADTypes.INCLUDE_ITEM, OpenSCADTypes.USE_ITEM
+            END_OF_LINE_COMMENT, INCLUDE_ITEM, USE_ITEM
     );
 
     // The sets below are used for element naming/renaming
 
     /** These elements have their name in the first child with INCLUDE_PATH token type */
     public static final TokenSet IMPORT_TOKENS = TokenSet.create(
-            OpenSCADTypes.INCLUDE_ITEM, OpenSCADTypes.USE_ITEM
+            INCLUDE_ITEM, USE_ITEM
     );
 
     /** These elements have their name in the first child with IDENTIFIER token type */
     public static final TokenSet NAMED_ELEMENTS = TokenSet.create(
-            OpenSCADTypes.MODULE_DECLARATION, OpenSCADTypes.FUNCTION_DECLARATION,
-            OpenSCADTypes.ARG_DECLARATION, OpenSCADTypes.FULL_ARG_DECLARATION,
-            OpenSCADTypes.MODULE_OP_NAME_REF, OpenSCADTypes.MODULE_OBJ_NAME_REF,
-            OpenSCADTypes.FUNCTION_NAME_REF, OpenSCADTypes.PARAMETER_REFERENCE,
-            OpenSCADTypes.VARIABLE_REF_EXPR, OpenSCADTypes.VARIABLE_DECLARATION,
-            OpenSCADTypes.BUILTIN_EXPR_REF, OpenSCADTypes.BUILTIN_OBJ_REF,
-            OpenSCADTypes.COMMON_OP_REF
+            MODULE_DECLARATION, FUNCTION_DECLARATION,
+            ARG_DECLARATION, FULL_ARG_DECLARATION,
+            MODULE_OP_NAME_REF, MODULE_OBJ_NAME_REF,
+            FUNCTION_NAME_REF, PARAMETER_REFERENCE,
+            VARIABLE_REF_EXPR, VARIABLE_DECLARATION,
+            BUILTIN_EXPR_REF, BUILTIN_OBJ_REF,
+            COMMON_OP_REF
     );
 
     /** These elements can't be renamed */
     public static final TokenSet NON_RENAMABLE_ELEMENTS = TokenSet.create(
-            OpenSCADTypes.BUILTIN_EXPR_REF, OpenSCADTypes.BUILTIN_OBJ_REF,
-            OpenSCADTypes.COMMON_OP_REF
+            BUILTIN_EXPR_REF, BUILTIN_OBJ_REF,
+            COMMON_OP_REF
     );
 
     /** These elements have their doc-string attached to the parent */
     public static final TokenSet DOC_IN_PARENT = TokenSet.create(
-            OpenSCADTypes.IDENTIFIER
+            IDENTIFIER
+    );
+
+    // The sets below are used for spacing feature in formatting
+
+    public static final TokenSet LOGICAL_OPERATORS = TokenSet.create(
+            AND, OR
+    );
+
+    public static final TokenSet EQUALITY_OPERATORS = TokenSet.create(
+            EQ, NE
+    );
+
+    public static final TokenSet RELATIONAL_OPERATORS = TokenSet.create(
+            LT, LE, GT, GE
+    );
+
+    public static final TokenSet ADDITIVE_OPERATORS = TokenSet.create(
+            MINUS, PLUS
+    );
+
+    public static final TokenSet MULTIPLICATIVE_OPERATORS = TokenSet.create(
+            DIV, MUL, PERC
     );
 
     public static final IStubFileElementType FILE = new IStubFileElementType(OpenSCADLanguage.INSTANCE);
@@ -162,6 +185,6 @@ public class OpenSCADParserDefinition implements ParserDefinition {
 
     @NotNull
     public PsiElement createElement(ASTNode node) {
-        return OpenSCADTypes.Factory.createElement(node);
+        return Factory.createElement(node);
     }
 }
