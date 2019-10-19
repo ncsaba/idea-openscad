@@ -3,10 +3,8 @@ package com.javampire.openscad.references;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
-import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.util.ArrayUtil;
 import com.javampire.openscad.psi.OpenSCADImportElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -47,14 +45,6 @@ public class OpenSCADImportReference extends PsiReferenceBase<OpenSCADImportElem
     public PsiElement resolve() {
         final ResolveResult[] resolveResults = multiResolve(false);
         return resolveResults.length == 1 ? resolveResults[0].getElement() : null;
-    }
-
-    @NotNull
-    @Override
-    public Object[] getVariants() {
-        // TODO: implement (this is used for code completion)
-        LOG.debug("getVariants called");
-        return ArrayUtil.EMPTY_OBJECT_ARRAY;
     }
 
     @Override

@@ -25,18 +25,18 @@ public interface OpenSCADTypes {
   IElementType DEBUG_OP = OpenSCADElementFactory.getElementType("DEBUG_OP");
   IElementType DISABLE_OP = OpenSCADElementFactory.getElementType("DISABLE_OP");
   IElementType DIV_EXPR = OpenSCADElementFactory.getElementType("DIV_EXPR");
-  IElementType ELSE_OP = OpenSCADElementFactory.getElementType("ELSE_OP");
   IElementType ELVIS_EXPR = OpenSCADElementFactory.getElementType("ELVIS_EXPR");
   IElementType EMPTY_OBJ = OpenSCADElementFactory.getElementType("EMPTY_OBJ");
   IElementType EXPR = OpenSCADElementFactory.getElementType("EXPR");
   IElementType FOR_ELEMENT = OpenSCADElementFactory.getElementType("FOR_ELEMENT");
+  IElementType FOR_OBJ = OpenSCADElementFactory.getElementType("FOR_OBJ");
   IElementType FULL_ARG_DECLARATION = OpenSCADElementFactory.getElementType("FULL_ARG_DECLARATION");
   IElementType FULL_ARG_DECLARATION_LIST = OpenSCADElementFactory.getElementType("FULL_ARG_DECLARATION_LIST");
   IElementType FUNCTION_CALL_EXPR = OpenSCADElementFactory.getElementType("FUNCTION_CALL_EXPR");
   IElementType FUNCTION_DECLARATION = OpenSCADElementFactory.getElementType("FUNCTION_DECLARATION");
   IElementType FUNCTION_NAME_REF = OpenSCADElementFactory.getElementType("FUNCTION_NAME_REF");
   IElementType IF_ELEMENT = OpenSCADElementFactory.getElementType("IF_ELEMENT");
-  IElementType IF_OP = OpenSCADElementFactory.getElementType("IF_OP");
+  IElementType IF_OBJ = OpenSCADElementFactory.getElementType("IF_OBJ");
   IElementType INCLUDE_ITEM = OpenSCADElementFactory.getElementType("INCLUDE_ITEM");
   IElementType INCLUDE_PATH_REF = OpenSCADElementFactory.getElementType("INCLUDE_PATH_REF");
   IElementType INDEX_EXPR = OpenSCADElementFactory.getElementType("INDEX_EXPR");
@@ -172,9 +172,6 @@ public interface OpenSCADTypes {
       else if (type == DIV_EXPR) {
         return new OpenSCADDivExprImpl(node);
       }
-      else if (type == ELSE_OP) {
-        return new OpenSCADElseOpImpl(node);
-      }
       else if (type == ELVIS_EXPR) {
         return new OpenSCADElvisExprImpl(node);
       }
@@ -183,6 +180,9 @@ public interface OpenSCADTypes {
       }
       else if (type == FOR_ELEMENT) {
         return new OpenSCADForElementImpl(node);
+      }
+      else if (type == FOR_OBJ) {
+        return new OpenSCADForObjImpl(node);
       }
       else if (type == FULL_ARG_DECLARATION) {
         return new OpenSCADFullArgDeclarationImpl(node);
@@ -202,8 +202,8 @@ public interface OpenSCADTypes {
       else if (type == IF_ELEMENT) {
         return new OpenSCADIfElementImpl(node);
       }
-      else if (type == IF_OP) {
-        return new OpenSCADIfOpImpl(node);
+      else if (type == IF_OBJ) {
+        return new OpenSCADIfObjImpl(node);
       }
       else if (type == INCLUDE_ITEM) {
         return new OpenSCADIncludeItemImpl(node);
