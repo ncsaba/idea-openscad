@@ -988,13 +988,14 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   public static boolean variable_declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_declaration")) return false;
     if (!nextTokenIs(b, IDENTIFIER)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, IDENTIFIER, EQUALS);
-    r = r && expr(b, l + 1, -1);
-    r = r && consumeToken(b, SEMICOLON);
-    exit_section_(b, m, VARIABLE_DECLARATION, r);
-    return r;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, VARIABLE_DECLARATION, null);
+    r = consumeTokens(b, 1, IDENTIFIER, EQUALS);
+    p = r; // pin = 1
+    r = r && report_error_(b, expr(b, l + 1, -1));
+    r = p && consumeToken(b, SEMICOLON) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   /* ********************************************************** */

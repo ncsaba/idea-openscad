@@ -1,5 +1,6 @@
 package com.javampire.openscad.psi.impl;
 
+import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.diagnostic.Logger;
@@ -13,9 +14,13 @@ import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.parser.OpenSCADParserDefinition;
 import com.javampire.openscad.psi.OpenSCADNamedElement;
 import com.javampire.openscad.psi.OpenSCADTypes;
+import com.javampire.openscad.psi.OpenSCADVariableDeclaration;
+import com.javampire.openscad.psi.stub.OpenSCADVariableStubElementType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class OpenSCADPsiImplUtil {
@@ -90,7 +95,7 @@ public class OpenSCADPsiImplUtil {
 
     public static PsiReference getReference(PsiElement element) {
         // TODO: implement parameter references
-        LOG.warn("Unhandled reference element: " + element);
+        LOG.debug("Unhandled reference element: " + element);
         return null;
     }
 
@@ -188,4 +193,26 @@ public class OpenSCADPsiImplUtil {
         return text;
     }
 
+
+    /**
+     * Recursively get all variables declaration accessible from node, i.e. children of node or children of upper parents.
+     *
+     * @param element Element for which accessible variables will be returned.
+     * @return List of accessible variable declarations.
+     */
+    public static List<OpenSCADVariableDeclaration> getAccessibleVariableDeclaration(final PsiElement element) {
+        final PsiElement parent = element.getParent();
+
+        // Get parent accessible variables if any
+        List<OpenSCADVariableDeclaration> list = (parent == null || parent instanceof PsiFileBase) ? new ArrayList<>() : getAccessibleVariableDeclaration(parent);
+
+        // Loop from first sibling to element (variables declared after elements are not accessible)
+        for (PsiElement sibling = parent.getFirstChild(); sibling != null && sibling != element; sibling = sibling.getNextSibling()) {
+            if (sibling.getNode().getElementType() == OpenSCADVariableStubElementType.INSTANCE) {
+                list.add((OpenSCADVariableDeclaration) sibling);
+            }
+        }
+
+        return list;
+    }
 }

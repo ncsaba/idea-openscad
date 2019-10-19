@@ -33,6 +33,7 @@
     <projectConfigurable groupId="language" instance="com.javampire.openscad.settings.OpenSCADSettingsConfigurable" id="OpenSCADSettings" displayName="OpenSCAD Language" />
     <applicationService serviceImplementation="com.javampire.openscad.settings.OpenSCADSettings" />
     <postStartupActivity implementation="com.javampire.openscad.settings.LibraryUtil" />
+    <completion.contributor language="OpenSCAD" implementationClass="com.javampire.openscad.completion.OpenSCADCompletionContributor" />
   </extensions>
 
   <actions>
