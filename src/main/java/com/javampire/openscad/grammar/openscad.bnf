@@ -87,6 +87,7 @@ private statement ::= object | declaration
 private declaration ::= variable_declaration | module_declaration | function_declaration
 
 variable_declaration ::= IDENTIFIER EQUALS expr SEMICOLON {
+    pin=1
     mixin="com.javampire.openscad.psi.impl.OpenSCADVariableDeclarationStubElementImpl"
     implements=[
         "com.javampire.openscad.psi.OpenSCADNamedElement"

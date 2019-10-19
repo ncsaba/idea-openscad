@@ -33,9 +33,9 @@ public class OpenSCADVariableDeclarationImpl extends OpenSCADVariableDeclaration
   }
 
   @Override
-  @NotNull
+  @Nullable
   public OpenSCADExpr getExpr() {
-    return findNotNullChildByClass(OpenSCADExpr.class);
+    return findChildByClass(OpenSCADExpr.class);
   }
 
   @Override

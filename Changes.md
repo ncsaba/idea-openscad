@@ -7,6 +7,8 @@ Version History
 * Add import reference
 * Fix deprecated calls
 * Update compatibility version from 192.2549 to no limit
+* Add editor context menu open OpenSCAD and generate actions
+* Add completion for variables, modules and functions
 
 ## Changes in version 1.3.0
 
