@@ -3,7 +3,9 @@ package com.javampire.openscad.completion;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.IdeActions;
+import com.intellij.openapi.keymap.KeymapUtil;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModifiableModelsProvider;
@@ -77,11 +79,11 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
                         if (parameters.getInvocationCount() % 2 == 0) {
                             // Add all possible functions and method from global libraries
                             result.addAllElements(getGlobalLibrariesModulesAndFunctions(project));
-                            result.addLookupAdvertisement("Press " + CompletionUtil.getActionShortcut(IdeActions.ACTION_CODE_COMPLETION) + " to see accessible variables, functions and methods.");
+                            result.addLookupAdvertisement("Press " + KeymapUtil.getFirstKeyboardShortcutText(ActionManager.getInstance().getAction(IdeActions.ACTION_CODE_COMPLETION)) + " to see accessible variables, functions and methods.");
                         } else {
                             // Add declared library methods and functions
                             result.addAllElements(getLocalLibrariesModulesAndFunctions(elementPosition));
-                            result.addLookupAdvertisement("Press " + CompletionUtil.getActionShortcut(IdeActions.ACTION_CODE_COMPLETION) + " to add non-imported functions and methods.");
+                            result.addLookupAdvertisement("Press " + KeymapUtil.getFirstKeyboardShortcutText(ActionManager.getInstance().getAction(IdeActions.ACTION_CODE_COMPLETION)) + " to add non-imported functions and methods.");
                         }
                     }
                 }
