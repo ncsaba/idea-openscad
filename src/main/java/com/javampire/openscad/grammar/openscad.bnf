@@ -50,13 +50,13 @@ object ::= builtin_obj
          | block_obj
          | compound_obj
          | empty_obj
+         | echo_call_obj
 
 builtin_obj ::= (builtin_obj_ref arg_assignment_list SEMICOLON)
                 | (builtin_op block_obj)
                 | (builtin_op statement)
 builtin_obj_ref ::= "cube"
                   | "cylinder"
-                  | "echo"
                   | "assert"
                   | "sphere"
                   | "polyhedron"
@@ -86,13 +86,16 @@ block_obj ::= LBRACE statement* RBRACE
 
 empty_obj ::= SEMICOLON
 
+echo_obj ::= ECHO_KEYWORD arg_assignment_list
+echo_call_obj ::= echo_obj [block_obj | statement | SEMICOLON]
+
 if_obj ::= IF_KEYWORD paren_expr (block_obj | statement) (ELSE_KEYWORD IF_KEYWORD paren_expr (block_obj | statement))* [ELSE_KEYWORD (block_obj | statement)]
 for_obj ::=  full_arg_op_identifier full_arg_declaration_list (block_obj | statement)
 private statement ::= object | declaration
 
 private declaration ::= variable_declaration | module_declaration | function_declaration
 
-variable_declaration ::= IDENTIFIER EQUALS expr SEMICOLON {
+variable_declaration ::= IDENTIFIER EQUALS [ echo_obj ] expr SEMICOLON {
     pin=1
     mixin="com.javampire.openscad.psi.impl.OpenSCADVariableDeclarationStubElementImpl"
     implements=[
@@ -111,7 +114,7 @@ module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement 
     methods=[getPresentation getNameIdentifier]
 }
 
-function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS expr SEMICOLON {
+function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS [ echo_obj ] expr SEMICOLON {
     mixin="com.javampire.openscad.psi.impl.OpenSCADFunctionDeclarationStubElementImpl"
     implements=[
         "com.javampire.openscad.psi.OpenSCADNamedElement"
@@ -220,7 +223,7 @@ for_element ::= FOR_KEYWORD full_arg_declaration_list
 if_element ::= IF_KEYWORD LPARENTH expr RPARENTH
 let_element ::= LET_KEYWORD full_arg_declaration_list
 builtin_expr ::= builtin_expr_ref arg_assignment_list
-               | LET_KEYWORD full_arg_declaration_list expr
+               | LET_KEYWORD full_arg_declaration_list [ echo_obj ] expr
 builtin_expr_ref ::= "cos"
                    | "sin"
                    | "tan"

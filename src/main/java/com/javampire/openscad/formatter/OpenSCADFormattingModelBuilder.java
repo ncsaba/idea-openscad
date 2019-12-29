@@ -17,7 +17,6 @@ import static com.javampire.openscad.psi.OpenSCADTypes.*;
 
 public class OpenSCADFormattingModelBuilder implements FormattingModelBuilder {
 
-
     @NotNull
     @Override
     public FormattingModel createModel(PsiElement element, CodeStyleSettings settings) {

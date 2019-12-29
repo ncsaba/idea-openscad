@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.javampire.openscad.psi.*;
 
-public class OpenSCADBuiltinExprImpl extends OpenSCADExprImpl implements OpenSCADBuiltinExpr {
+public class OpenSCADEchoCallObjImpl extends OpenSCADObjectImpl implements OpenSCADEchoCallObj {
 
-  public OpenSCADBuiltinExprImpl(@NotNull ASTNode node) {
+  public OpenSCADEchoCallObjImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitBuiltinExpr(this);
+    visitor.visitEchoCallObj(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -27,32 +27,26 @@ public class OpenSCADBuiltinExprImpl extends OpenSCADExprImpl implements OpenSCA
 
   @Override
   @Nullable
-  public OpenSCADArgAssignmentList getArgAssignmentList() {
-    return findChildByClass(OpenSCADArgAssignmentList.class);
+  public OpenSCADFunctionDeclaration getFunctionDeclaration() {
+    return findChildByClass(OpenSCADFunctionDeclaration.class);
   }
 
   @Override
   @Nullable
-  public OpenSCADBuiltinExprRef getBuiltinExprRef() {
-    return findChildByClass(OpenSCADBuiltinExprRef.class);
+  public OpenSCADModuleDeclaration getModuleDeclaration() {
+    return findChildByClass(OpenSCADModuleDeclaration.class);
+  }
+
+  @Override
+  @NotNull
+  public List<OpenSCADObject> getObjectList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADObject.class);
   }
 
   @Override
   @Nullable
-  public OpenSCADEchoObj getEchoObj() {
-    return findChildByClass(OpenSCADEchoObj.class);
-  }
-
-  @Override
-  @Nullable
-  public OpenSCADExpr getExpr() {
-    return findChildByClass(OpenSCADExpr.class);
-  }
-
-  @Override
-  @Nullable
-  public OpenSCADFullArgDeclarationList getFullArgDeclarationList() {
-    return findChildByClass(OpenSCADFullArgDeclarationList.class);
+  public OpenSCADVariableDeclaration getVariableDeclaration() {
+    return findChildByClass(OpenSCADVariableDeclaration.class);
   }
 
 }
