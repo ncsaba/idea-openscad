@@ -26,6 +26,7 @@ import com.intellij.util.ProcessingContext;
 import com.javampire.openscad.OpenSCADFileType;
 import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.OpenSCADLanguage;
+import com.javampire.openscad.parser.OpenSCADParserDefinition;
 import com.javampire.openscad.psi.*;
 import com.javampire.openscad.psi.impl.OpenSCADPsiImplUtil;
 import com.javampire.openscad.references.OpenSCADResolver;
@@ -61,8 +62,17 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
                         final Project project = parameters.getOriginalFile().getProject();
                         final PsiElement elementPosition = parameters.getPosition();
 
+                        // No autocompletion when editing argument lists
+                        if (OpenSCADTypes.ARG_DECLARATION == elementPosition.getParent().getNode().getElementType()) {
+                            return;
+                        }
+
                         // Add all accessible variables
                         result.addAllElements(getAccessibleVariables(elementPosition));
+                        ProgressManager.checkCanceled();
+
+                        // Add all parent arguments (from declaration lists)
+                        result.addAllElements(getAccessibleArgumentDeclarations(elementPosition));
                         ProgressManager.checkCanceled();
 
                         // Add local custom modules
@@ -178,11 +188,42 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
      * Get accessible variables declarations for the current element.
      *
      * @param element Psi element.
-     * @return List of variable declaration element.
+     * @return List of variable declaration elements.
      */
     private List<LookupElement> getAccessibleVariables(final PsiElement element) {
         final List<OpenSCADVariableDeclaration> variableDeclarations = OpenSCADPsiImplUtil.getAccessibleVariableDeclaration(element);
         return convertToLookupElements(variableDeclarations, null);
+    }
+
+    /**
+     * Get accessible variables declarations from parent argument list declarations, i.e. variables declared in function or module parameters.
+     *
+     * @param element Psi element.
+     * @return List of argument declaration elements.
+     */
+    private List<LookupElement> getAccessibleArgumentDeclarations(PsiElement element) {
+
+        // Parents with ARG_DECLARATION_LIST : modules and functions
+        final List<PsiElement> parentsWithArgDeclarationList = OpenSCADPsiImplUtil.getParentsOfType(element, OpenSCADParserDefinition.WITH_ARG_DECLARATION_LIST);
+        final List<OpenSCADArgDeclaration> argDeclarations = parentsWithArgDeclarationList.stream()
+                .map(e -> PsiTreeUtil.getChildOfType(e, OpenSCADArgDeclarationList.class))
+                .filter(Objects::nonNull)
+                .flatMap(e -> PsiTreeUtil.getChildrenOfTypeAsList(e, OpenSCADArgDeclaration.class).stream())
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        final List<LookupElement> lookupElements = new ArrayList<>(convertToLookupElements(argDeclarations, null));
+
+        // Parents with FULL_ARG_DECLARATION_LIST : for loop
+        final List<PsiElement> parentsWithFullArgDeclarationList = OpenSCADPsiImplUtil.getParentsOfType(element, OpenSCADParserDefinition.WITH_FULL_ARG_DECLARATION_LIST);
+        final List<PsiElement> fullArgDeclarations = parentsWithFullArgDeclarationList.stream()
+                .map(e -> PsiTreeUtil.getChildOfType(e, OpenSCADFullArgDeclarationList.class))
+                .filter(Objects::nonNull)
+                .map(e -> PsiTreeUtil.getChildOfType(e, OpenSCADFullArgDeclaration.class))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        lookupElements.addAll(convertToLookupElements(fullArgDeclarations, null));
+
+        return lookupElements;
     }
 
     /**

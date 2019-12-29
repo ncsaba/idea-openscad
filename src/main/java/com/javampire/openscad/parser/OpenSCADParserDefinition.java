@@ -86,19 +86,25 @@ public class OpenSCADParserDefinition implements ParserDefinition {
 
     // The sets below are used for code folding
 
-    /** Used for folding import section (can include comments too) */
+    /**
+     * Used for folding import section (can include comments too)
+     */
     public static final TokenSet IMPORT_FOLDING_TOKENS = TokenSet.create(
             END_OF_LINE_COMMENT, INCLUDE_ITEM, USE_ITEM
     );
 
     // The sets below are used for element naming/renaming
 
-    /** These elements have their name in the first child with INCLUDE_PATH token type */
+    /**
+     * These elements have their name in the first child with INCLUDE_PATH token type
+     */
     public static final TokenSet IMPORT_TOKENS = TokenSet.create(
             INCLUDE_ITEM, USE_ITEM
     );
 
-    /** These elements have their name in the first child with IDENTIFIER token type */
+    /**
+     * These elements have their name in the first child with IDENTIFIER token type
+     */
     public static final TokenSet NAMED_ELEMENTS = TokenSet.create(
             MODULE_DECLARATION, FUNCTION_DECLARATION,
             ARG_DECLARATION, FULL_ARG_DECLARATION,
@@ -109,13 +115,17 @@ public class OpenSCADParserDefinition implements ParserDefinition {
             COMMON_OP_REF
     );
 
-    /** These elements can't be renamed */
+    /**
+     * These elements can't be renamed
+     */
     public static final TokenSet NON_RENAMABLE_ELEMENTS = TokenSet.create(
             BUILTIN_EXPR_REF, BUILTIN_OBJ_REF,
             COMMON_OP_REF
     );
 
-    /** These elements have their doc-string attached to the parent */
+    /**
+     * These elements have their doc-string attached to the parent
+     */
     public static final TokenSet DOC_IN_PARENT = TokenSet.create(
             IDENTIFIER
     );
@@ -140,6 +150,16 @@ public class OpenSCADParserDefinition implements ParserDefinition {
 
     public static final TokenSet MULTIPLICATIVE_OPERATORS = TokenSet.create(
             DIV, MUL, PERC
+    );
+
+    // The set below are used for completion
+
+    public static final TokenSet WITH_ARG_DECLARATION_LIST = TokenSet.create(
+            MODULE_DECLARATION, FUNCTION_DECLARATION
+    );
+
+    public static final TokenSet WITH_FULL_ARG_DECLARATION_LIST = TokenSet.create(
+            FOR_OBJ
     );
 
     public static final IStubFileElementType FILE = new IStubFileElementType(OpenSCADLanguage.INSTANCE);

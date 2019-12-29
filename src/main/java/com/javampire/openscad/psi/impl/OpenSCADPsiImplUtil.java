@@ -7,6 +7,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.PlatformIcons;
@@ -16,6 +17,7 @@ import com.javampire.openscad.psi.OpenSCADNamedElement;
 import com.javampire.openscad.psi.OpenSCADTypes;
 import com.javampire.openscad.psi.OpenSCADVariableDeclaration;
 import com.javampire.openscad.psi.stub.OpenSCADVariableStubElementType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -27,7 +29,9 @@ public class OpenSCADPsiImplUtil {
 
     private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.psi.impl.OpenSCADPsiImplUtil");
 
-    public static ItemPresentation getPresentation(final PsiElement element) {
+    private static Pattern MULTILINE_PATTERN = Pattern.compile("\\R");
+
+    public static ItemPresentation getPresentation(@NotNull final PsiElement element) {
         return new ItemPresentation() {
             @Nullable
             @Override
@@ -71,14 +75,14 @@ public class OpenSCADPsiImplUtil {
         };
     }
 
-    public static PsiElement setName(PsiElement element, String newName) {
+    public static PsiElement setName(@NotNull PsiElement element, String newName) {
         if (OpenSCADParserDefinition.NON_RENAMABLE_ELEMENTS.contains(element.getNode().getElementType())) {
             throw new IncorrectOperationException("Builtin functions/modules can't be renamed");
         }
         return element;
     }
 
-    public static PsiElement getNameIdentifier(PsiElement element) {
+    public static PsiElement getNameIdentifier(@NotNull PsiElement element) {
         if (OpenSCADParserDefinition.NAMED_ELEMENTS.contains(element.getNode().getElementType())) {
             final ASTNode nameNode = element.getNode().findChildByType(OpenSCADTypes.IDENTIFIER);
             if (nameNode != null) {
@@ -105,7 +109,7 @@ public class OpenSCADPsiImplUtil {
      * @param element a module or a function
      * @return name(arg1, ...)
      */
-    public static String getNameWithArgumentList(OpenSCADNamedElement element, boolean shortForm) {
+    public static String getNameWithArgumentList(@NotNull OpenSCADNamedElement element, boolean shortForm) {
         StringBuilder buf = new StringBuilder();
         buf.append(element.getName());
         final ASTNode argListNode = element.getNode().findChildByType(OpenSCADTypes.ARG_DECLARATION_LIST);
@@ -119,14 +123,12 @@ public class OpenSCADPsiImplUtil {
         return buf.toString();
     }
 
-    public static Pattern MULTILINE_PATTERN = Pattern.compile("\\R");
-
-    public static boolean isMultiLine(PsiElement element) {
+    private static boolean isMultiLine(@NotNull PsiElement element) {
         return MULTILINE_PATTERN.matcher(element.getText()).find();
     }
 
     @Nullable
-    public static String getDocString(PsiElement element) {
+    public static String getDocString(@Nullable PsiElement element) {
         if (element == null) {
             return null;
         }
@@ -195,24 +197,48 @@ public class OpenSCADPsiImplUtil {
 
 
     /**
-     * Recursively get all variables declaration accessible from node, i.e. children of node or children of upper parents.
+     * Recursively get all variables declaration accessible to element, i.e. before element and before its parents.
      *
      * @param element Element for which accessible variables will be returned.
      * @return List of accessible variable declarations.
      */
-    public static List<OpenSCADVariableDeclaration> getAccessibleVariableDeclaration(final PsiElement element) {
+    public static List<OpenSCADVariableDeclaration> getAccessibleVariableDeclaration(@NotNull final PsiElement element) {
         final PsiElement parent = element.getParent();
 
         // Get parent accessible variables if any
-        List<OpenSCADVariableDeclaration> list = (parent == null || parent instanceof PsiFileBase) ? new ArrayList<>() : getAccessibleVariableDeclaration(parent);
+        List<OpenSCADVariableDeclaration> variableDeclarationsInParent = (parent == null || parent instanceof PsiFileBase) ? new ArrayList<>() : getAccessibleVariableDeclaration(parent);
 
         // Loop from first sibling to element (variables declared after elements are not accessible)
-        for (PsiElement sibling = parent.getFirstChild(); sibling != null && sibling != element; sibling = sibling.getNextSibling()) {
-            if (sibling.getNode().getElementType() == OpenSCADVariableStubElementType.INSTANCE) {
-                list.add((OpenSCADVariableDeclaration) sibling);
+        if (parent != null) {
+            for (PsiElement sibling = parent.getFirstChild(); sibling != null && sibling != element; sibling = sibling.getNextSibling()) {
+                if (sibling.getNode().getElementType() == OpenSCADVariableStubElementType.INSTANCE) {
+                    variableDeclarationsInParent.add((OpenSCADVariableDeclaration) sibling);
+                }
             }
         }
 
-        return list;
+        return variableDeclarationsInParent;
     }
+
+    /**
+     * Recursively get all parents of types elementTypes.
+     *
+     * @param element      Element for which matching parents will be returned.
+     * @param elementTypes Allowed parent types.
+     * @return List of matching parents.
+     */
+    public static List<PsiElement> getParentsOfType(@Nullable PsiElement element, @NotNull TokenSet elementTypes) {
+        List<PsiElement> matchingParents = new ArrayList<>();
+        if (element != null && !(element instanceof PsiFileBase)) {
+            element = element.getParent();
+        }
+        while (element != null) {
+            if (elementTypes.contains(element.getNode().getElementType())) {
+                matchingParents.add(element);
+            }
+            element = element.getParent();
+        }
+        return matchingParents;
+    }
+
 }
