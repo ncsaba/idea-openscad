@@ -14,13 +14,15 @@ import java.util.List;
 
 public class OpenSCADResolver {
 
-    public static List<PsiFile> findFilesByRelativePath(@NotNull Module module, @NotNull String fileRelativePath) {
-        return findFilesByRelativePath(
-            module.getProject(), GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module), fileRelativePath
-        );
+    public static List<PsiFile> findModuleContentFile(@NotNull Module module, @NotNull String fileRelativePath) {
+        return findFilesByRelativePath(module.getProject(), module.getModuleContentScope(), fileRelativePath);
     }
 
-    public static List<PsiFile> findFilesByRelativePath(@NotNull Project project, @NotNull String fileRelativePath) {
+    public static List<PsiFile> findModuleLibrary(@NotNull Module module, @NotNull String fileRelativePath) {
+        return findFilesByRelativePath(module.getProject(), module.getModuleWithLibrariesScope(), fileRelativePath);
+    }
+
+    public static List<PsiFile> findProjectLibrary(@NotNull Project project, @NotNull String fileRelativePath) {
         return findFilesByRelativePath(project, ProjectScope.getLibrariesScope(project), fileRelativePath);
     }
 
