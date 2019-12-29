@@ -27,13 +27,23 @@ public class OpenSCADImportReference extends PsiReferenceBase<OpenSCADImportElem
     @Override
     public ResolveResult[] multiResolve(boolean incompleteCode) {
         final Module module = ModuleUtil.findModuleForPsiElement(myElement);
-        final List<PsiFile> fileList;
+        List<PsiFile> fileList;
         if (module != null) {
+            // If it is an external library
             fileList = OpenSCADResolver.findModuleLibrary(module, importPath);
+            if (fileList.isEmpty()) {
+                // If not, might be inner module file
+                fileList = OpenSCADResolver.findModuleContentFile(module, importPath);
+            }
         } else {
+            // If it is an external library
             fileList = OpenSCADResolver.findProjectLibrary(myElement.getProject(), importPath);
+            if (fileList.isEmpty()) {
+                // If not, might be inner module file
+                fileList = OpenSCADResolver.findProjectContentFile(myElement.getProject(), importPath);
+            }
         }
-        final List<ResolveResult> results = new ArrayList<ResolveResult>();
+        final List<ResolveResult> results = new ArrayList<>();
         for (PsiFile f : fileList) {
             results.add(new PsiElementResolveResult(f));
         }
