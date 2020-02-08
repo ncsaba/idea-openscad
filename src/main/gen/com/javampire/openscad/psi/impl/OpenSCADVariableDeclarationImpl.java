@@ -34,6 +34,12 @@ public class OpenSCADVariableDeclarationImpl extends OpenSCADVariableDeclaration
 
   @Override
   @Nullable
+  public OpenSCADEchoObj getEchoObj() {
+    return findChildByClass(OpenSCADEchoObj.class);
+  }
+
+  @Override
+  @Nullable
   public OpenSCADExpr getExpr() {
     return findChildByClass(OpenSCADExpr.class);
   }

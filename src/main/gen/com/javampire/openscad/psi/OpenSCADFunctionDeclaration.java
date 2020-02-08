@@ -13,6 +13,9 @@ public interface OpenSCADFunctionDeclaration extends OpenSCADNamedElement, StubB
   @NotNull
   OpenSCADArgDeclarationList getArgDeclarationList();
 
+  @Nullable
+  OpenSCADEchoObj getEchoObj();
+
   @NotNull
   OpenSCADExpr getExpr();
 

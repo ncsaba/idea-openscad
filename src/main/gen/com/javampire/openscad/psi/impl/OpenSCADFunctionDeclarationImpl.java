@@ -39,6 +39,12 @@ public class OpenSCADFunctionDeclarationImpl extends OpenSCADFunctionDeclaration
   }
 
   @Override
+  @Nullable
+  public OpenSCADEchoObj getEchoObj() {
+    return findChildByClass(OpenSCADEchoObj.class);
+  }
+
+  @Override
   @NotNull
   public OpenSCADExpr getExpr() {
     return findNotNullChildByClass(OpenSCADExpr.class);

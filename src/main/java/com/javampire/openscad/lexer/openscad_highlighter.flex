@@ -1,8 +1,6 @@
 package com.javampire.openscad.highlighting;
 
-import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-import com.javampire.openscad.psi.OpenSCADTypes;
 import com.intellij.psi.TokenType;
 
 %%
@@ -50,6 +48,8 @@ STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
 
     "function"	                { return OpenSCADTypes.FUNCTION_KEYWORD; }
     "module"	                { return OpenSCADTypes.MODULE_KEYWORD; }
+
+    "echo"                      { return OpenSCADTypes.ECHO_KEYWORD; }
 
     "else"		                { return OpenSCADTypes.ELSE_KEYWORD; }
     "for"                       { return OpenSCADTypes.FOR_KEYWORD; }
