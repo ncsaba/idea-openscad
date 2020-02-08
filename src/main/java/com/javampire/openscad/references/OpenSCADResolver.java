@@ -22,6 +22,10 @@ public class OpenSCADResolver {
         return findFilesByRelativePath(module.getProject(), module.getModuleWithLibrariesScope(), fileRelativePath);
     }
 
+    public static List<PsiFile> findProjectContentFile(@NotNull Project project, @NotNull String fileRelativePath) {
+        return findFilesByRelativePath(project, ProjectScope.getContentScope(project), fileRelativePath);
+    }
+
     public static List<PsiFile> findProjectLibrary(@NotNull Project project, @NotNull String fileRelativePath) {
         return findFilesByRelativePath(project, ProjectScope.getLibrariesScope(project), fileRelativePath);
     }
@@ -38,5 +42,4 @@ public class OpenSCADResolver {
         }
         return fileList;
     }
-
 }
