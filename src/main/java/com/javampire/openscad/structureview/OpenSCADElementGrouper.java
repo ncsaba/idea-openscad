@@ -51,7 +51,7 @@ public class OpenSCADElementGrouper implements Grouper {
 
     @NotNull
     @Override
-    public Collection<Group> group(@NotNull AbstractTreeNode parent, @NotNull Collection<TreeElement> children) {
+    public Collection<Group> group(@NotNull AbstractTreeNode<?> parent, @NotNull Collection<TreeElement> children) {
         if (parent.getValue() instanceof ElementGroup) return Collections.emptyList();
         final LinkedHashMap<ItemPresentation, Group> result = new LinkedHashMap<>();
         for (Map.Entry<Class, ItemPresentation> entry : ITEM_PRESENTATION_MAP.entrySet()) {
