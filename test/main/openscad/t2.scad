@@ -1,8 +1,8 @@
-use <ta.scad>
+include <ta.scad>
 
 tamodule(); // code completion should work
 
-t2var = "t2var";
+t2var = var1; // code completions should work
 
 function t2function(t2arg1, t2arg2) = [t2arg1 * t2arg2];
 
@@ -14,10 +14,10 @@ module t2module(t2arg1, t2arg2) {
         echo(t2arg3) ; // code completion should work
         for (t2for = [3:5]) {
             if (t2for != 4)
-            let(t2arg4 = "test") echo(t2for, t2arg4); // code completion should work for both variables
+                let(t2arg4 = "test") echo(t2for, t2arg4); // code completion should work for both variables
         }
         if (true)
-            cube([1, 1, 1]);
+            cube([t2, 1, 12]);
     }
 }
 

@@ -1,3 +1,7 @@
 module tamodule() {
-    cube([5, 5, 5]);
+    var3 = 5;
+    cube([var3, var3, var3]);
 }
+
+var1 = 2;
+var2 = var1;
