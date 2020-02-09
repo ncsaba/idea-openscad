@@ -1,3 +1,4 @@
+![Java CI](https://github.com/ldenisey/idea-openscad/workflows/Java%20CI/badge.svg)
 
 # OpenSCAD Language Support for IntelliJ Platform
 
