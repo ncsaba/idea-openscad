@@ -3,6 +3,7 @@ package com.javampire.openscad.settings;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
+import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModifiableModelsProvider;
 import com.intellij.openapi.roots.ModifiableRootModel;
@@ -45,10 +46,22 @@ public class LibraryUtil implements StartupActivity {
     }
 
     public static void updateOpenSCADLibraries(Project project) {
-        final OpenSCADInfo info = OpenSCADSettingsUtil.getOpenSCADInfo();
-        if (info != null) {
-            final List<String> libraryPaths = info.getLibraryPaths();
-            if (! libraryPaths.isEmpty()) {
+        final OpenSCADInfo[] info = new OpenSCADInfo[1];
+        ProgressManager.getInstance().runProcessWithProgressSynchronously(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        info[0] = OpenSCADSettingsUtil.getOpenSCADInfo();
+                    }
+                },
+                "Configure OpenSCAD executable",
+                false,
+                null
+        );
+
+        if (info[0] != null) {
+            final List<String> libraryPaths = info[0].getLibraryPaths();
+            if (!libraryPaths.isEmpty()) {
                 createLibrary(project, "OpenSCAD Libraries", libraryPaths, true);
             }
         }
@@ -57,8 +70,7 @@ public class LibraryUtil implements StartupActivity {
     public static void createLibrary(@NotNull final Project project,
                                      final String libraryName,
                                      @NotNull final List<String> paths,
-                                     final boolean isGlobal)
-    {
+                                     final boolean isGlobal) {
         ModifiableModelsProvider modelsProvider = ModifiableModelsProvider.SERVICE.getInstance();
 
         ApplicationManager.getApplication().runWriteAction(() -> {

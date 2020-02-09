@@ -23,7 +23,7 @@ public class OpenSCADSettingsUtil {
 
     public static OpenSCADInfo getOpenSCADInfo() {
         // run the OpenSCAD executable and parse the returned info
-        if (! OpenSCADSettings.hasExecutable()) {
+        if (!OpenSCADSettings.hasExecutable()) {
             return null;
         }
         final String openSCADExecutable = OpenSCADSettings.getInstance().getOpenSCADExecutable();
@@ -33,7 +33,7 @@ public class OpenSCADSettingsUtil {
         }
         try {
             String infoString = new CapturingProcessHandler(
-                new GeneralCommandLine(openSCADExecutable, "--info")
+                    new GeneralCommandLine(openSCADExecutable, "--info")
             ).runProcess(5 * MINUTE).getStdout().trim();
 
             if (!infoString.isEmpty()) {
@@ -86,7 +86,7 @@ public class OpenSCADSettingsUtil {
                         new GeneralCommandLine("which", executableName)
                 ).runProcess(5 * MINUTE).getStdout().trim();
 
-                if (! result.isEmpty()) {
+                if (!result.isEmpty()) {
                     return result;
                 }
             } catch (ExecutionException e) {
