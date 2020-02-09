@@ -17,9 +17,8 @@ dependencies {
 }
 
 intellij {
-    plugins = ['psiviewer:201-SNAPSHOT']
+    //plugins = ['psiviewer:201-SNAPSHOT'] // For dev purpose only
     updateSinceUntilBuild = false
-    sandboxDirectory = "$project.buildDir/myCustom-sandbox"
 }
 
 patchPluginXml {
