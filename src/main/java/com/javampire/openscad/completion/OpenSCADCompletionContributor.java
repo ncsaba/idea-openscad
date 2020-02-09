@@ -92,14 +92,16 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
                         result.addAllElements(getBuiltinModulesAndFunctions(project));
                         ProgressManager.checkCanceled();
 
+                        // Add declared library methods and functions
+                        result.addAllElements(getLocalLibrariesModulesAndFunctions(elementPosition));
+                        ProgressManager.checkCanceled();
+
                         // Second completion case
                         if (parameters.getInvocationCount() % 2 == 0) {
                             // Add all possible functions and method from global libraries
                             result.addAllElements(getGlobalLibrariesModulesAndFunctions(project));
                             result.addLookupAdvertisement("Press " + KeymapUtil.getFirstKeyboardShortcutText(ActionManager.getInstance().getAction(IdeActions.ACTION_CODE_COMPLETION)) + " to see accessible variables, functions and methods.");
                         } else {
-                            // Add declared library methods and functions
-                            result.addAllElements(getLocalLibrariesModulesAndFunctions(elementPosition));
                             result.addLookupAdvertisement("Press " + KeymapUtil.getFirstKeyboardShortcutText(ActionManager.getInstance().getAction(IdeActions.ACTION_CODE_COMPLETION)) + " to add non-imported functions and methods.");
                         }
                     }
