@@ -164,13 +164,17 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
      * @return List of completion elements.
      */
     private List<LookupElement> getLocalLibrariesModulesAndFunctions(final PsiElement element) {
-        final Module module = ModuleUtil.findModuleForPsiElement(element);
+        return getLocalLibrariesModulesAndFunctions(element.getContainingFile());
+    }
+
+    private List<LookupElement> getLocalLibrariesModulesAndFunctions(final PsiFile file) {
         final List<LookupElement> imports = new ArrayList<>();
 
         // Loop through declarations
         final List<PsiElement> declarations = new ArrayList<>();
-        declarations.addAll(PsiTreeUtil.getChildrenOfTypeAsList(element.getContainingFile(), OpenSCADUseItem.class));
-        declarations.addAll(PsiTreeUtil.getChildrenOfTypeAsList(element.getContainingFile(), OpenSCADIncludeItem.class));
+        declarations.addAll(PsiTreeUtil.getChildrenOfTypeAsList(file, OpenSCADUseItem.class));
+        declarations.addAll(PsiTreeUtil.getChildrenOfTypeAsList(file, OpenSCADIncludeItem.class));
+        final Module module = ModuleUtil.findModuleForFile(file.getOriginalFile());
         for (PsiElement declaration : declarations) {
             // Get relative paths
             final String importPath = OpenSCADPsiImplUtil.getPresentation(declaration).getPresentableText();
@@ -181,14 +185,17 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
             if (module != null) {
                 psiFiles = OpenSCADResolver.findModuleContentFile(module, importPath);
             } else {
-                psiFiles = OpenSCADResolver.findProjectLibrary(element.getProject(), importPath);
+                psiFiles = OpenSCADResolver.findProjectLibrary(file.getProject(), importPath);
             }
             if (psiFiles.isEmpty()) continue;
+            final PsiFile dependency = psiFiles.get(0);
 
-            imports.addAll(getFunctions(psiFiles.get(0), _FROM_ + importPath));
-            imports.addAll(getModules(psiFiles.get(0), _FROM_ + importPath));
+            imports.addAll(getFunctions(dependency, _FROM_ + importPath));
+            imports.addAll(getModules(dependency, _FROM_ + importPath));
+
+            // Recursive call to get sub dependencies
+            imports.addAll(getLocalLibrariesModulesAndFunctions(dependency));
         }
-
         return imports;
     }
 

@@ -1,4 +1,6 @@
-module tamodule() {
+include <dep11.scad>
+
+module dep1module() {
     var3 = 5;
     cube([var3, var3, var3]);
 }
