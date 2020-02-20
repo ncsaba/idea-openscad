@@ -75,6 +75,14 @@ builtin_obj_ref ::= "cube"
     methods=[setName getNameIdentifier]
 }
 
+echo_call_obj ::= echo_obj [block_obj | statement | SEMICOLON]
+echo_obj ::= echo_obj_ref arg_assignment_list
+echo_obj_ref ::= "echo" {
+    mixin="com.javampire.openscad.psi.impl.OpenSCADResolvableElementImpl"
+    implements=["com.javampire.openscad.psi.OpenSCADResolvableElement"]
+    methods=[setName getNameIdentifier]
+}
+
 module_call_obj ::= module_obj_name_ref arg_assignment_list SEMICOLON
 module_obj_name_ref ::= IDENTIFIER {
     mixin="com.javampire.openscad.psi.impl.OpenSCADResolvableElementImpl"
@@ -85,9 +93,6 @@ module_obj_name_ref ::= IDENTIFIER {
 block_obj ::= LBRACE statement* RBRACE
 
 empty_obj ::= SEMICOLON
-
-echo_obj ::= ECHO_KEYWORD arg_assignment_list
-echo_call_obj ::= echo_obj [block_obj | statement | SEMICOLON]
 
 if_obj ::= IF_KEYWORD paren_expr (block_obj | statement) (ELSE_KEYWORD IF_KEYWORD paren_expr (block_obj | statement))* [ELSE_KEYWORD (block_obj | statement)]
 for_obj ::=  full_arg_op_identifier full_arg_declaration_list (block_obj | statement)

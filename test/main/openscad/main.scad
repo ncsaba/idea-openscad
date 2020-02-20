@@ -2,6 +2,8 @@ include <dep1.scad>
 
 dep1module(); // code completion should work
 
+dep11module(); // code completion should work
+
 t2var = var1; // code completions should work
 
 function t2function(t2arg1, t2arg2) = [t2arg1 * t2arg2];
@@ -18,6 +20,8 @@ module t2module(t2arg1, t2arg2) {
         }
         if (true)
             cube([t2, 1, 12]);
+
+        translate([1, 0, 0]) children(0); // code completion should work
     }
 }
 

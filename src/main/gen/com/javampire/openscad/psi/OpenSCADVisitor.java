@@ -87,6 +87,10 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitObject(o);
   }
 
+  public void visitEchoObjRef(@NotNull OpenSCADEchoObjRef o) {
+    visitResolvableElement(o);
+  }
+
   public void visitElvisExpr(@NotNull OpenSCADElvisExpr o) {
     visitExpr(o);
   }

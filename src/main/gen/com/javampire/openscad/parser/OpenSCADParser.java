@@ -539,9 +539,8 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   // echo_obj [block_obj | statement | SEMICOLON]
   public static boolean echo_call_obj(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "echo_call_obj")) return false;
-    if (!nextTokenIs(b, ECHO_KEYWORD)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _COLLAPSE_, ECHO_CALL_OBJ, null);
+    Marker m = enter_section_(b, l, _COLLAPSE_, ECHO_CALL_OBJ, "<echo call obj>");
     r = echo_obj(b, l + 1);
     r = r && echo_call_obj_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
@@ -566,15 +565,25 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ECHO_KEYWORD arg_assignment_list
+  // echo_obj_ref arg_assignment_list
   public static boolean echo_obj(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "echo_obj")) return false;
-    if (!nextTokenIs(b, ECHO_KEYWORD)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, ECHO_KEYWORD);
+    Marker m = enter_section_(b, l, _NONE_, ECHO_OBJ, "<echo obj>");
+    r = echo_obj_ref(b, l + 1);
     r = r && arg_assignment_list(b, l + 1);
-    exit_section_(b, m, ECHO_OBJ, r);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // "echo"
+  public static boolean echo_obj_ref(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "echo_obj_ref")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ECHO_OBJ_REF, "<echo obj ref>");
+    r = consumeToken(b, "echo");
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
