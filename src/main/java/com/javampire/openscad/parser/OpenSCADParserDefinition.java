@@ -41,7 +41,7 @@ public class OpenSCADParserDefinition implements ParserDefinition {
             ELSE_KEYWORD, FALSE_KEYWORD, FOR_KEYWORD,
             FUNCTION_KEYWORD, IF_KEYWORD,
             LET_KEYWORD, MODULE_KEYWORD,
-            TRUE_KEYWORD, UNDEF_KEYWORD, ECHO_KEYWORD
+            TRUE_KEYWORD, UNDEF_KEYWORD
     );
 
     public static final TokenSet OBJECT_KEYWORDS = TokenSet.create(

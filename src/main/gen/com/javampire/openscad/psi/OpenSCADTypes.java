@@ -27,6 +27,7 @@ public interface OpenSCADTypes {
   IElementType DIV_EXPR = OpenSCADElementFactory.getElementType("DIV_EXPR");
   IElementType ECHO_CALL_OBJ = OpenSCADElementFactory.getElementType("ECHO_CALL_OBJ");
   IElementType ECHO_OBJ = OpenSCADElementFactory.getElementType("ECHO_OBJ");
+  IElementType ECHO_OBJ_REF = OpenSCADElementFactory.getElementType("ECHO_OBJ_REF");
   IElementType ELVIS_EXPR = OpenSCADElementFactory.getElementType("ELVIS_EXPR");
   IElementType EMPTY_OBJ = OpenSCADElementFactory.getElementType("EMPTY_OBJ");
   IElementType EXPR = OpenSCADElementFactory.getElementType("EXPR");
@@ -79,7 +80,6 @@ public interface OpenSCADTypes {
   IElementType DIV = new OpenSCADTokenType("DIV");
   IElementType DOC_COMMENT = new OpenSCADTokenType("DOC_COMMENT");
   IElementType DOT = new OpenSCADTokenType("DOT");
-  IElementType ECHO_KEYWORD = new OpenSCADTokenType("ECHO_KEYWORD");
   IElementType ELSE_KEYWORD = new OpenSCADTokenType("ELSE_KEYWORD");
   IElementType END_OF_LINE_COMMENT = new OpenSCADTokenType("END_OF_LINE_COMMENT");
   IElementType EQ = new OpenSCADTokenType("EQ");
@@ -180,6 +180,9 @@ public interface OpenSCADTypes {
       }
       else if (type == ECHO_OBJ) {
         return new OpenSCADEchoObjImpl(node);
+      }
+      else if (type == ECHO_OBJ_REF) {
+        return new OpenSCADEchoObjRefImpl(node);
       }
       else if (type == ELVIS_EXPR) {
         return new OpenSCADElvisExprImpl(node);

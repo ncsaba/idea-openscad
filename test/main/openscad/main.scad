@@ -2,6 +2,8 @@ include <dep1.scad>
 
 dep1module(); // code completion should work
 
+dep11module(); // code completion should work
+
 t2var = var1; // code completions should work
 
 function t2function(t2arg1, t2arg2) = [t2arg1 * t2arg2];
