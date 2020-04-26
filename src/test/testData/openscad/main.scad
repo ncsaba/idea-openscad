@@ -1,6 +1,6 @@
-include <dep1.scad>
+include <colorProvider.scad>
 
-dep1module(); // code completion should work
+colorProvide(); // code completion should work
 
 dep11module(); // code completion should work
 
@@ -11,7 +11,7 @@ function t2function(t2arg1, t2arg2) = [t2arg1 * t2arg2];
 module t2module(t2arg1, t2arg2) {
     echo(t2arg1) ; // code completions should work
     echo(t2var) ; // code completion should work
-    dep1module(); // code completion should work
+    colorProvide(); // code completion should work
     module innerModule(t2arg3) {
         echo(t2arg3) ; // code completion should work
         for (t2for = [3:5]) {

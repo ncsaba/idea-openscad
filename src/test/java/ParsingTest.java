@@ -23,11 +23,11 @@ public class ParsingTest extends ParsingTestCase {
         return true;
     }
 
-    public void testDep1() throws IOException {
+    public void testSubColorProvider() throws IOException {
         doTest("_psidump");
     }
 
-    public void testSubdep11() throws IOException {
+    public void testColorProvider() throws IOException {
         doTest("_psidump");
     }
 
