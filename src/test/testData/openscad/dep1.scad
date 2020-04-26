@@ -1,4 +1,4 @@
-include <dep11.scad>
+include <subdep11.scad>
 
 module dep1module() {
     var3 = 5;

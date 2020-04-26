@@ -1,12 +1,13 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.4.10'
+    id 'org.jetbrains.intellij' version '0.4.16'
 }
 
 group 'com.javampire'
 version '1.4.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
+sourceSets.main.java.srcDirs = ['src/main/java', 'src/main/gen']
 
 repositories {
     mavenCentral()
@@ -31,5 +32,3 @@ patchPluginXml {
     ]]>
     """
 }
-
-sourceSets.main.java.srcDirs = ['src/main/java', 'src/main/gen']

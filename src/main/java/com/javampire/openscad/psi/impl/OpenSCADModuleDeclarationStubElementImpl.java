@@ -48,4 +48,9 @@ public class OpenSCADModuleDeclarationStubElementImpl extends StubBasedPsiElemen
         }
         return this;
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" + getNode().getElementType().toString() + ")";
+    }
 }

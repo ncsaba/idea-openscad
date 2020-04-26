@@ -1,7 +1,9 @@
 package com.javampire.openscad.lexer;
 
+import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.TokenType;
+import com.javampire.openscad.psi.OpenSCADTypes;
 
 %%
 
@@ -49,7 +51,7 @@ STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
     "function"	                { return OpenSCADTypes.FUNCTION_KEYWORD; }
     "module"	                { return OpenSCADTypes.MODULE_KEYWORD; }
 
-    "else"		        { return OpenSCADTypes.ELSE_KEYWORD; }
+    "else"                      { return OpenSCADTypes.ELSE_KEYWORD; }
     "for"                       { return OpenSCADTypes.FOR_KEYWORD; }
     "if"                        { return OpenSCADTypes.IF_KEYWORD; }
     "let"                       { return OpenSCADTypes.LET_KEYWORD; }
