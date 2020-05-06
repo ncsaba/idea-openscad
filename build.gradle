@@ -18,7 +18,7 @@ dependencies {
 }
 
 intellij {
-    //plugins = ['psiviewer:201-SNAPSHOT'] // For dev purpose only
+    plugins = ['psiviewer:201-SNAPSHOT'] // For dev purpose only
     updateSinceUntilBuild = false
 }
 
