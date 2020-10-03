@@ -1,12 +1,12 @@
 plugins {
-    id 'java'
-    id 'org.jetbrains.intellij' version '0.4.16'
+    id 'org.jetbrains.intellij' version '0.4.26'
 }
 
 group 'com.javampire'
 version '1.4.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.11
+targetCompatibility = 1.11
 sourceSets.main.java.srcDirs = ['src/main/java', 'src/main/gen']
 
 repositories {
@@ -18,7 +18,7 @@ dependencies {
 }
 
 intellij {
-    //plugins = ['psiviewer:201-SNAPSHOT'] // For dev purpose only
+    //plugins = ['psiviewer:203-SNAPSHOT'] // For debugging the parser only
     updateSinceUntilBuild = false
 }
 
@@ -26,7 +26,7 @@ patchPluginXml {
     changeNotes """
     <![CDATA[
         <html>
-        Changes are documented in our [change log](https://github.com/ncsaba/idea-openscad/blob/master/Changes.md)
+        Changes are documented in our [change log](https://github.com/ncsaba/idea-openscad/blob/master/CHANGELOG.md)
         on the project page.
         </html>
     ]]>
