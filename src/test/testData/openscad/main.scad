@@ -2,7 +2,7 @@ include <colorProvider.scad>
 
 colorProvide(); // code completion should work
 
-dep11module(); // code completion should work
+subColorProvider(); // code completion should work
 
 t2var = var1; // code completions should work
 

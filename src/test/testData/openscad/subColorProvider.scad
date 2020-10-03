@@ -1,3 +1,3 @@
-module dep11module() {
+module subColorProvider() {
     var3 = 5;
 }
