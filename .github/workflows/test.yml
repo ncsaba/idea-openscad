@@ -13,13 +13,15 @@ jobs:
         java-version: 1.11
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew buildPlugin
     - name: Get project version
       run: echo "::set-env name=PROJECT_VERSION::$(gradle properties -q | grep 'version:' | awk '{print $2}')"
-    - name: Upload artifact
-      uses: actions/upload-artifact@v1
-      with:
-        name: idea-openscad-${{env.PROJECT_VERSION}}
-        path: build/distributions/idea-openscad-${{env.PROJECT_VERSION}}.zip
+    - name: control echo
+      run: echo ${{env.PROJECT_VERSION}}
+    - name: Get project version again
+      run: |
+          echo 'PROJECT_VERSION2<<EOF' >> $GITHUB_ENV
+          gradle properties -q | grep 'version:' | awk '{print $2}' >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+    - name: refacto echo
+      run: echo $PROJECT_VERSION2
 
