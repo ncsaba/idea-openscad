@@ -70,7 +70,7 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
                         // No autocompletion for numbers
                         if ("".equals(result.getPrefixMatcher().getPrefix())) {
                             PsiElement previousElement = parameters.getPosition().getParent().getPrevSibling().getLastChild();
-                            if (OpenSCADTypes.NUMBER_LITERAL == previousElement.getNode().getElementType()) {
+                            if (previousElement != null && OpenSCADTypes.NUMBER_LITERAL == previousElement.getNode().getElementType()) {
                                 return;
                             }
                         }
@@ -136,8 +136,8 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
      */
     private void addAccessibleArgumentDeclarations(final CompletionResultSet result, final PsiElement element) {
         // Parents with ARG_DECLARATION_LIST : modules and functions
-        final List<PsiElement> parentsWithArgDeclarationList = OpenSCADPsiImplUtil.getParentsOfType(element, OpenSCADParserDefinition.WITH_ARG_DECLARATION_LIST);
-        final List<OpenSCADArgDeclaration> argDeclarations = parentsWithArgDeclarationList.stream()
+        final List<PsiElement> argDeclarationParents = OpenSCADPsiImplUtil.getParentsOfType(element, OpenSCADParserDefinition.WITH_ARG_DECLARATION_LIST);
+        final List<OpenSCADArgDeclaration> argDeclarations = argDeclarationParents.stream()
                 .map(e -> PsiTreeUtil.getChildOfType(e, OpenSCADArgDeclarationList.class))
                 .filter(Objects::nonNull)
                 .flatMap(e -> PsiTreeUtil.getChildrenOfTypeAsList(e, OpenSCADArgDeclaration.class).stream())
@@ -146,14 +146,28 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
         result.addAllElements(convertToLookupElements(argDeclarations, null));
 
         // Parents with FULL_ARG_DECLARATION_LIST : for loop
-        final List<PsiElement> parentsWithFullArgDeclarationList = OpenSCADPsiImplUtil.getParentsOfType(element, OpenSCADParserDefinition.WITH_FULL_ARG_DECLARATION_LIST);
-        final List<PsiElement> fullArgDeclarations = parentsWithFullArgDeclarationList.stream()
+        final List<PsiElement> fullArgDeclarationParents = OpenSCADPsiImplUtil.getParentsOfType(element, OpenSCADParserDefinition.WITH_FULL_ARG_DECLARATION_LIST);
+        final List<PsiElement> fullArgDeclarations = fullArgDeclarationParents.stream()
                 .map(e -> PsiTreeUtil.getChildOfType(e, OpenSCADFullArgDeclarationList.class))
                 .filter(Objects::nonNull)
                 .map(e -> PsiTreeUtil.getChildOfType(e, OpenSCADFullArgDeclaration.class))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         result.addAllElements(convertToLookupElements(fullArgDeclarations, null));
+
+        // Parents previous sibling with FULL_ARG_DECLARATION_LIST : let declaration
+        final List<PsiElement> builtinExprParents = OpenSCADPsiImplUtil.getParentsOfType(element, OpenSCADParserDefinition.FUNCTION_KEYWORDS);
+        final List<PsiElement> letFullArgDeclaration = builtinExprParents.stream()
+                .map(PsiElement::getFirstChild)
+                .filter(e -> e.getNode().getElementType() == OpenSCADTypes.LET_KEYWORD)
+                .map(PsiElement::getNextSibling)
+                .filter(Objects::nonNull)
+                .filter(e -> e instanceof OpenSCADFullArgDeclarationList)
+                .map(e -> PsiTreeUtil.getChildrenOfType(e, OpenSCADFullArgDeclaration.class))
+                .filter(Objects::nonNull)
+                .flatMap(Arrays::stream)
+                .collect(Collectors.toList());
+        result.addAllElements(convertToLookupElements(letFullArgDeclaration, null));
     }
 
     /**
