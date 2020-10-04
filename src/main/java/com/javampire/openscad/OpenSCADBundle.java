@@ -20,14 +20,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.PropertyKey;
 
 public class OpenSCADBundle extends AbstractBundle {
-  public static String message(@NotNull @PropertyKey(resourceBundle = BUNDLE) String key, @NotNull Object... params) {
-    return INSTANCE.getMessage(key, params);
-  }
+    public static String message(@NotNull @PropertyKey(resourceBundle = BUNDLE) String key, @NotNull Object... params) {
+        return INSTANCE.getMessage(key, params);
+    }
 
-  public static final String BUNDLE = "com.javampire.openscad.messages.OpenSCADBundle";
-  private static final OpenSCADBundle INSTANCE = new OpenSCADBundle();
+    public static final String BUNDLE = "com.javampire.openscad.messages.OpenSCADBundle";
+    private static final OpenSCADBundle INSTANCE = new OpenSCADBundle();
 
-  private OpenSCADBundle() {
-    super(BUNDLE);
-  }
+    private OpenSCADBundle() {
+        super(BUNDLE);
+    }
 }

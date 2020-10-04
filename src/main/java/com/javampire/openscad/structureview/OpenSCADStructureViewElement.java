@@ -75,7 +75,7 @@ public class OpenSCADStructureViewElement implements StructureViewTreeElement, S
             );
             LOG.debug("navigatable elements: " + navigatableElements);
             for (PsiElement element : navigatableElements) {
-                final OpenSCADStructureViewElement child = new OpenSCADStructureViewElement((NavigatablePsiElement)element);
+                final OpenSCADStructureViewElement child = new OpenSCADStructureViewElement((NavigatablePsiElement) element);
                 treeElements.add(child);
             }
             return treeElements.toArray(new TreeElement[0]);

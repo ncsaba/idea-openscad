@@ -14,8 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class OpenSCADResolvableElementImpl
         extends OpenSCADNamedElementImpl
-        implements OpenSCADResolvableElement
-{
+        implements OpenSCADResolvableElement {
 
     private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.psi.impl.OpenSCADResolvableElementImpl");
 
@@ -25,15 +24,15 @@ public abstract class OpenSCADResolvableElementImpl
 
     public OpenSCADReferenceResolver getReferenceResolver() {
         if (
-            this instanceof OpenSCADModuleObjNameRef
-            || this instanceof OpenSCADModuleOpNameRef
-            || this instanceof OpenSCADCommonOpRef
-            || this instanceof OpenSCADBuiltinObjRef
+                this instanceof OpenSCADModuleObjNameRef
+                        || this instanceof OpenSCADModuleOpNameRef
+                        || this instanceof OpenSCADCommonOpRef
+                        || this instanceof OpenSCADBuiltinObjRef
         ) {
             return OpenSCADModuleIndex.getInstance();
         } else if (
-            this instanceof OpenSCADFunctionNameRef
-            || this instanceof OpenSCADBuiltinExprRef
+                this instanceof OpenSCADFunctionNameRef
+                        || this instanceof OpenSCADBuiltinExprRef
         ) {
             return OpenSCADFunctionIndex.getInstance();
         } else if (this instanceof OpenSCADVariableRefExpr) {

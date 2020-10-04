@@ -47,17 +47,17 @@ public class OpenSCADColorSettingsPage implements ColorSettingsPage {
     @Override
     public String getDemoText() {
         return "/*\nYou are reading the \".scad\" entry\nfor OpenSCAD files.\n*/\n" +
-               "use <some/path/used_file.scad>\n" +
-               "include </another/path/included_file.scad>\n" +
-               "\n" +
-               "$fn=64;\n" +
-               "some_var = 127;  // line-end comment about some_var\n" +
-               "module some_module(var1=1, var2, foo) {\n" +
-               "    translate([1,2,3]) cylinder(1,2,3);\n" +
-               "    var1 = \"string_value\";\n" +
-               "}\n" +
-               "function some_function(var1, var2=\"string value\") =\n    foo + sin(1.128e+10);\n" +
-               "if (x < max([1,10]) || x > 20 && x == 15)\n    sphere(x);\nelse\n    cube(x);\n\n";
+                "use <some/path/used_file.scad>\n" +
+                "include </another/path/included_file.scad>\n" +
+                "\n" +
+                "$fn=64;\n" +
+                "some_var = 127;  // line-end comment about some_var\n" +
+                "module some_module(var1=1, var2, foo) {\n" +
+                "    translate([1,2,3]) cylinder(1,2,3);\n" +
+                "    var1 = \"string_value\";\n" +
+                "}\n" +
+                "function some_function(var1, var2=\"string value\") =\n    foo + sin(1.128e+10);\n" +
+                "if (x < max([1,10]) || x > 20 && x == 15)\n    sphere(x);\nelse\n    cube(x);\n\n";
     }
 
     @Nullable

@@ -13,8 +13,7 @@ import java.util.Collection;
 
 public class OpenSCADVariableIndex
         extends StringStubIndexExtension<OpenSCADVariableDeclaration>
-        implements OpenSCADReferenceResolver
-{
+        implements OpenSCADReferenceResolver {
 
     public static final StubIndexKey<String, OpenSCADVariableDeclaration> VARIABLE = StubIndexKey.createIndexKey("OpenSCAD.variable.name");
 
@@ -33,8 +32,7 @@ public class OpenSCADVariableIndex
     @Override
     public Collection<OpenSCADVariableDeclaration> get(@NotNull final String variableName,
                                                        @NotNull final Project project,
-                                                       @NotNull final GlobalSearchScope scope)
-    {
+                                                       @NotNull final GlobalSearchScope scope) {
         return StubIndex.getElements(getKey(), variableName, project, null, OpenSCADVariableDeclaration.class);
     }
 
