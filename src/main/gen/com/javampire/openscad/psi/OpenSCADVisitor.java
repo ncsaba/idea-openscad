@@ -5,9 +5,9 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
+import com.javampire.openscad.psi.stub.OpenSCADFunctionStub;
 import com.javampire.openscad.psi.stub.OpenSCADVariableStub;
 import com.javampire.openscad.psi.stub.OpenSCADModuleStub;
-import com.javampire.openscad.psi.stub.OpenSCADFunctionStub;
 
 public class OpenSCADVisitor extends PsiElementVisitor {
 

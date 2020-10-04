@@ -10,13 +10,13 @@ import com.intellij.navigation.ItemPresentation;
 
 public interface OpenSCADFunctionDeclaration extends OpenSCADNamedElement, StubBasedPsiElement<OpenSCADFunctionStub> {
 
-  @NotNull
+  @Nullable
   OpenSCADArgDeclarationList getArgDeclarationList();
 
   @Nullable
   OpenSCADEchoObj getEchoObj();
 
-  @NotNull
+  @Nullable
   OpenSCADExpr getExpr();
 
   ItemPresentation getPresentation();
