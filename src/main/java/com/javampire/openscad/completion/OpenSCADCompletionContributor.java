@@ -67,6 +67,13 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
                         if (OpenSCADTypes.ARG_DECLARATION == elementPosition.getParent().getNode().getElementType()) {
                             return;
                         }
+                        // No autocompletion for numbers
+                        if ("".equals(result.getPrefixMatcher().getPrefix())) {
+                            PsiElement previousElement = parameters.getPosition().getParent().getPrevSibling().getLastChild();
+                            if (OpenSCADTypes.NUMBER_LITERAL == previousElement.getNode().getElementType()) {
+                                return;
+                            }
+                        }
 
                         // Add all accessible variables in the current file
                         addAccessibleVariables(result, elementPosition, null);
