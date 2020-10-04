@@ -23,6 +23,10 @@ public class ParsingTest extends ParsingTestCase {
         return true;
     }
 
+    public void testCyclicUsedFile() throws IOException {
+        doTest("_psidump");
+    }
+
     public void testSubColorProvider() throws IOException {
         doTest("_psidump");
     }

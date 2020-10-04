@@ -69,37 +69,37 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
                         }
 
                         // Add all accessible variables in the current file
-                        result.addAllElements(getAccessibleVariables(elementPosition, null));
+                        addAccessibleVariables(result, elementPosition, null);
                         ProgressManager.checkCanceled();
 
                         // Add all parent arguments (from declaration lists)
-                        result.addAllElements(getAccessibleArgumentDeclarations(elementPosition));
+                        addAccessibleArgumentDeclarations(result, elementPosition);
                         ProgressManager.checkCanceled();
 
                         // Add all accessible variables in includes
-                        result.addAllElements(getIncludesAccessibleVariables(elementPosition));
+                        addIncludesAccessibleVariables(result, elementPosition);
                         ProgressManager.checkCanceled();
 
                         // Add local custom modules
-                        result.addAllElements(getModules(elementPosition, null));
+                        addModules(result, elementPosition, null);
                         ProgressManager.checkCanceled();
 
                         // Add local custom functions
-                        result.addAllElements(getFunctions(elementPosition, null));
+                        addFunctions(result, elementPosition, null);
                         ProgressManager.checkCanceled();
 
                         // Add builtin modules and functions
-                        result.addAllElements(getBuiltinModulesAndFunctions(project));
+                        addBuiltinModulesAndFunctions(result, project);
                         ProgressManager.checkCanceled();
 
                         // Add declared library methods and functions
-                        result.addAllElements(getLocalLibrariesModulesAndFunctions(elementPosition));
+                        addLocalLibrariesModulesAndFunctions(result, elementPosition);
                         ProgressManager.checkCanceled();
 
                         // Second completion case
                         if (parameters.getInvocationCount() % 2 == 0) {
                             // Add all possible functions and method from global libraries
-                            result.addAllElements(getGlobalLibrariesModulesAndFunctions(project));
+                            addGlobalLibrariesModulesAndFunctions(result, project);
                             result.addLookupAdvertisement("Press " + KeymapUtil.getFirstKeyboardShortcutText(ActionManager.getInstance().getAction(IdeActions.ACTION_CODE_COMPLETION)) + " to see accessible variables, functions and methods.");
                         } else {
                             result.addLookupAdvertisement("Press " + KeymapUtil.getFirstKeyboardShortcutText(ActionManager.getInstance().getAction(IdeActions.ACTION_CODE_COMPLETION)) + " to add non-imported functions and methods.");
@@ -109,7 +109,126 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
         );
     }
 
-    private List<LookupElement> getBuiltinModulesAndFunctions(final Project project) {
+    /**
+     * Get accessible variables declarations for the current element.
+     *
+     * @param result   Result set.
+     * @param element  Psi element.
+     * @param tailText Tail text to show in the result.
+     */
+    private void addAccessibleVariables(final CompletionResultSet result, final PsiElement element, final String tailText) {
+        final List<OpenSCADVariableDeclaration> variableDeclarations = OpenSCADPsiImplUtil.getAccessibleVariableDeclaration(element);
+        result.addAllElements(convertToLookupElements(variableDeclarations, null));
+    }
+
+    /**
+     * Get accessible variables declarations from parent argument list declarations, i.e. variables declared in function or module parameters.
+     *
+     * @param result  Result set.
+     * @param element Psi element.
+     */
+    private void addAccessibleArgumentDeclarations(final CompletionResultSet result, final PsiElement element) {
+        // Parents with ARG_DECLARATION_LIST : modules and functions
+        final List<PsiElement> parentsWithArgDeclarationList = OpenSCADPsiImplUtil.getParentsOfType(element, OpenSCADParserDefinition.WITH_ARG_DECLARATION_LIST);
+        final List<OpenSCADArgDeclaration> argDeclarations = parentsWithArgDeclarationList.stream()
+                .map(e -> PsiTreeUtil.getChildOfType(e, OpenSCADArgDeclarationList.class))
+                .filter(Objects::nonNull)
+                .flatMap(e -> PsiTreeUtil.getChildrenOfTypeAsList(e, OpenSCADArgDeclaration.class).stream())
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        result.addAllElements(convertToLookupElements(argDeclarations, null));
+
+        // Parents with FULL_ARG_DECLARATION_LIST : for loop
+        final List<PsiElement> parentsWithFullArgDeclarationList = OpenSCADPsiImplUtil.getParentsOfType(element, OpenSCADParserDefinition.WITH_FULL_ARG_DECLARATION_LIST);
+        final List<PsiElement> fullArgDeclarations = parentsWithFullArgDeclarationList.stream()
+                .map(e -> PsiTreeUtil.getChildOfType(e, OpenSCADFullArgDeclarationList.class))
+                .filter(Objects::nonNull)
+                .map(e -> PsiTreeUtil.getChildOfType(e, OpenSCADFullArgDeclaration.class))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        result.addAllElements(convertToLookupElements(fullArgDeclarations, null));
+    }
+
+    /**
+     * Get accessible variables declaration from included files for the current element.
+     *
+     * @param result  Result set.
+     * @param element Psi elements.
+     */
+    private void addIncludesAccessibleVariables(final CompletionResultSet result, final PsiElement element) {
+        final Module module = ModuleUtil.findModuleForPsiElement(element);
+
+        // Loop through declarations
+        final List<PsiElement> includes = PsiTreeUtil.getChildrenOfTypeAsList(element.getContainingFile(), OpenSCADIncludeItem.class);
+        for (PsiElement include : includes) {
+            // Get relative paths
+            final String importPath = OpenSCADPsiImplUtil.getPresentation(include).getPresentableText();
+            if (importPath == null) continue;
+
+            // Get psi file
+            final List<PsiFile> psiFiles;
+            if (module != null) {
+                psiFiles = OpenSCADResolver.findModuleContentFile(module, importPath);
+            } else {
+                psiFiles = OpenSCADResolver.findProjectLibrary(element.getProject(), importPath);
+            }
+            if (psiFiles.isEmpty()) continue;
+
+            // Get all variable declaration
+            final List<OpenSCADVariableDeclaration> varDeclarations = PsiTreeUtil.getChildrenOfTypeAsList(psiFiles.get(0), OpenSCADVariableDeclaration.class);
+
+            // Add all include variables
+            result.addAllElements(convertToLookupElements(varDeclarations, _FROM_ + importPath));
+        }
+    }
+
+    /**
+     * Get module declarations.
+     *
+     * @param result   Result set.
+     * @param element  Psi element.
+     * @param tailText Tail text to display with completion result.
+     */
+    private void addModules(final CompletionResultSet result, final PsiElement element, final String tailText) {
+        result.addAllElements(getModules(element, tailText));
+    }
+
+    /**
+     * Get module declarations.
+     *
+     * @param element  Psi element.
+     * @param tailText Tail text to display with completion result.
+     * @return List of modules.
+     */
+    private List<LookupElement> getModules(final PsiElement element, final String tailText) {
+        final List<OpenSCADModuleDeclaration> moduleDeclarations = PsiTreeUtil.getChildrenOfTypeAsList(element.getContainingFile(), OpenSCADModuleDeclaration.class);
+        return convertToLookupElements(moduleDeclarations, tailText);
+    }
+
+    /**
+     * Get function declarations.
+     *
+     * @param result   Result set.
+     * @param element  Psi element.
+     * @param tailText Tail text to display with completion result.
+     */
+    private void addFunctions(final CompletionResultSet result, final PsiElement element, final String tailText) {
+        result.addAllElements(getFunctions(element, tailText));
+    }
+
+    /**
+     * Get function declarations.
+     *
+     * @param element  Psi element.
+     * @param tailText Tail text to display with completion result.
+     * @return List of functions.
+     */
+    private List<LookupElement> getFunctions(final PsiElement element, final String tailText) {
+        final List<OpenSCADFunctionDeclaration> functionDeclarations = PsiTreeUtil.getChildrenOfTypeAsList(element.getContainingFile(), OpenSCADFunctionDeclaration.class);
+        return convertToLookupElements(functionDeclarations, tailText);
+    }
+
+    private void addBuiltinModulesAndFunctions(final CompletionResultSet result, final Project project) {
         if (builtinModulesAndFunctions == null) {
             // Add builtin modules
             PsiFile[] builtinModuleResults = FilenameIndex.getFilesByName(project, BUILT_IN_MODULES_FILENAME, GlobalSearchScope.everythingScope(project));
@@ -119,55 +238,27 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
             builtinModulesAndFunctions.addAll(getFunctions(builtinFunctionResults[0], null));
             builtinModulesAndFunctions.add(LookupElementBuilder.create(BUILT_IN_MISSING_FUNCTION).withIcon(OpenSCADIcons.FUNCTION));
         }
-        return builtinModulesAndFunctions;
-    }
-
-    private List<LookupElement> getGlobalLibrariesModulesAndFunctions(final Project project) {
-        if (globalLibrariesModulesAndFunctions == null) {
-
-            // List global libraries paths
-            PsiManager psiManager = PsiManager.getInstance(project);
-            ModifiableModelsProvider modelsProvider = ModifiableModelsProvider.SERVICE.getInstance();
-            Library[] librariesPathRoots = modelsProvider.getLibraryTableModifiableModel().getLibraries();
-            final List<VirtualFile> librariesPaths = Arrays.stream(librariesPathRoots)
-                    .map(libraryPathsRoot -> libraryPathsRoot.getFiles(OrderRootType.CLASSES))
-                    .flatMap(Arrays::stream)
-                    .collect(Collectors.toList());
-
-            // For each global library path
-            final List<LookupElement> result = new ArrayList<>();
-            for (VirtualFile librariesPath : librariesPaths) {
-                // List libraries files
-                final List<PsiFile> libraries = VfsUtil.collectChildrenRecursively(librariesPath).stream()
-                        .map(psiManager::findFile)
-                        .filter(Objects::nonNull)
-                        .filter(PsiElement::isValid)
-                        .filter(psiFile -> psiFile.getFileType() == OpenSCADFileType.INSTANCE)
-                        .collect(Collectors.toList());
-
-                for (PsiFile library : libraries) {
-                    final String libraryRelPath = library.getVirtualFile().getCanonicalPath().substring(librariesPath.getCanonicalPath().length() + 1);
-                    result.addAll(getModules(library, _FROM_ + libraryRelPath));
-                    result.addAll(getFunctions(library, _FROM_ + libraryRelPath));
-                }
-            }
-
-            globalLibrariesModulesAndFunctions = result;
-        }
-        return globalLibrariesModulesAndFunctions;
+        result.addAllElements(builtinModulesAndFunctions);
     }
 
     /**
      * Get edited file include and use declaration targets.
      *
+     * @param result  Result set.
      * @param element Current element.
-     * @return List of completion elements.
      */
-    private List<LookupElement> getLocalLibrariesModulesAndFunctions(final PsiElement element) {
-        return getLocalLibrariesModulesAndFunctions(element.getContainingFile());
+    private void addLocalLibrariesModulesAndFunctions(final CompletionResultSet result, final PsiElement element) {
+        result.addAllElements(addLocalLibrariesModulesAndFunctions(new ArrayList<>(), element.getContainingFile()));
     }
 
-    private List<LookupElement> getLocalLibrariesModulesAndFunctions(final PsiFile file) {
+    /**
+     * Add local libraries recursively starting from file.
+     *
+     * @param addedFiles File already added, to avoid infinite loops, in case of cyclic dependencies.
+     * @param file       File to analyze.
+     * @return List of modules and functions lookups.
+     */
+    private List<LookupElement> addLocalLibrariesModulesAndFunctions(final List<PsiFile> addedFiles, final PsiFile file) {
         final List<LookupElement> imports = new ArrayList<>();
 
         // Loop through declarations
@@ -194,112 +285,44 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
             imports.addAll(getModules(dependency, _FROM_ + importPath));
 
             // Recursive call to get sub dependencies
-            imports.addAll(getLocalLibrariesModulesAndFunctions(dependency));
-        }
-        return imports;
-    }
-
-    /**
-     * Get accessible variables declarations for the current element.
-     *
-     * @param element  Psi element.
-     * @param tailText Tail text to show in the result.
-     * @return List of variable declaration elements.
-     */
-    private List<LookupElement> getAccessibleVariables(final PsiElement element, final String tailText) {
-        final List<OpenSCADVariableDeclaration> variableDeclarations = OpenSCADPsiImplUtil.getAccessibleVariableDeclaration(element);
-        return convertToLookupElements(variableDeclarations, null);
-    }
-
-    /**
-     * Get accessible variables declaration from included files for the current element.
-     *
-     * @param element Psi elements.
-     * @return List of variable declaration elements.
-     */
-    private List<LookupElement> getIncludesAccessibleVariables(final PsiElement element) {
-        final Module module = ModuleUtil.findModuleForPsiElement(element);
-        final List<LookupElement> imports = new ArrayList<>();
-
-        // Loop through declarations
-        final List<PsiElement> includes = PsiTreeUtil.getChildrenOfTypeAsList(element.getContainingFile(), OpenSCADIncludeItem.class);
-        for (PsiElement include : includes) {
-            // Get relative paths
-            final String importPath = OpenSCADPsiImplUtil.getPresentation(include).getPresentableText();
-            if (importPath == null) continue;
-
-            // Get psi file
-            final List<PsiFile> psiFiles;
-            if (module != null) {
-                psiFiles = OpenSCADResolver.findModuleContentFile(module, importPath);
-            } else {
-                psiFiles = OpenSCADResolver.findProjectLibrary(element.getProject(), importPath);
+            if (!addedFiles.contains(dependency)) {
+                addedFiles.add(dependency);
+                imports.addAll(addLocalLibrariesModulesAndFunctions(addedFiles, dependency));
             }
-            if (psiFiles.isEmpty()) continue;
-
-            // Get all variable declaration
-            final List<OpenSCADVariableDeclaration> varDeclarations = PsiTreeUtil.getChildrenOfTypeAsList(psiFiles.get(0), OpenSCADVariableDeclaration.class);
-
-            // Add all include variables
-            imports.addAll(convertToLookupElements(varDeclarations, _FROM_ + importPath));
         }
-
         return imports;
     }
 
-    /**
-     * Get accessible variables declarations from parent argument list declarations, i.e. variables declared in function or module parameters.
-     *
-     * @param element Psi element.
-     * @return List of argument declaration elements.
-     */
-    private List<LookupElement> getAccessibleArgumentDeclarations(final PsiElement element) {
+    private void addGlobalLibrariesModulesAndFunctions(final CompletionResultSet result, final Project project) {
+        if (globalLibrariesModulesAndFunctions == null) {
+            // List global libraries paths
+            PsiManager psiManager = PsiManager.getInstance(project);
+            ModifiableModelsProvider modelsProvider = ModifiableModelsProvider.SERVICE.getInstance();
+            Library[] librariesPathRoots = modelsProvider.getLibraryTableModifiableModel().getLibraries();
+            final List<VirtualFile> librariesPaths = Arrays.stream(librariesPathRoots)
+                    .map(libraryPathsRoot -> libraryPathsRoot.getFiles(OrderRootType.CLASSES))
+                    .flatMap(Arrays::stream)
+                    .collect(Collectors.toList());
 
-        // Parents with ARG_DECLARATION_LIST : modules and functions
-        final List<PsiElement> parentsWithArgDeclarationList = OpenSCADPsiImplUtil.getParentsOfType(element, OpenSCADParserDefinition.WITH_ARG_DECLARATION_LIST);
-        final List<OpenSCADArgDeclaration> argDeclarations = parentsWithArgDeclarationList.stream()
-                .map(e -> PsiTreeUtil.getChildOfType(e, OpenSCADArgDeclarationList.class))
-                .filter(Objects::nonNull)
-                .flatMap(e -> PsiTreeUtil.getChildrenOfTypeAsList(e, OpenSCADArgDeclaration.class).stream())
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        final List<LookupElement> lookupElements = new ArrayList<>(convertToLookupElements(argDeclarations, null));
+            // For each global library path
+            globalLibrariesModulesAndFunctions = new ArrayList<>();
+            for (VirtualFile librariesPath : librariesPaths) {
+                // List libraries files
+                final List<PsiFile> libraries = VfsUtil.collectChildrenRecursively(librariesPath).stream()
+                        .map(psiManager::findFile)
+                        .filter(Objects::nonNull)
+                        .filter(PsiElement::isValid)
+                        .filter(psiFile -> psiFile.getFileType() == OpenSCADFileType.INSTANCE)
+                        .collect(Collectors.toList());
 
-        // Parents with FULL_ARG_DECLARATION_LIST : for loop
-        final List<PsiElement> parentsWithFullArgDeclarationList = OpenSCADPsiImplUtil.getParentsOfType(element, OpenSCADParserDefinition.WITH_FULL_ARG_DECLARATION_LIST);
-        final List<PsiElement> fullArgDeclarations = parentsWithFullArgDeclarationList.stream()
-                .map(e -> PsiTreeUtil.getChildOfType(e, OpenSCADFullArgDeclarationList.class))
-                .filter(Objects::nonNull)
-                .map(e -> PsiTreeUtil.getChildOfType(e, OpenSCADFullArgDeclaration.class))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        lookupElements.addAll(convertToLookupElements(fullArgDeclarations, null));
-
-        return lookupElements;
-    }
-
-    /**
-     * Get module declarations.
-     *
-     * @param element  Psi element.
-     * @param tailText Tail text to display with completion result.
-     * @return List of modules.
-     */
-    private List<LookupElement> getModules(final PsiElement element, final String tailText) {
-        final List<OpenSCADModuleDeclaration> moduleDeclarations = PsiTreeUtil.getChildrenOfTypeAsList(element.getContainingFile(), OpenSCADModuleDeclaration.class);
-        return convertToLookupElements(moduleDeclarations, tailText);
-    }
-
-    /**
-     * Get function declarations.
-     *
-     * @param element  Psi element.
-     * @param tailText Tail text to display with completion result.
-     * @return List of functions.
-     */
-    private List<LookupElement> getFunctions(final PsiElement element, final String tailText) {
-        final List<OpenSCADFunctionDeclaration> functionDeclarations = PsiTreeUtil.getChildrenOfTypeAsList(element.getContainingFile(), OpenSCADFunctionDeclaration.class);
-        return convertToLookupElements(functionDeclarations, tailText);
+                for (PsiFile library : libraries) {
+                    final String libraryRelPath = library.getVirtualFile().getCanonicalPath().substring(librariesPath.getCanonicalPath().length() + 1);
+                    globalLibrariesModulesAndFunctions.addAll(getModules(library, _FROM_ + libraryRelPath));
+                    globalLibrariesModulesAndFunctions.addAll(getFunctions(library, _FROM_ + libraryRelPath));
+                }
+            }
+        }
+        result.addAllElements(globalLibrariesModulesAndFunctions);
     }
 
     private <T extends PsiElement> List<LookupElement> convertToLookupElements(final List<T> elements, final String tailText) {
