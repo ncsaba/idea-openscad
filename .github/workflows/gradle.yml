@@ -21,7 +21,7 @@ jobs:
         gradle properties -q | grep 'version:' | awk '{print $2}' >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
     - name: Upload artifact
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
-        name: idea-openscad-$PROJECT_VERSION
-        path: build/distributions/idea-openscad-$PROJECT_VERSION.zip
+        name: idea-openscad-${{ env.PROJECT_VERSION }}
+        path: build/distributions/idea-openscad-${{ env.PROJECT_VERSION }}.zip
