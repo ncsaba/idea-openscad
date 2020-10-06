@@ -41,6 +41,7 @@ public class OpenSCADElementGrouper implements Grouper {
     );
 
     public static final Map<Class, ItemPresentation> ITEM_PRESENTATION_MAP = new LinkedHashMap<>();
+
     static {
         ITEM_PRESENTATION_MAP.put(OpenSCADUseItem.class, IMPORT_GROUP_ITEM);
         ITEM_PRESENTATION_MAP.put(OpenSCADIncludeItem.class, IMPORT_GROUP_ITEM);
@@ -60,7 +61,7 @@ public class OpenSCADElementGrouper implements Grouper {
             ElementGroup group = (ElementGroup) result.get(presentation);
             if (group == null) {
                 group = new ElementGroup(children, itemType);
-                if (group.presentation != NO_GROUP_ITEM && ! group.children.isEmpty()) {
+                if (group.presentation != NO_GROUP_ITEM && !group.children.isEmpty()) {
                     result.put(presentation, group);
                 }
             } else {
@@ -99,7 +100,7 @@ public class OpenSCADElementGrouper implements Grouper {
 
         private void addChildren(@NotNull Collection<TreeElement> candidateChildren, Class itemType) {
             for (TreeElement item : candidateChildren) {
-                if (item instanceof OpenSCADStructureViewElement && itemType.isInstance(((OpenSCADStructureViewElement)item).getValue())) {
+                if (item instanceof OpenSCADStructureViewElement && itemType.isInstance(((OpenSCADStructureViewElement) item).getValue())) {
                     this.children.add(item);
                 }
             }

@@ -13,8 +13,7 @@ import java.util.Collection;
 
 public class OpenSCADModuleIndex
         extends StringStubIndexExtension<OpenSCADModuleDeclaration>
-        implements OpenSCADReferenceResolver
-{
+        implements OpenSCADReferenceResolver {
 
     public static final StubIndexKey<String, OpenSCADModuleDeclaration> MODULE = StubIndexKey.createIndexKey("OpenSCAD.module.name");
 
@@ -33,8 +32,7 @@ public class OpenSCADModuleIndex
     @Override
     public Collection<OpenSCADModuleDeclaration> get(@NotNull final String moduleName,
                                                      @NotNull final Project project,
-                                                     @NotNull final GlobalSearchScope scope)
-    {
+                                                     @NotNull final GlobalSearchScope scope) {
         return StubIndex.getElements(getKey(), moduleName, project, null, OpenSCADModuleDeclaration.class);
     }
 

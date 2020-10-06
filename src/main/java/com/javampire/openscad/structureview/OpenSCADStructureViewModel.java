@@ -12,10 +12,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class OpenSCADStructureViewModel
         extends StructureViewModelBase
-        implements StructureViewModel.ElementInfoProvider
-{
+        implements StructureViewModel.ElementInfoProvider {
 
-    private static final Grouper[] GROUPERS = { new OpenSCADElementGrouper() };
+    private static final Grouper[] GROUPERS = {new OpenSCADElementGrouper()};
 
     public OpenSCADStructureViewModel(PsiFile psiFile, Editor editor) {
         super(psiFile, editor, new OpenSCADStructureViewElement(psiFile));

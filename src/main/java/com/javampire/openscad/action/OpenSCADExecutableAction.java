@@ -32,7 +32,7 @@ public abstract class OpenSCADExecutableAction extends AnAction {
     }
 
     public OpenSCADExecutableAction(Icon icon) {
-        super((String)null, (String)null, icon);
+        super((String) null, (String) null, icon);
     }
 
     public OpenSCADExecutableAction(@Nullable @Nls(capitalization = Nls.Capitalization.Title) String text) {
