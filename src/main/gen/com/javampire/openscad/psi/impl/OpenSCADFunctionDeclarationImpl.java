@@ -33,9 +33,9 @@ public class OpenSCADFunctionDeclarationImpl extends OpenSCADFunctionDeclaration
   }
 
   @Override
-  @NotNull
+  @Nullable
   public OpenSCADArgDeclarationList getArgDeclarationList() {
-    return findNotNullChildByClass(OpenSCADArgDeclarationList.class);
+    return findChildByClass(OpenSCADArgDeclarationList.class);
   }
 
   @Override
@@ -45,9 +45,9 @@ public class OpenSCADFunctionDeclarationImpl extends OpenSCADFunctionDeclaration
   }
 
   @Override
-  @NotNull
+  @Nullable
   public OpenSCADExpr getExpr() {
-    return findNotNullChildByClass(OpenSCADExpr.class);
+    return findChildByClass(OpenSCADExpr.class);
   }
 
   @Override

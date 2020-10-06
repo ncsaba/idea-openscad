@@ -715,12 +715,10 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   static boolean full_arg_op_identifier(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "full_arg_op_identifier")) return false;
     boolean r;
-    Marker m = enter_section_(b);
     r = consumeToken(b, "intersection_for");
     if (!r) r = consumeToken(b, "assign");
     if (!r) r = consumeToken(b, FOR_KEYWORD);
     if (!r) r = consumeToken(b, LET_KEYWORD);
-    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -729,16 +727,17 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   public static boolean function_declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_declaration")) return false;
     if (!nextTokenIs(b, FUNCTION_KEYWORD)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, FUNCTION_KEYWORD, IDENTIFIER);
-    r = r && arg_declaration_list(b, l + 1);
-    r = r && consumeToken(b, EQUALS);
-    r = r && function_declaration_4(b, l + 1);
-    r = r && expr(b, l + 1, -1);
-    r = r && consumeToken(b, SEMICOLON);
-    exit_section_(b, m, FUNCTION_DECLARATION, r);
-    return r;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, FUNCTION_DECLARATION, null);
+    r = consumeTokens(b, 1, FUNCTION_KEYWORD, IDENTIFIER);
+    p = r; // pin = 1
+    r = r && report_error_(b, arg_declaration_list(b, l + 1));
+    r = p && report_error_(b, consumeToken(b, EQUALS)) && r;
+    r = p && report_error_(b, function_declaration_4(b, l + 1)) && r;
+    r = p && report_error_(b, expr(b, l + 1, -1)) && r;
+    r = p && consumeToken(b, SEMICOLON) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   // [ echo_obj ]

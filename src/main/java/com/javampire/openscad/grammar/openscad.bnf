@@ -111,6 +111,7 @@ variable_declaration ::= IDENTIFIER EQUALS [ echo_obj ] expr SEMICOLON {
 }
 
 module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement {
+    pin=1
     mixin="com.javampire.openscad.psi.impl.OpenSCADModuleDeclarationStubElementImpl"
     implements=[
         "com.javampire.openscad.psi.OpenSCADNamedElement"
@@ -120,6 +121,7 @@ module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement 
 }
 
 function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS [ echo_obj ] expr SEMICOLON {
+    pin=1
     mixin="com.javampire.openscad.psi.impl.OpenSCADFunctionDeclarationStubElementImpl"
     implements=[
         "com.javampire.openscad.psi.OpenSCADNamedElement"
