@@ -152,6 +152,10 @@ public class OpenSCADParserDefinition implements ParserDefinition {
             DIV, MUL, PERC
     );
 
+    public static final TokenSet MATHEMATICAL_EXPR = TokenSet.create(
+            PLUS_EXPR, MINUS_EXPR, DIV_EXPR, MUL_EXPR, MODULO_EXPR
+    );
+
     // The set below are used for completion
 
     public static final TokenSet WITH_ARG_DECLARATION_LIST = TokenSet.create(
