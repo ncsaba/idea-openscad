@@ -17,7 +17,6 @@ import java.util.Objects;
 public class OpenSCADSettingsConfigurable implements SearchableConfigurable.Parent, Configurable.NoScroll {
     private final Project myProject;
 
-    @SuppressWarnings("unused")
     private JPanel settingsPanel;
 
     private TextFieldWithBrowseButton openSCADExecutableField;

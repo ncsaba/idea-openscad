@@ -21,14 +21,3 @@ intellij {
     //plugins = ['psiviewer:203-SNAPSHOT'] // For debugging the parser only
     updateSinceUntilBuild = false
 }
-
-patchPluginXml {
-    changeNotes """
-    <![CDATA[
-        <html>
-        Changes are documented in our [change log](https://github.com/ncsaba/idea-openscad/blob/master/CHANGELOG.md)
-        on the project page.
-        </html>
-    ]]>
-    """
-}
