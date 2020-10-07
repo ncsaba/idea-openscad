@@ -3,14 +3,16 @@
   <name>OpenSCAD Language Support</name>
   <vendor email="idea-openscad@javampire.com" url="http://github.com/ncsaba/idea-openscad">Csaba Nagy</vendor>
 
-  <idea-version since-build="192.2549" />
+  <idea-version since-build="192" />
 
   <description><![CDATA[
-    Syntax highlighting and refactoring support for OpenSCAD files.
+    OpenSCAD language support plugin. Provide highlighting, completion, code folding, structure views, completion, navigation, color edition,
+    library support, actions for opening OpenSCAD and exporting model.
     ]]></description>
 
   <change-notes>
-    Changes are documented in our [change log](https://github.com/ncsaba/idea-openscad/blob/master/Changes.md)
+    Changes are documented in our [change log](https://github.com/ncsaba/idea-openscad/blob/master/CHANGELOG.md)
+    on the project page.
   </change-notes>
 
   <extensions defaultExtensionNs="com.intellij">
@@ -41,7 +43,7 @@
   </extensions>
 
   <actions>
-    <action class="com.javampire.openscad.action.RenderAction" description="Render in OpenSCAD" id="Render" text="Render this file" />
+    <action class="com.javampire.openscad.action.RenderAction" description="Render in OpenSCAD" id="Render" text="Render This File" />
     <action class="com.javampire.openscad.action.GenerateSTL" description="Generate STL" id="Generate STL" text="Generate STL" />
     <action class="com.javampire.openscad.action.GeneratePNG" description="Generate PNG" id="Generate PNG" text="Generate PNG" />
     <action class="com.javampire.openscad.action.GenerateSVG" description="Generate SVG" id="Generate SVG" text="Generate SVG" />
@@ -58,6 +60,7 @@
     </group>
   </actions>
 
+  <depends>com.intellij.modules.platform</depends>
   <depends>com.intellij.modules.lang</depends>
 
 </idea-plugin>
