@@ -2,7 +2,7 @@
 
 # OpenSCAD Language Support for IntelliJ Platform
 
-This is a plugin for the products based on IntelliJ Platform (Idea, PyCharm, etc.) for the OpenSCAD language. It supports :
+OpenSCAD language plugin for IntelliJ Platform IDEs (Idea, PyCharm, etc.). It provides :
 
 * syntax highlighting
 * formatting
