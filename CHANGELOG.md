@@ -1,35 +1,44 @@
-Version History
-===============
+# OpenSCAD Intellij plugin ChangeLog
 
-# Changes in version 1.4.0
+## [Unreleased]
+### Changed
+- Update GitHub actions and changelog format
 
-* Add code formatter
-* Add settings for OpenSCAD libraries and executable
-* Add import reference
-* Fix deprecated calls
-* Update compatibility version from 192.2549 to no limit
-* Add editor context menu open OpenSCAD and generate actions
-* Add completion for variables, modules and functions
+## 2.0.0
+### Added
+- Add code formatter
+- Add settings for OpenSCAD libraries and executable
+- Add import reference
+- Add editor context menu open OpenSCAD and generate actions
+- Add completion for variables, modules and functions
 
-## Changes in version 1.3.0
+### Changed
+- Update compatibility version from 192.2549 to no limit
 
-* Change version number to 1.3.0
-* Fix known grammar parsing issues
-* Added structure view
-* Partial code navigation (modules/functions/variables without considering context)
-* Documentation popups
+### Fix
+- Fix deprecated calls
 
-## Changes in version 1.2-SNAPSHOT
+## 1.3.0
+### Added
+- Added structure view
+- Partial code navigation (modules/functions/variables without considering context)
+- Documentation popups
 
-* Fixed change-log from the default text
+### Changed
+- Change version number to 1.3.0
 
-## Changes in version 1.1-SNAPSHOT
+### Fix
+- Fix known grammar parsing issues
 
-* Updated plugin name to conform to standards for uploading to the jetbrains plugin repository.
+## 1.2.0
+### Fix
+- Fixed change-log from the default text
 
-## Changes in version 1.0-SNAPSHOT
+## 1.1.0
+### Changed
+- Updated plugin name to conform to standards for uploading to the jetbrains plugin repository.
 
-## Initial release of the plugin.
-
-*   Syntax highlighting
-*   Code folding
+## 1.0.0
+### Added
+- Syntax highlighting
+- Code folding
