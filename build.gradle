@@ -1,6 +1,9 @@
 plugins {
-    id 'org.jetbrains.intellij' version '0.4.26'
+    id 'org.jetbrains.intellij' version '0.5.0'
+    id 'org.jetbrains.changelog' version '0.6.2'
 }
+
+apply plugin: 'org.jetbrains.changelog'
 
 group 'com.javampire'
 version '2.0.1-SNAPSHOT'
@@ -20,4 +23,22 @@ dependencies {
 intellij {
     //plugins = ['psiviewer:203-SNAPSHOT'] // For debugging the parser only
     updateSinceUntilBuild = false
+
+    patchPluginXml {
+        sinceBuild '192'
+        untilBuild ''
+
+        changeNotes({ changelog.getLatest().toHTML() })
+    }
+}
+
+changelog {
+    version = "${project.version}"
+    path = "${project.projectDir}/CHANGELOG.md"
+    header = { "[${project.version}] - ${date()}" }
+    headerParserRegex = ~/\d\.\d\.\d(-SNAPSHOT)?/
+    itemPrefix = "-"
+    keepUnreleasedSection = true
+    unreleasedTerm = "[Unreleased]"
+    groups = ["Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"]
 }

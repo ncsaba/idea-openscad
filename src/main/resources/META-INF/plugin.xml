@@ -3,17 +3,10 @@
   <name>OpenSCAD Language Support</name>
   <vendor email="idea-openscad@javampire.com" url="http://github.com/ncsaba/idea-openscad">Csaba Nagy</vendor>
 
-  <idea-version since-build="192" />
-
   <description><![CDATA[
     OpenSCAD language support plugin. Provide highlighting, completion, code folding, structure views, completion, navigation, color edition,
     library support, actions for opening OpenSCAD and exporting model.
     ]]></description>
-
-  <change-notes>
-    Changes are documented in our [change log](https://github.com/ncsaba/idea-openscad/blob/master/CHANGELOG.md)
-    on the project page.
-  </change-notes>
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Extension points for openscad -->
