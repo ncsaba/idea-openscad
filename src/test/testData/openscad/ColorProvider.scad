@@ -10,5 +10,6 @@ module colorProvide() {
     color(alpha = 1.0, c = [29 / 255, 165 / 255, 85 / 255]) cube([var3, var3, var3]);
 }
 
-var1 = 2;
+var1 = 200;
 var2 = var1;
+var2 = "toto";
