@@ -17,6 +17,7 @@ import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiErrorElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FilenameIndex;
@@ -67,11 +68,26 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
                         if (OpenSCADTypes.ARG_DECLARATION == elementPosition.getParent().getNode().getElementType()) {
                             return;
                         }
+
+                        // No autocompletion on literal
+                        if (OpenSCADTypes.LITERAL_EXPR == elementPosition.getParent().getNode().getElementType()) {
+                            return;
+                        }
+
                         // No autocompletion for numbers
                         if ("".equals(result.getPrefixMatcher().getPrefix())) {
-                            PsiElement previousElement = parameters.getPosition().getParent().getPrevSibling().getLastChild();
-                            if (previousElement != null && OpenSCADTypes.NUMBER_LITERAL == previousElement.getNode().getElementType()) {
-                                return;
+                            PsiElement previousElement = elementPosition.getParent().getPrevSibling();
+                            if (previousElement != null) {
+                                previousElement = previousElement.getLastChild();
+                                if (previousElement instanceof PsiErrorElement) {
+                                    previousElement = previousElement.getPrevSibling();
+                                }
+                                if ("ERROR_ELEMENT".equals(previousElement.getNode().getElementType().toString())) {
+                                    previousElement = elementPosition.getParent().getLastChild().getPrevSibling().getLastChild();
+                                }
+                                if (previousElement != null && OpenSCADTypes.NUMBER_LITERAL == previousElement.getNode().getElementType()) {
+                                    return;
+                                }
                             }
                         }
 
