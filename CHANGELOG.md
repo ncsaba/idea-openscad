@@ -1,8 +1,12 @@
 # OpenSCAD Intellij plugin ChangeLog
 
 ## [Unreleased]
+
+## 2.0.1
 ### Changed
 - Update GitHub actions and changelog format
+
+### Fix
 - Fix [Issue-56](https://github.com/ncsaba/idea-openscad/issues/56)
 
 ## 2.0.0
