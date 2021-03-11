@@ -1,6 +1,6 @@
 plugins {
-    id 'org.jetbrains.intellij' version '0.5.0'
-    id 'org.jetbrains.changelog' version '0.6.2'
+    id 'org.jetbrains.intellij' version '0.6.5'
+    id 'org.jetbrains.changelog' version '1.1.2'
 }
 
 apply plugin: 'org.jetbrains.changelog'
@@ -21,6 +21,8 @@ dependencies {
 }
 
 intellij {
+    version 'IC-2020.3.3'
+
     //plugins = ['psiviewer:203-SNAPSHOT'] // For debugging the parser only
     updateSinceUntilBuild = false
 
