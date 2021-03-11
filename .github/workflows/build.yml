@@ -158,9 +158,10 @@ jobs:
         with:
           plugin-location: plugin-artifact/*.zip
           ide-versions: |
-            ideaIC:2019.3
             ideaIC:2020.1
-            ideaIC:2020.2
+            ideaIC:LATEST-EAP-SNAPSHOT
+            pycharmPC:2020.1
+            pycharmPC:LATEST-EAP-SNAPSHOT
 
       # Print the output of the verify step
       - name: Print Logs
