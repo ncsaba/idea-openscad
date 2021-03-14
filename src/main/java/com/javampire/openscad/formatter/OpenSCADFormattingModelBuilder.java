@@ -37,7 +37,7 @@ public class OpenSCADFormattingModelBuilder implements FormattingModelBuilder {
 
     private SpacingBuilder createSpacingBuilder(CommonCodeStyleSettings settings) {
         // Configure spacing rules below
-        return new SpacingBuilder(settings.getRootSettings(), OpenSCADLanguage.INSTANCE)
+        return new SpacingBuilder(settings)
 
                 // Before parenthesis
                 .afterInside(IDENTIFIER, OpenSCADFunctionStubElementType.INSTANCE).spaceIf(settings.SPACE_BEFORE_METHOD_PARENTHESES)
