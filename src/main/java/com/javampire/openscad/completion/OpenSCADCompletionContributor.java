@@ -82,7 +82,7 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
                                 if (previousElement instanceof PsiErrorElement) {
                                     previousElement = previousElement.getPrevSibling();
                                 }
-                                if ("ERROR_ELEMENT".equals(previousElement.getNode().getElementType().toString())) {
+                                if (previousElement != null && "ERROR_ELEMENT".equals(previousElement.getNode().getElementType().toString())) {
                                     previousElement = elementPosition.getParent().getLastChild().getPrevSibling().getLastChild();
                                 }
                                 if (previousElement != null && OpenSCADTypes.NUMBER_LITERAL == previousElement.getNode().getElementType()) {
