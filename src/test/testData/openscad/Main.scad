@@ -1,4 +1,4 @@
-include <colorProvider.scad>
+include <ColorProvider.scad>
 
 colorProvide(); // code completion should work
 

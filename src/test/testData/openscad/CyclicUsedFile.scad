@@ -1,4 +1,4 @@
-use <subColorProvider.scad>
+use <SubColorProvider.scad>
 
 function multiply(x, y) = x * y;
 function x(abc) = abc;
