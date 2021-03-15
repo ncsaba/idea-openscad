@@ -7,7 +7,6 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.SystemInfo;
 import com.intellij.psi.PsiFile;
 import com.javampire.openscad.OpenSCADLanguage;
 import com.javampire.openscad.settings.OpenSCADSettings;
@@ -53,29 +52,28 @@ public abstract class OpenSCADExecutableAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
+        // Check arguments
+        final List<String> arguments = getArguments(event);
+        if (arguments == null) {
+            return;
+        }
 
         // Check configuration
         final OpenSCADSettings openSCADSettings = OpenSCADSettings.getInstance();
-        if (openSCADSettings == null || openSCADSettings.openSCADExecutable == null) {
+        if (openSCADSettings == null || openSCADSettings.getOpenSCADExecutable() == null) {
             Messages.showErrorDialog("Can not find OpenSCAD executable path. Please configure it in Settings -> Languages & Frameworks -> OpenSCAD Language and retry.", "OpenSCAD executable not set");
             return;
         }
 
-        // Create external command
-        List<String> commandWrapper = new ArrayList<>();
-        if (SystemInfo.isWindows) {
-            commandWrapper.add("cmd.exe");
-            commandWrapper.add("/c");
-        } else {
-            commandWrapper.add("bash");
-            commandWrapper.add("-c");
-        }
-        commandWrapper.add("\"" + openSCADSettings.openSCADExecutable + "\" " + getArguments(event));
+        // Create full command
+        final List<String> command = new ArrayList<>();
+        command.add(openSCADSettings.getOpenSCADExecutable());
+        command.addAll(arguments);
 
         ApplicationManager.getApplication().executeOnPooledThread(() -> {
             StringBuilder stderr = new StringBuilder();
             ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command(commandWrapper);
+            processBuilder.command(command);
             try {
                 Process process = processBuilder.start();
                 BufferedReader stdErrorBufferReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
@@ -85,15 +83,22 @@ public abstract class OpenSCADExecutableAction extends AnAction {
                 }
                 int returnCode = process.waitFor();
                 if (returnCode != 0) {
-                    LOG.error("Execution of " + commandWrapper.toString() + " failed. Return code:" + returnCode + ". Stderr:\n" + stderr.toString());
-                    ApplicationManager.getApplication().invokeLater(() -> Messages.showErrorDialog("Execution of " + commandWrapper.toString() + " failed:\n" + stderr.toString(), "OpenSCAD return code " + returnCode));
+                    LOG.error("Execution of " + command.toString() + " failed. Return code:" + returnCode + ". Stderr:\n" + stderr.toString());
+                    ApplicationManager.getApplication().invokeLater(() -> Messages.showErrorDialog("Execution of " + command.toString() + " failed with error " + returnCode + " :\n" + stderr.toString(), "OpenSCAD Execution Error"));
                 }
             } catch (IOException | InterruptedException e) {
-                LOG.error("Execution of " + commandWrapper.toString() + " failed.", e);
-                ApplicationManager.getApplication().invokeLater(() -> Messages.showErrorDialog("Execution of " + commandWrapper.toString() + " failed: \n" + ExceptionUtils.getFullStackTrace(e) + "\nYou can report an issue with this message in the GitHub repository of this plugin.", "OpenSCAD execution triggered an internal exception."));
+                LOG.error("Execution of " + command.toString() + " failed.", e);
+                ApplicationManager.getApplication().invokeLater(() -> Messages.showErrorDialog("Execution of " + command.toString() + " failed: \n" + ExceptionUtils.getFullStackTrace(e) + "\nYou can report an issue with this message in the GitHub repository of this plugin.", "OpenSCAD Execution Exception."));
             }
         });
     }
 
-    abstract protected String getArguments(@NotNull AnActionEvent event);
+    /**
+     * Arguments specific to an action.
+     * If null, no command will be executed.
+     *
+     * @param event Event.
+     * @return Arguments.
+     */
+    abstract protected List<String> getArguments(@NotNull AnActionEvent event);
 }
