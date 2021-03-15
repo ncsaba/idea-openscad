@@ -1,6 +1,12 @@
 # OpenSCAD Intellij plugin ChangeLog
 
 ## [Unreleased]
+### Changed
+- "Generate" ... actions have been transformed into an "Export as ..." action that allow for target file path and type selection.
+
+### Fix
+- Issue-59 NullPointerException In Intellij
+- Issue-62 Doesn't open app correctly if file path includes spaces
 
 ## 2.0.1
 ### Changed
