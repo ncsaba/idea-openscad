@@ -7,18 +7,17 @@ import com.intellij.openapi.fileChooser.FileSaverDescriptor;
 import com.intellij.openapi.fileChooser.FileSaverDialog;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class ExportAction extends OpenSCADExecutableAction {
 
-    private final String[] extensions = {"STL", "PNG", "SVG"};
+    private final String[] extensions = {"stl", "png", "svg"};
 
     @Override
-    protected String getArguments(@NotNull AnActionEvent event) {
+    protected List<String> getArguments(@NotNull AnActionEvent event) {
         final VirtualFile sourceFile = event.getData(CommonDataKeys.VIRTUAL_FILE);
         if (sourceFile == null) {
             return null;
@@ -33,6 +32,6 @@ public class ExportAction extends OpenSCADExecutableAction {
             return null;
         }
 
-        return "-o " + vfw.getVirtualFile(true).getPath() + " " + sourceFilePath;
+        return Arrays.asList("-o", vfw.getVirtualFile(true).getPath(), sourceFilePath);
     }
 }
