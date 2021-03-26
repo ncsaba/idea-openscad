@@ -1,3 +1,5 @@
+<!-- Keep a Changelog guide -> https://keepachangelog.com -->
+
 # OpenSCAD Intellij plugin ChangeLog
 
 ## [Unreleased]
