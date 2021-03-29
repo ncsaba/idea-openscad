@@ -1,0 +1,147 @@
+# GitHub Actions Workflow to handle the release process based on the pre release prepared with the Build workflow.
+# Will delete the latest pre release and build a new release with version incrementation.
+
+name: PromotePreRelease
+on: [ workflow_dispatch ]
+
+jobs:
+  prepare:
+    name: Prepare release
+    runs-on: ubuntu-latest
+    outputs:
+      name: ${{ steps.properties.outputs.name }}
+      baseVersion: ${{ steps.baseProperties.outputs.baseVersion }}
+      version: ${{ steps.properties.outputs.version }}
+      changelog: ${{ steps.properties.outputs.changelog }}
+      releaseSha: ${{ steps.sha.outputs.releaseSha }}
+    steps:
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.WORKFLOW_PUSH }}
+      - uses: gradle/wrapper-validation-action@v1.0.3
+
+      # Export build variables
+      - name: Export base version properties
+        id: baseProperties
+        shell: bash
+        run: |
+          PROPERTIES="$(./gradlew properties --console=plain -q)"
+          VERSION="$(echo "$PROPERTIES" | grep "^version:" | cut -f2- -d ' ')"
+
+          echo "$VERSION"
+          echo "::set-output name=baseVersion::$VERSION"
+
+      # Prepare version for release
+      - name: Trim dev suffix
+        id: setVersions
+        shell: bash
+        run: ./gradlew setversions --suffix=false
+
+      # Export build variables
+      - name: Export new commit properties
+        id: properties
+        shell: bash
+        run: |
+          PROPERTIES="$(./gradlew properties --console=plain -q)"
+          VERSION="$(echo "$PROPERTIES" | grep "^version:" | cut -f2- -d ' ')"
+          NAME="$(echo "$PROPERTIES" | grep "^name:" | cut -f2- -d ' ')"
+          CHANGELOG="$(./gradlew getChangelog --unreleased --no-header --console=plain -q)"
+          CHANGELOG="${CHANGELOG//'%'/'%25'}"
+          CHANGELOG="${CHANGELOG//$'\n'/'%0A'}"
+          CHANGELOG="${CHANGELOG//$'\r'/'%0D'}"
+
+          echo "::set-output name=version::$VERSION"
+          echo "::set-output name=name::$NAME"
+          echo "::set-output name=changelog::$CHANGELOG"
+
+      # Commit patched Changelog and new version
+      - name: Commit files
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Release ${{ steps.properties.outputs.version }}"
+          skip_fetch: true
+
+      # Get commit sha
+      - shell: bash
+        id: sha
+        run: |
+          RELEASE_SHA="$(git rev-parse HEAD)"
+          echo "$RELEASE_SHA"
+          echo "::set-output name=releaseSha::$RELEASE_SHA"
+
+  release:
+    name: Release
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ needs.prepare.outputs.releaseSha }}
+
+      # Build artifact using buildPlugin Gradle task
+      - name: Build Plugin
+        run: ./gradlew buildPlugin
+
+      # Create release
+      - name: Create Release
+        id: createRelease
+        uses: ncipollo/release-action@v1
+        with:
+          name: ${{ needs.prepare.outputs.version }}
+          tag: ${{ needs.prepare.outputs.version }}
+          commit: ${{ needs.prepare.outputs.releaseSha }}
+          body: ${{ needs.prepare.outputs.changelog }}
+          artifact: ./build/distributions/${{ needs.prepare.outputs.name }}-${{ needs.prepare.outputs.version }}.zip
+          artifactContentType: application/zip
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Publish the plugin to the Marketplace
+      - name: Publish Plugin
+        run: ./gradlew publishPlugin -Dorg.gradle.project.intellijPublishToken=${{ secrets.JETBRAINS_PUBLISH_TOKEN }}
+
+      # Delete generated release
+      - name: Delete previous release
+        id: deletePreviousRelease
+        uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ needs.prepare.outputs.baseVersion }}
+
+  finalize:
+    name: Prepare next development
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.WORKFLOW_PUSH }}
+          ref: ${{ github.event.ref }}
+
+      # Prepare version for release
+      - name: Increment version for dev
+        id: setVersions
+        shell: bash
+        run: ./gradlew setversions --suffix=true --increment=technical
+
+      # Update Unreleased section with the current version
+      - name: Patch Changelog
+        run: ./gradlew patchChangelog
+
+      # Commit patched Changelog and new version
+      - name: Commit files
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Finalize release"
