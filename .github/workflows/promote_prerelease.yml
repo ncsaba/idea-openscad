@@ -21,7 +21,7 @@ jobs:
           java-version: 15
       - uses: actions/checkout@v2
         with:
-          token: ${{ secrets.WORKFLOW_PUSH }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: gradle/wrapper-validation-action@v1.0.3
 
       # Export build variables
@@ -41,6 +41,10 @@ jobs:
         shell: bash
         run: ./gradlew setversions --suffix=false
 
+      # Update Unreleased section with the current version
+      - name: Patch Changelog
+        run: ./gradlew patchChangelog
+
       # Export build variables
       - name: Export new commit properties
         id: properties
@@ -58,7 +62,7 @@ jobs:
           echo "::set-output name=name::$NAME"
           echo "::set-output name=changelog::$CHANGELOG"
 
-      # Commit patched Changelog and new version
+      # Commit patched Changelog and release version
       - name: Commit files
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
@@ -99,13 +103,15 @@ jobs:
           tag: ${{ needs.prepare.outputs.version }}
           commit: ${{ needs.prepare.outputs.releaseSha }}
           body: ${{ needs.prepare.outputs.changelog }}
-          artifact: ./build/distributions/${{ needs.prepare.outputs.name }}-${{ needs.prepare.outputs.version }}.zip
+          artifacts: ./build/distributions/${{ needs.prepare.outputs.name }}-${{ needs.prepare.outputs.version }}.zip
           artifactContentType: application/zip
           token: ${{ secrets.GITHUB_TOKEN }}
 
       # Publish the plugin to the Marketplace
       - name: Publish Plugin
-        run: ./gradlew publishPlugin -Dorg.gradle.project.intellijPublishToken=${{ secrets.JETBRAINS_PUBLISH_TOKEN }}
+        env:
+          intellijPublishToken: ${{ secrets.JETBRAINS_PUBLISH_TOKEN }}
+        run: ./gradlew publishPlugin
 
       # Delete generated release
       - name: Delete previous release
@@ -127,21 +133,17 @@ jobs:
           java-version: 15
       - uses: actions/checkout@v2
         with:
-          token: ${{ secrets.WORKFLOW_PUSH }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.event.ref }}
 
-      # Prepare version for release
+      # Prepare version for dev
       - name: Increment version for dev
         id: setVersions
         shell: bash
         run: ./gradlew setversions --suffix=true --increment=technical
 
-      # Update Unreleased section with the current version
-      - name: Patch Changelog
-        run: ./gradlew patchChangelog
-
-      # Commit patched Changelog and new version
+      # Commit new version
       - name: Commit files
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Finalize release"
+          commit_message: "To dev version"

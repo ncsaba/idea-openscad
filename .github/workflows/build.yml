@@ -16,7 +16,6 @@
 name: Build
 on: [ push, pull_request ]
 jobs:
-
   check:
     name: Check
     runs-on: ubuntu-latest
