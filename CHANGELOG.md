@@ -3,6 +3,18 @@
 # OpenSCAD Intellij plugin ChangeLog
 
 ## Unreleased
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## 2.1.0
 ### Changed
 - "Generate" ... actions have been transformed into an "Export as ..." action that allow for target file path and type selection.
 
