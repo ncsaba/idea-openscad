@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: gradle/wrapper-validation-action@v1.0.3
+      - uses: gradle/wrapper-validation-action@v1.0.4
 
       # Export pre release (snapshot) version
       - name: Export base version properties
