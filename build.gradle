@@ -1,13 +1,13 @@
 plugins {
-    id 'org.jetbrains.intellij' version '0.7.2'
-    id 'org.jetbrains.changelog' version '1.1.2'
+    id 'org.jetbrains.intellij' version '1.1.4'
+    id 'org.jetbrains.changelog' version '1.2.1'
     id 'com.github.ldenisey.setversions' version '1.0.0'
 }
 
 apply plugin: 'org.jetbrains.changelog'
 
-group 'com.javampire'
-version '2.1.1-SNAPSHOT'
+group = 'com.javampire'
+version = '2.1.1-SNAPSHOT'
 
 sourceCompatibility = 1.11
 targetCompatibility = 1.11
@@ -32,27 +32,30 @@ dependencies {
 }
 
 intellij {
-    //plugins = ['psiviewer:203-SNAPSHOT'] // For debugging the parser only
-    updateSinceUntilBuild = false
+    version.set("212-EAP-SNAPSHOT")
+
+    //plugins.set(['psiviewer:203-SNAPSHOT']) // For debugging the parser only
+
+    updateSinceUntilBuild.set(false)
 
     patchPluginXml {
-        sinceBuild '201.6668'
-        untilBuild ''
+        sinceBuild.set('201.6668')
+        untilBuild.set('')
 
-        changeNotes({ changelog.getLatest().toHTML() })
+        changeNotes.set(provider { changelog.getLatest().toHTML() })
     }
 }
 
 // Read more: https://github.com/JetBrains/gradle-changelog-plugin
 changelog {
-    version = project.version
-    header = { project.version }
-    headerParserRegex = ~/\d\.\d\.\d(-SNAPSHOT)?/
-    unreleasedTerm = "Unreleased"
+    version.set(project.version)
+    header.set(project.version)
+    headerParserRegex.set(~/\d\.\d\.\d(-SNAPSHOT)?/)
+    unreleasedTerm.set("Unreleased")
 }
 
 runPluginVerifier {
-    ideVersions = pluginVerifierIdeVersions
+    ideVersions = (List) pluginVerifierIdeVersions.split(',')
 }
 
 publishPlugin {
