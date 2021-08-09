@@ -45,8 +45,8 @@ public abstract class OpenSCADExecutableAction extends AnAction {
     @Override
     public void update(@NotNull AnActionEvent event) {
         if (ActionPlaces.isPopupPlace(event.getPlace())) {
-            PsiFile psiFile = event.getData(CommonDataKeys.PSI_FILE);
-            event.getPresentation().setEnabledAndVisible(psiFile.getLanguage().isKindOf(OpenSCADLanguage.INSTANCE));
+            final PsiFile psiFile = event.getData(CommonDataKeys.PSI_FILE);
+            event.getPresentation().setEnabledAndVisible(psiFile != null && psiFile.getLanguage().isKindOf(OpenSCADLanguage.INSTANCE));
         }
     }
 
