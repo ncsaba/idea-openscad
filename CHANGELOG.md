@@ -3,6 +3,18 @@
 # OpenSCAD Intellij plugin ChangeLog
 
 ## Unreleased
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## 2.1.1
 ### Fixed
 - Issue-71 & Issue-74 - Fix color identifier detection
 - Issue-77 - Fix npe when invoking file contextual action menu
