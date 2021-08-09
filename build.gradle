@@ -7,7 +7,7 @@ plugins {
 apply plugin: 'org.jetbrains.changelog'
 
 group = 'com.javampire'
-version = '2.1.1'
+version = '2.1.2-SNAPSHOT'
 
 sourceCompatibility = 1.11
 targetCompatibility = 1.11
