@@ -3,17 +3,10 @@
 # OpenSCAD Intellij plugin ChangeLog
 
 ## Unreleased
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
 ### Fixed
+- Issue-71 & Issue-74 - Fix color identifier detection
+- Issue-77 - Fix npe when invoking file contextual action menu
 
-### Security
 ## 2.1.0
 ### Changed
 - "Generate" ... actions have been transformed into an "Export as ..." action that allow for target file path and type selection.
