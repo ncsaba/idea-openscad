@@ -18,28 +18,31 @@ class OpenSCADColorProvider implements ElementColorProvider {
     @Nullable
     @Override
     public Color getColorFrom(@NotNull PsiElement element) {
-        if (element.getNode().getElementType() == OpenSCADTypes.IDENTIFIER && "color".equals(element.getText())) {
-            final OpenSCADBuiltinOp colorBlock = (OpenSCADBuiltinOp) element.getParent().getParent();
-            String colorDef = null;
-            final List<OpenSCADArgAssignment> assignmentList = colorBlock.getArgAssignmentList().getArgAssignmentList();
-            if (assignmentList.size() > 0) {
-                // Testing if first element is a parameter reference ("c" of "alpha")
-                PsiElement colorDefElement = assignmentList.get(0).getFirstChild();
-                if (colorDefElement instanceof OpenSCADParameterReference) {
-                    colorDefElement = getColorFromParameterReferencedAssignment(assignmentList);
+        if ("color".equals(element.getText()) && element.getNode().getElementType() == OpenSCADTypes.IDENTIFIER) {
+            final PsiElement grandParentBlock = element.getParent().getParent();
+            if (grandParentBlock instanceof OpenSCADBuiltinOp) {
+                final OpenSCADBuiltinOp colorBlock = (OpenSCADBuiltinOp) grandParentBlock;
+                String colorDef = null;
+                final List<OpenSCADArgAssignment> assignmentList = colorBlock.getArgAssignmentList().getArgAssignmentList();
+                if (assignmentList.size() > 0) {
+                    // Testing if first element is a parameter reference ("c" of "alpha")
+                    PsiElement colorDefElement = assignmentList.get(0).getFirstChild();
+                    if (colorDefElement instanceof OpenSCADParameterReference) {
+                        colorDefElement = getColorFromParameterReferencedAssignment(assignmentList);
+                    }
+
+                    if (colorDefElement instanceof OpenSCADLiteralExpr && colorDefElement.getFirstChild().getNode().getElementType() == OpenSCADTypes.STRING_LITERAL) {
+                        colorDef = getColorFromLiteralExpr((OpenSCADLiteralExpr) colorDefElement);
+                    } else if (colorDefElement instanceof OpenSCADVectorExpr) {
+                        // Specific openscad case, RGB are given as float values, converting them as hexa
+                        colorDef = getColorFromVectorDef((OpenSCADVectorExpr) colorDefElement);
+                    }
                 }
 
-                if (colorDefElement instanceof OpenSCADLiteralExpr && colorDefElement.getFirstChild().getNode().getElementType() == OpenSCADTypes.STRING_LITERAL) {
-                    colorDef = getColorFromLiteralExpr((OpenSCADLiteralExpr) colorDefElement);
-                } else if (colorDefElement instanceof OpenSCADVectorExpr) {
-                    // Specific openscad case, RGB are given as float values, converting them as hexa
-                    colorDef = getColorFromVectorDef((OpenSCADVectorExpr) colorDefElement);
+                if (colorDef != null) {
+                    // Standard hexadecimal or string color definition
+                    return ColorMap.getColor(colorDef);
                 }
-            }
-
-            if (colorDef != null) {
-                // Standard hexadecimal or string color definition
-                return ColorMap.getColor(colorDef);
             }
         }
         return null;
