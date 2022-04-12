@@ -22,7 +22,7 @@
     <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADFunctionIndex" />
     <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADVariableIndex" />
     <lang.commenter language="OpenSCAD" implementationClass="com.javampire.openscad.editor.OpenSCADCommenter" />
-    <documentationProvider implementation="com.javampire.openscad.documentation.OpenSCADDocumentationProvider" />
+    <lang.documentationProvider language="OpenSCAD" implementationClass="com.javampire.openscad.documentation.OpenSCADDocumentationProvider" />
     <colorProvider implementation="com.javampire.openscad.color.OpenSCADColorProvider"/>
     <lang.braceMatcher language="OpenSCAD" implementationClass="com.javampire.openscad.highlighting.OpenSCADBraceMatcher" />
     <indexedRootsProvider implementation="com.javampire.openscad.psi.stub.index.BuiltinIndexContributor" />
